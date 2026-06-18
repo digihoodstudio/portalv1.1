@@ -1,0 +1,29 @@
+node_modules
+.devcontainer
+*.log
+*.local
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage
+dist
+.out
+.next
+.env
+.env.local
+.env.*.local
+**/node_modules
+**/.DS_Store
+**/.pnp.*
+**/.yarn/**/*
+**/.idea/**/*
+**/.vscode/**/*
+
+# OpenAI temp packages
+openai-4.13.0.tgz
+temp-openai/
+*.tsbuildinfo
+
+# Local JSON database storage
+backend/prisma/db.json

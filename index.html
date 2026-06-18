@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bhumi Didi Web - Redirecting...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #030816;
+      --card-bg: rgba(8, 16, 41, 0.6);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --gold: #cfc7ba;
+      --gold-glow: rgba(207, 199, 186, 0.15);
+      --red: #f43f5e;
+      --green: #10b981;
+      --text-color: #e2e8f0;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      background-image:
+        radial-gradient(circle at top, rgba(143, 122, 103, 0.18), transparent 45%),
+        linear-gradient(180deg, #02061d 0%, #050b24 100%);
+      color: var(--text-color);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .glow-orb {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      padding: 40px 32px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 0 32px rgba(207, 199, 186, 0.03);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-icon {
+      width: 72px;
+      height: 72px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: var(--gold);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      animation: pulse-glow 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 16px rgba(207, 199, 186, 0.1);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(207, 199, 186, 0.35);
+        border-color: rgba(207, 199, 186, 0.5);
+      }
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* Status Grid */
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .status-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.3s;
+    }
+
+    .status-box.online-box {
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    .status-box .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .status-box .port {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-indicator.offline { color: var(--red); }
+    .status-indicator.offline .indicator-dot {
+      background-color: var(--red);
+      box-shadow: 0 0 10px var(--red);
+    }
+
+    .status-indicator.online { color: var(--green); }
+    .status-indicator.online .indicator-dot {
+      background-color: var(--green);
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse-dot 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.7; }
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      background: rgba(255,255,255,0.05);
+      border-radius: 100px;
+      height: 4px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), rgba(207,199,186,0.4));
+      border-radius: 100px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* Status message */
+    .status-msg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 20px;
+      min-height: 24px;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(207, 199, 186, 0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.9s infinite linear;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Redirect button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold) 0%, #a89a8a 100%);
+      color: #030816;
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(207, 199, 186, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(207, 199, 186, 0.45);
+      filter: brightness(1.08);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(207, 199, 186, 0.3);
+      color: var(--gold);
+    }
+
+    .hidden { display: none !important; }
+
+    /* Success state */
+    .success-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow-orb"></div>
+
+  <div class="container">
+    <div class="card">
+      <!-- Logo -->
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+
+      <h1 id="title">Connecting to App...</h1>
+      <p class="subtitle" id="status-text">Checking if your development servers are running on localhost.</p>
+
+      <!-- Success badge (hidden until ready) -->
+      <div class="success-badge hidden" id="success-badge">
+        <span>●</span> All Systems Online
+      </div>
+
+      <!-- Status Grid -->
+      <div class="status-grid">
+        <div class="status-box" id="fe-box">
+          <span class="label">Frontend</span>
+          <span class="port">Port 3001</span>
+          <div id="frontend-status" class="status-indicator offline">
+            <span class="indicator-dot"></span>
+            <span class="text">Checking...</span>
+          </div>
+        </div>
+        <div class="status-box" id="be-box">
+          <span class="label">API Backend</span>
+          <span class="port">Port 4000</span>
+          <div id="backend-status" class="status-indicator offline">
+            <span class="indicator-dot"></span>
+            <span class="text">Checking...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+
+      <!-- Status message -->
+      <div class="status-msg" id="status-msg">
+        <div class="spinner"></div>
+        <span id="msg-text">Scanning localhost ports...</span>
+      </div>
+
+      <!-- Launch button (hidden until frontend is online) -->
+      <a href="http://localhost:3001" class="btn hidden" id="launch-btn" onclick="goToApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        Open Bhumi Didi Web
+      </a>
+
+      <a href="http://localhost:3001" class="btn-secondary hidden" id="manual-btn">
+        Go to localhost:3001 manually
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const FRONTEND_URL = 'http://localhost:3001';
+    const BACKEND_URL  = 'http://localhost:4000';
+
+    let frontendOnline = false;
+    let backendOnline  = false;
+    let redirected     = false;
+    let checkCount     = 0;
+    const MAX_CHECKS   = 60; // ~2 minutes
+
+    function goToApp() {
+      window.location.href = FRONTEND_URL;
+    }
+
+    function probeUrl(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const t = setTimeout(() => { img.src = ''; resolve(false); }, 1500);
+        img.onload  = () => { clearTimeout(t); resolve(true);  };
+        img.onerror = () => { clearTimeout(t); resolve(false); };
+        img.src = url + '?_=' + Date.now();
+      });
+    }
+
+    async function probeFrontend() {
+      return probeUrl(FRONTEND_URL + '/favicon.ico');
+    }
+
+    async function probeBackend() {
+      return probeUrl(BACKEND_URL + '/health.png');
+    }
+
+    function setIndicator(elId, boxId, online, label) {
+      const el  = document.getElementById(elId);
+      const box = document.getElementById(boxId);
+      el.className = 'status-indicator ' + (online ? 'online' : 'offline');
+      el.querySelector('.text').textContent = online ? 'Online' : label;
+      if (online) box.classList.add('online-box');
+      else        box.classList.remove('online-box');
+    }
+
+    async function check() {
+      checkCount++;
+      const progress = Math.min((checkCount / MAX_CHECKS) * 60, 60);
+      document.getElementById('progress-bar').style.width = progress + '%';
+
+      const [fe, be] = await Promise.all([probeFrontend(), probeBackend()]);
+
+      frontendOnline = fe;
+      backendOnline  = be;
+
+      setIndicator('frontend-status', 'fe-box', fe, checkCount <= 1 ? 'Checking...' : 'Offline');
+      setIndicator('backend-status',  'be-box', be, checkCount <= 1 ? 'Checking...' : 'Offline');
+
+      const title     = document.getElementById('title');
+      const statusTxt = document.getElementById('status-text');
+      const statusMsg = document.getElementById('status-msg');
+      const msgTxt    = document.getElementById('msg-text');
+      const launchBtn = document.getElementById('launch-btn');
+      const manualBtn = document.getElementById('manual-btn');
+      const badge     = document.getElementById('success-badge');
+      const progressBar = document.getElementById('progress-bar');
+
+      if (fe) {
+        // Frontend is UP — redirect automatically
+        progressBar.style.width = '100%';
+        progressBar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+
+        if (be) {
+          title.textContent = 'All Systems Online';
+          statusTxt.textContent = 'Frontend & backend are both running. Launching your app now...';
+        } else {
+          title.textContent = 'App Ready';
+          statusTxt.textContent = 'Frontend is running. Backend may still be starting up.';
+        }
+
+        badge.classList.remove('hidden');
+        statusMsg.classList.add('hidden');
+        launchBtn.classList.remove('hidden');
+        manualBtn.classList.remove('hidden');
+
+        if (!redirected) {
+          redirected = true;
+          setTimeout(() => { window.location.href = FRONTEND_URL; }, 600);
+        }
+        return; // stop polling
+      }
+
+      // Frontend not yet up
+      if (checkCount >= MAX_CHECKS) {
+        title.textContent = 'Server Not Running';
+        statusTxt.textContent = 'Servers appear to be offline. Please run START.bat from your project folder.';
+        msgTxt.textContent = 'Could not detect servers after 2 minutes.';
+        statusMsg.querySelector('.spinner').style.display = 'none';
+        launchBtn.classList.remove('hidden');
+        manualBtn.classList.remove('hidden');
+        return;
+      }
+
+      // Still waiting
+      const dots = ['Scanning ports...', 'Pinging localhost:3001...', 'Waiting for Next.js...', 'Almost there...'];
+      msgTxt.textContent = dots[checkCount % dots.length];
+
+      setTimeout(check, 2000);
+    }
+
+    // Start checking immediately
+    check();
+  </script>
+</body>
+
+</html>

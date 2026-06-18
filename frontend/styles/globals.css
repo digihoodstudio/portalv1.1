@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --color-background: #02061D;
+  --color-foreground: #BDB6AC;
+  --color-gold: #CFC7BA;
+  --color-gold-dim: #8E7D69;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-plus-jakarta), var(--font-inter), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(207,199,186,0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(207,199,186,0.3); }
+
+::selection {
+  background: rgba(207, 199, 186, 0.25);
+  color: #fff;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+/* ── Utility classes ── */
+.bg-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.text-gold {
+  color: var(--color-gold);
+}
+
+.border-gold {
+  border-color: var(--color-gold-dim);
+}
+
+.shadow-glow {
+  box-shadow: 0 20px 80px rgba(143, 122, 103, 0.18), 0 1px 0 rgba(255,255,255,0.04) inset;
+}
+
+.shadow-glow-sm {
+  box-shadow: 0 10px 30px rgba(143, 122, 103, 0.10), 0 1px 0 rgba(255,255,255,0.04) inset;
+}
+
+.border-glass {
+  border-color: rgba(207, 199, 186, 0.12);
+}
+
+/* ── Focus ring reset ── */
+*:focus-visible:not(input):not(textarea):not(select) {
+  outline: 2px solid rgba(207,199,186,0.5);
+  outline-offset: 2px;
+}
+
+/* ── Smooth page transitions ── */
+main {
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
