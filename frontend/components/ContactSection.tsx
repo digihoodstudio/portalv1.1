@@ -75,7 +75,6 @@ export default function ContactSection() {
     {
       name: "WhatsApp",
       value: "+977 9712039972",
-      desc: "Instant click-to-chat. Best for fast integration support.",
       url: "https://wa.me/message/FKV26Z3XPSIOL1",
       color:
         "border-emerald-500/20 hover:border-emerald-500/40 bg-emerald-950/10 text-emerald-400",
@@ -84,7 +83,6 @@ export default function ContactSection() {
     {
       name: "Gmail",
       value: "info@digihoodstudio.com",
-      desc: "Traditional email support for partnership queries.",
       url: "mailto:info@digihoodstudio.com",
       color:
         "border-rose-500/20 hover:border-rose-500/40 bg-rose-950/10 text-rose-400",
