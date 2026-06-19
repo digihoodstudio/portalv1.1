@@ -74,30 +74,21 @@ export default function ContactSection() {
   const channels = [
     {
       name: "WhatsApp",
-      value: "+1 (888) 555-0199",
+      value: "+977 9712039972",
       desc: "Instant click-to-chat. Best for fast integration support.",
-      url: "https://wa.me/18885550199",
+      url: "https://wa.me/message/FKV26Z3XPSIOL1",
       color:
         "border-emerald-500/20 hover:border-emerald-500/40 bg-emerald-950/10 text-emerald-400",
       icon: <MessageCircle className="h-6 w-6" />,
     },
     {
       name: "Gmail",
-      value: "hello@aigrowthsystems.com",
+      value: "info@digihoodstudio.com",
       desc: "Traditional email support for partnership queries.",
-      url: "mailto:hello@aigrowthsystems.com",
+      url: "mailto:info@digihoodstudio.com",
       color:
         "border-rose-500/20 hover:border-rose-500/40 bg-rose-950/10 text-rose-400",
       icon: <Mail className="h-6 w-6" />,
-    },
-    {
-      name: "Facebook",
-      value: "Digihood Studio",
-      desc: "Follow us for latest AI research and client cases.",
-      url: "https://facebook.com/aigrowthsystems",
-      color:
-        "border-blue-500/20 hover:border-blue-500/40 bg-blue-950/10 text-blue-400",
-      icon: <Facebook className="h-6 w-6" />,
     },
   ];
 
