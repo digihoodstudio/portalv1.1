@@ -1,13 +1,15 @@
-# 🚀 Quick Start - AI Growth Systems
+# 🚀 Quick Start - Digihood Studio
 
 ## One-Command Setup & Run
 
 ### Windows (PowerShell/CMD)
+
 ```bash
 npm install && npm --workspace app install && npm --workspace server install && npm run dev
 ```
 
 ### Mac/Linux (Bash/Terminal)
+
 ```bash
 npm install && npm --workspace app install && npm --workspace server install && npm run dev
 ```
@@ -28,11 +30,13 @@ npm install && npm --workspace app install && npm --workspace server install && 
 Look for these messages in your terminal:
 
 ### Backend Ready ✅
+
 ```
 API server listening on http://localhost:4000
 ```
 
 ### Frontend Ready ✅
+
 ```
 ▲ Next.js 15.2.3
 - Local:        http://localhost:3001
@@ -55,10 +59,12 @@ Once both servers show "ready":
 ## 📋 Test Credentials
 
 **Super Admin:**
+
 - Email: `superadmin@gmail.com`
 - Password: `AdminPass123!`
 
 **Admin:**
+
 - Email: `admin@gmail.com`
 - Password: `AdminPass123!`
 
@@ -69,6 +75,7 @@ Or **Create Your Own** via Sign Up button
 ## ❌ Having Issues?
 
 ### Error: "Port 3001 already in use"
+
 ```bash
 # Kill the process on port 3001
 # Windows: netstat -ano | findstr :3001
@@ -76,6 +83,7 @@ Or **Create Your Own** via Sign Up button
 ```
 
 ### Error: "Cannot find module..."
+
 ```bash
 # Clear cache and reinstall
 rm -rf node_modules app/node_modules server/node_modules package-lock.json
@@ -83,6 +91,7 @@ npm install && npm --workspace app install && npm --workspace server install
 ```
 
 ### Backend not connecting
+
 - Check that port 4000 is free
 - Ensure backend shows "listening on http://localhost:4000"
 - Frontend will auto-retry connection

@@ -1,4 +1,4 @@
-# 🚀 WELCOME TO AI GROWTH SYSTEMS
+# 🚀 WELCOME TO Digihood Studio
 
 ## You're 30 Seconds Away From Going Live!
 
@@ -9,26 +9,32 @@ This is a **complete, production-ready web application**. Everything is configur
 ## ✅ START HERE (Choose ONE):
 
 ### 1️⃣ **FASTEST WAY** (Windows)
+
 ```
 Double-click: RUN_ME_FIRST.bat
 ```
+
 ↓ Installs dependencies + starts servers automatically
 
 ---
 
 ### 2️⃣ **TERMINAL WAY** (All platforms)
+
 ```
 npm run dev
 ```
+
 ↓ Starts both frontend and backend servers
 
 ---
 
 ### 3️⃣ **VERIFICATION FIRST** (Recommended)
+
 ```
 Windows: VERIFY.bat
 Mac/Linux: ./verify.sh
 ```
+
 ↓ Checks everything is ready, then you can start
 
 ---
@@ -36,10 +42,11 @@ Mac/Linux: ./verify.sh
 ## 🎯 AFTER STARTING
 
 1. **Wait for both servers to start** (look for):
-   - `▲ Next.js 15.2.3` 
+   - `▲ Next.js 15.2.3`
    - `API server listening on http://localhost:4000`
 
 2. **Open your browser**:
+
    ```
    http://localhost:3001
    ```
@@ -54,19 +61,20 @@ Mac/Linux: ./verify.sh
 
 ## 📚 DOCUMENTATION
 
-| File | What It Does |
-|------|-------------|
-| **CLICK_TO_RUN.md** | Visual 30-second startup guide |
-| **QUICKSTART.md** | Essential commands reference |
-| **START.md** | Step-by-step walkthrough |
-| **COMPLETE_SETUP.md** | Full technical documentation |
-| **README.md** | Project overview |
+| File                  | What It Does                   |
+| --------------------- | ------------------------------ |
+| **CLICK_TO_RUN.md**   | Visual 30-second startup guide |
+| **QUICKSTART.md**     | Essential commands reference   |
+| **START.md**          | Step-by-step walkthrough       |
+| **COMPLETE_SETUP.md** | Full technical documentation   |
+| **README.md**         | Project overview               |
 
 ---
 
 ## ❌ ISSUES?
 
 ### "Port already in use"
+
 ```bash
 # Windows
 netstat -ano | findstr :3001
@@ -78,13 +86,16 @@ kill -9 <number>
 ```
 
 ### "npm not found"
+
 - Install Node.js: https://nodejs.org/
 
 ### "Cannot connect to backend"
+
 - Make sure both are running
 - Check that you see both messages in terminal
 
 ### "More help?"
+
 - See `COMPLETE_SETUP.md` Troubleshooting section
 
 ---
@@ -92,32 +103,38 @@ kill -9 <number>
 ## 🎨 WHAT'S INCLUDED
 
 ✅ **User Authentication**
+
 - Sign up with email
 - Secure login with JWT
 - Password hashing
 
 ✅ **Dashboard**
+
 - Personal metrics
 - Lead list
 - Real-time data
 
 ✅ **Admin Features**
+
 - Manage all leads
 - View all users
 - System analytics
 
 ✅ **SuperAdmin Features**
+
 - Platform management
 - User administration
 - Advanced settings
 
 ✅ **UI/UX**
+
 - Modern responsive design
 - Dark theme with gold accents
 - Smooth animations
 - Mobile optimized
 
 ✅ **API Integration**
+
 - OpenAI chatbot (ready)
 - Twilio voice calls (ready)
 - Email integration (ready)
@@ -126,12 +143,12 @@ kill -9 <number>
 
 ## 📊 SYSTEM INFO
 
-| Component | Port | Status |
-|-----------|------|--------|
-| Frontend | 3001 | Ready ✅ |
-| Backend | 4000 | Ready ✅ |
-| Database | In-Memory | Ready ✅ |
-| Auth | JWT | Ready ✅ |
+| Component | Port      | Status   |
+| --------- | --------- | -------- |
+| Frontend  | 3001      | Ready ✅ |
+| Backend   | 4000      | Ready ✅ |
+| Database  | In-Memory | Ready ✅ |
+| Auth      | JWT       | Ready ✅ |
 
 ---
 
@@ -140,12 +157,15 @@ kill -9 <number>
 **Pick your startup method above and start in 30 seconds!**
 
 ### Windows?
+
 → Double-click `RUN_ME_FIRST.bat`
 
 ### Mac/Linux?
+
 → Run `./run.sh`
 
 ### Anywhere?
+
 → Run `npm run dev`
 
 ---
@@ -159,7 +179,7 @@ After you login:
    - View leads list
    - Refresh data
 
-2. **Admin Page** (`/admin`) 
+2. **Admin Page** (`/admin`)
    - Available if logged in as admin
    - View all leads
    - Manage system
@@ -179,7 +199,7 @@ After you login:
 ## 📞 NEED HELP?
 
 1. **Can't start?** → See COMPLETE_SETUP.md
-2. **Commands?** → See QUICKSTART.md  
+2. **Commands?** → See QUICKSTART.md
 3. **Step by step?** → See START.md
 4. **Just want to click?** → See CLICK_TO_RUN.md
 
