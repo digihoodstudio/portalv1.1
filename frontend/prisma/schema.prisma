@@ -1,0 +1,366 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Supports both Vercel Postgres variable names (POSTGRES_PRISMA_URL)
+  // and our custom names (DATABASE_URL). Set whichever you use.
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+// ─── Roles ───────────────────────────────────────────────────────────────────
+model Role {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  users       User[]
+
+  @@map("roles")
+}
+
+// ─── Users ───────────────────────────────────────────────────────────────────
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  suspended    Boolean   @default(false)
+  phone        String?
+  status       String    @default("ACTIVE")
+  joiningDate  DateTime  @default(now())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  roleId    String
+  role      Role    @relation(fields: [roleId], references: [id])
+
+  clientId  String?
+  client    Client? @relation(fields: [clientId], references: [id])
+
+  adminId   String?
+  admin     Admin?  @relation(fields: [adminId], references: [id])
+
+  designationId String?
+  designation   Designation? @relation(fields: [designationId], references: [id])
+
+  notifications  Notification[]
+  activityLogs   ActivityLog[]
+  auditLogs      AuditLog[]
+  leads          Lead[]
+  dailyPlanners  DailyPlanner[]
+  dailyUpdates   DailyUpdate[]
+  employeeMeetings EmployeeMeeting[]
+  employeeTasks  EmployeeTask[]
+
+  @@map("users")
+}
+
+// ─── Clients ─────────────────────────────────────────────────────────────────
+model Client {
+  id           String   @id @default(cuid())
+  companyName  String
+  contactName  String?
+  contactEmail String?
+  contactPhone String?
+  plan         String   @default("GROWTH")
+  status       String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  users         User[]
+  projects      Project[]
+  uploadedFiles UploadedFile[]
+  leads         Lead[]
+
+  @@map("clients")
+}
+
+// ─── Admins (outbound dialing team) ──────────────────────────────────────────
+model Admin {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  phone          String?
+  capacity       Int      @default(1000)
+  activeTasks    Int      @default(0)
+  completionRate Float    @default(0)
+  status         String   @default("AVAILABLE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  users       User[]
+  projects    Project[]
+  assignments Assignment[]
+
+  @@map("admins")
+}
+
+// ─── Designations ─────────────────────────────────────────────────────────────
+model Designation {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  users User[]
+
+  @@map("designations")
+}
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+model Project {
+  id               String    @id @default(cuid())
+  name             String
+  status           String    @default("PENDING_APPROVAL")
+  progress         Int       @default(0)
+  startDate        DateTime?
+  estCompletion    DateTime?
+  actualCompletion DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  adminId String?
+  admin   Admin?  @relation(fields: [adminId], references: [id])
+
+  uploadedFiles UploadedFile[]
+  leads         Lead[]
+  assignments   Assignment[]
+
+  @@map("projects")
+}
+
+// ─── Uploaded Files ───────────────────────────────────────────────────────────
+model UploadedFile {
+  id          String   @id @default(cuid())
+  fileName    String
+  fileType    String   @default("CSV")
+  recordCount Int      @default(0)
+  status      String   @default("PENDING_APPROVAL")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  clientId  String
+  client    Client  @relation(fields: [clientId], references: [id])
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  @@map("uploaded_files")
+}
+
+// ─── Leads ────────────────────────────────────────────────────────────────────
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  phone     String?
+  email     String?
+  notes     String?
+  status    String   @default("NEW")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  calls Call[]
+
+  @@map("leads")
+}
+
+// ─── Assignments ──────────────────────────────────────────────────────────────
+model Assignment {
+  id          String   @id @default(cuid())
+  recordCount Int      @default(0)
+  status      String   @default("ASSIGNED")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  adminId String
+  admin   Admin  @relation(fields: [adminId], references: [id])
+
+  @@map("assignments")
+}
+
+// ─── Notifications ────────────────────────────────────────────────────────────
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  channel   String   @default("IN_APP")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+// ─── Activity Logs ────────────────────────────────────────────────────────────
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String
+  details   String?
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("activity_logs")
+}
+
+// ─── Audit Logs ───────────────────────────────────────────────────────────────
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  actor     String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+// ─── Voice Tests ──────────────────────────────────────────────────────────────
+model VoiceTest {
+  id        String   @id @default(cuid())
+  phone     String
+  scenario  String
+  voiceType String   @default("Female Professional")
+  createdAt DateTime @default(now())
+
+  transcripts CallTranscript[]
+
+  @@map("voice_tests")
+}
+
+// ─── Call Transcripts ─────────────────────────────────────────────────────────
+model CallTranscript {
+  id        String   @id @default(cuid())
+  role      String
+  message   String
+  createdAt DateTime @default(now())
+
+  callId String
+  call   VoiceTest @relation(fields: [callId], references: [id])
+
+  @@map("call_transcripts")
+}
+
+// ─── Calls ────────────────────────────────────────────────────────────────────
+model Call {
+  id          String   @id @default(cuid())
+  durationSec Int      @default(0)
+  initiatedBy String   @default("system")
+  outcome     String   @default("ANSWERED")
+  createdAt   DateTime @default(now())
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id])
+
+  @@map("calls")
+}
+
+// ─── Appointments ─────────────────────────────────────────────────────────────
+model Appointment {
+  id          String   @id @default(cuid())
+  title       String?
+  scheduledAt DateTime @default(now())
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("appointments")
+}
+
+// ─── Daily Planner ────────────────────────────────────────────────────────────
+model DailyPlanner {
+  id          String   @id @default(cuid())
+  date        String
+  callTarget  Int      @default(20)
+  callsMade   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
+  @@map("daily_planners")
+}
+
+// ─── Daily Updates ────────────────────────────────────────────────────────────
+model DailyUpdate {
+  id        String   @id @default(cuid())
+  date      String
+  summary   String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("daily_updates")
+}
+
+// ─── Employee Meetings ────────────────────────────────────────────────────────
+model EmployeeMeeting {
+  id           String   @id @default(cuid())
+  date         String
+  time         String
+  prospectName String
+  purpose      String?
+  completed    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("employee_meetings")
+}
+
+// ─── Employee Tasks ───────────────────────────────────────────────────────────
+model EmployeeTask {
+  id        String   @id @default(cuid())
+  date      String
+  title     String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("employee_tasks")
+}
+
+// ─── Chatbot Logs ─────────────────────────────────────────────────────────────
+model ChatbotLog {
+  id        String   @id @default(cuid())
+  message   String?
+  response  String?
+  createdAt DateTime @default(now())
+
+  @@map("chatbot_logs")
+}
