@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, LogOut } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import SuperAdminDashboard from "../../components/SuperAdminDashboard";
 import AdminDashboard from "../../components/AdminDashboard";
 import ClientDashboard from "../../components/ClientDashboard";
@@ -23,25 +24,42 @@ export default function UnifiedDashboardPage() {
     window.location.reload();
   };
 
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userStr = localStorage.getItem("user");
+    const checkAuth = async () => {
+      const supabase = createClient();
 
-    if (!token || !userStr) {
-      router.push("/login");
-      return;
-    }
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-    try {
-      const parsedUser = JSON.parse(userStr);
-      setUser(parsedUser);
-      const role = parsedUser.role?.toUpperCase?.() || parsedUser.role;
-      setUserRole(role || "CLIENT");
-    } catch (e) {
-      router.push("/login");
-    } finally {
+      if (!session) {
+        router.push("/login");
+        return;
+      }
+
+      // Get profile from profiles table
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session.user.id)
+        .single();
+
+      setUser({
+        name: profile?.full_name || session.user.email,
+        email: session.user.email,
+        role: profile?.role || "CLIENT",
+      });
+      setUserRole(profile?.role || "CLIENT");
       setLoading(false);
-    }
+    };
+
+    checkAuth();
   }, [router]);
 
   const getDisplayName = () => {
@@ -89,7 +107,6 @@ export default function UnifiedDashboardPage() {
 
   return (
     <main className="mx-auto mt-28 max-w-7xl px-6 pb-24 md:px-12 font-sans text-white">
-      {/* Dynamic Background Glow */}
       <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden pointer-events-none">
         <div
           className={`h-[350px] w-[600px] rounded-full blur-[140px] opacity-15 transition-colors duration-500 ${
@@ -103,7 +120,6 @@ export default function UnifiedDashboardPage() {
       </div>
 
       <div className="rounded-[32px] border border-white/10 bg-glass p-6 md:p-10 shadow-glow space-y-8">
-        {/* Dynamic Context Header */}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between border-b border-white/10 pb-8">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
@@ -129,7 +145,6 @@ export default function UnifiedDashboardPage() {
               Welcome Back, {getDisplayName()}
             </h1>
 
-            {/* Badges bar */}
             <div className="flex flex-wrap items-center gap-2.5 pt-1">
               <span
                 className={`rounded-full border px-3 py-1 text-2xs font-bold ${
@@ -156,10 +171,16 @@ export default function UnifiedDashboardPage() {
               <RefreshCw size={12} />
               <span>Refresh</span>
             </button>
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-950/20 px-5 py-2 text-xs font-semibold text-red-300 transition hover:bg-red-950/40"
+            >
+              <LogOut size={12} />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
 
-        {/* Dashboard Conditional Mounting */}
         <div className="transition-opacity duration-300">
           {userRole === "SUPERADMIN" && <SuperAdminDashboard />}
           {isStaffRole(userRole) && <AgentDashboard />}
