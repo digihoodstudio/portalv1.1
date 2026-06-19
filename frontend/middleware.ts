@@ -25,17 +25,14 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // Get current user
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // If not logged in and trying to access dashboard → send to login
   if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // If logged in and on login/register page → send to dashboard
   if (
     user &&
     (request.nextUrl.pathname === "/login" ||
