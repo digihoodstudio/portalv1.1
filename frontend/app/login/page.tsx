@@ -112,9 +112,7 @@ function LoginContent() {
           <h1 className="text-2xl font-bold tracking-tight text-white">
             Welcome Back
           </h1>
-          <p className="mt-1 text-xs text-white/50">
-            Sign in to your Digihood Studio Portal account
-          </p>
+          <p className="mt-1 text-xs text-white/50">Sign in to your portal</p>
         </div>
 
         {/* Alerts */}
