@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Vapi from "@vapi-ai/web";
 import {
   Send,
   Mic,
@@ -12,24 +13,19 @@ import {
   RotateCcw,
   Bot,
   User,
+  PhoneOff,
 } from "lucide-react";
 
-/* ── Types ─────────────────────────────────────── */
+/* ── Types ─────────────────────────────────────────────── */
 interface Message {
   role: "assistant" | "user";
   text: string;
   id: string;
 }
 
-/* ── Web Speech API type shims ──────────────────── */
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
+type CallStatus = "idle" | "connecting" | "active";
 
-/* ── Animated waveform bar ──────────────────────── */
+/* ── Animated waveform bar ─────────────────────────────── */
 function WaveBar({ active, delay }: { active: boolean; delay: number }) {
   return (
     <motion.div
@@ -59,97 +55,115 @@ export default function AssistantPanel() {
   const [messages, setMessages] = useState<Message[]>([INITIAL]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [listening, setListening] = useState(false);
-  const [speakEnabled, setSpeakEnabled] = useState(true);
-  const [voiceSupported, setVoiceSupported] = useState(false);
-  const [transcript, setTranscript] = useState("");
+
+  // Vapi voice state
+  const [callStatus, setCallStatus] = useState<CallStatus>("idle");
+  const [isMuted, setIsMuted] = useState(false);
+  const [volumeLevel, setVolumeLevel] = useState(0);
+  const [vapiError, setVapiError] = useState("");
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<any>(null);
+  const vapiRef = useRef<Vapi | null>(null);
 
-  const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
-
-  /* ── Check browser voice support + preload voices ── */
+  /* ── Initialize Vapi once ────────────────────────────── */
   useEffect(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    setVoiceSupported(!!SR);
+    const publicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
+    if (!publicKey) {
+      console.warn("Vapi public key not set");
+      return;
+    }
 
-    // Voices load asynchronously — preload and cache them
-    const loadVoices = () => {
-      voicesRef.current = window.speechSynthesis?.getVoices() ?? [];
+    const vapi = new Vapi(publicKey);
+    vapiRef.current = vapi;
+
+    vapi.on("call-start", () => {
+      setCallStatus("active");
+      setVapiError("");
+    });
+
+    vapi.on("call-end", () => {
+      setCallStatus("idle");
+      setVolumeLevel(0);
+      setIsMuted(false);
+    });
+
+    vapi.on("volume-level", (level: number) => {
+      setVolumeLevel(level);
+    });
+
+    // Show live transcript in the chat as messages come in
+    vapi.on("message", (msg: any) => {
+      if (msg.type === "transcript" && msg.transcriptType === "final") {
+        const role = msg.role === "user" ? "user" : "assistant";
+        setMessages((prev) => [
+          ...prev,
+          {
+            role,
+            text: msg.transcript,
+            id: `${role[0]}-${Date.now()}-${Math.random()}`,
+          },
+        ]);
+      }
+    });
+
+    vapi.on("error", (err: any) => {
+      console.error("Vapi error:", err);
+      setVapiError("Voice call error. Please try again.");
+      setCallStatus("idle");
+    });
+
+    return () => {
+      vapi.stop();
     };
-    loadVoices();
-    window.speechSynthesis?.addEventListener("voiceschanged", loadVoices);
-    return () =>
-      window.speechSynthesis?.removeEventListener("voiceschanged", loadVoices);
   }, []);
 
-  /* ── Auto-scroll to bottom ── */
+  /* ── Auto-scroll ──────────────────────────────────────── */
   useEffect(() => {
     if (messages.length > 1 || loading) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      const el = bottomRef.current;
+      if (el) {
+        const parent = el.parentElement;
+        if (parent) {
+          parent.scrollTop = parent.scrollHeight;
+        }
+      }
     }
   }, [messages, loading]);
 
-  /* ── Speak response ── */
-  const speak = useCallback(
-    (rawText: string) => {
-      if (!speakEnabled || !window.speechSynthesis) return;
-      window.speechSynthesis.cancel();
+  /* ── Vapi: start / stop call ─────────────────────────── */
+  const toggleVoiceCall = useCallback(async () => {
+    const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
+    if (!assistantId) {
+      setVapiError("Voice assistant not configured.");
+      return;
+    }
+    if (!vapiRef.current) return;
 
-      // Strip markdown and symbols so they don't get read aloud
-      const cleaned = rawText
-        .replace(/\*\*(.*?)\*\*/g, "$1") // **bold**
-        .replace(/\*(.*?)\*/g, "$1") // *italic*
-        .replace(/•/g, ",") // bullet → pause
-        .replace(/✓/g, "") // checkmark
-        .replace(/→/g, "to") // arrow
-        .replace(/[#_`~]/g, "") // other markdown
-        .replace(/\n{2,}/g, ". ") // double newlines → sentence pause
-        .replace(/\n/g, ", ") // single newlines → comma pause
-        .replace(/\.{2,}/g, ".") // multiple dots
-        .replace(/\s{2,}/g, " ") // extra spaces
-        .trim();
+    if (callStatus === "idle") {
+      setCallStatus("connecting");
+      setVapiError("");
+      try {
+        await vapiRef.current.start(assistantId);
+      } catch (err) {
+        console.error(err);
+        setVapiError("Couldn't start voice call.");
+        setCallStatus("idle");
+      }
+    } else {
+      vapiRef.current.stop();
+    }
+  }, [callStatus]);
 
-      const utt = new SpeechSynthesisUtterance(cleaned);
-      utt.rate = 0.88; // slightly slower — easier to follow
-      utt.pitch = 0.95; // slightly lower — warmer, more natural
-      utt.volume = 1.0;
+  /* ── Vapi: mute toggle ───────────────────────────────── */
+  const toggleMute = useCallback(() => {
+    if (!vapiRef.current || callStatus !== "active") return;
+    const newMuted = !isMuted;
+    vapiRef.current.setMuted(newMuted);
+    setIsMuted(newMuted);
+  }, [isMuted, callStatus]);
 
-      // Priority voice list — most natural English voices
-      const priorityNames = [
-        "Google UK English Female",
-        "Google US English",
-        "Samantha", // macOS
-        "Karen", // macOS Australian
-        "Moira", // macOS Irish
-        "Microsoft Aria Online (Natural)",
-        "Microsoft Jenny Online (Natural)",
-        "Google UK English Male",
-      ];
-
-      const voices = voicesRef.current.length
-        ? voicesRef.current
-        : (window.speechSynthesis.getVoices() ?? []);
-
-      const preferred =
-        priorityNames.reduce<SpeechSynthesisVoice | null>((found, name) => {
-          if (found) return found;
-          return voices.find((v) => v.name === name) ?? null;
-        }, null) ??
-        voices.find((v) => v.lang === "en-GB" && !v.localService) ??
-        voices.find((v) => v.lang === "en-US" && !v.localService) ??
-        voices.find((v) => v.lang.startsWith("en"));
-
-      if (preferred) utt.voice = preferred;
-
-      window.speechSynthesis.speak(utt);
-    },
-    [speakEnabled],
-  );
-
-  /* ── Send message to API ── */
+  /* ── Text chat ───────────────────────────────────────── */
   const sendMessage = useCallback(
     async (text: string) => {
       if (!text.trim() || loading) return;
@@ -161,7 +175,6 @@ export default function AssistantPanel() {
       const next = [...messages, userMsg];
       setMessages(next);
       setInput("");
-      setTranscript("");
       setLoading(true);
 
       try {
@@ -182,7 +195,6 @@ export default function AssistantPanel() {
           id: `a-${Date.now()}`,
         };
         setMessages((prev) => [...prev, assistantMsg]);
-        speak(reply);
       } catch {
         const errorMsg: Message = {
           role: "assistant",
@@ -194,56 +206,16 @@ export default function AssistantPanel() {
         setLoading(false);
       }
     },
-    [messages, loading, speak],
+    [messages, loading],
   );
 
-  /* ── Voice input ── */
-  const toggleVoice = useCallback(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
-
-    if (listening) {
-      recognitionRef.current?.stop();
-      setListening(false);
-      return;
-    }
-
-    const recognition = new SR();
-    recognitionRef.current = recognition;
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = "en-US";
-
-    recognition.onstart = () => setListening(true);
-
-    recognition.onresult = (event: any) => {
-      let interim = "";
-      let final = "";
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const t = event.results[i][0].transcript;
-        if (event.results[i].isFinal) final += t;
-        else interim += t;
-      }
-      setTranscript(interim || final);
-      if (final) {
-        setListening(false);
-        sendMessage(final);
-      }
-    };
-
-    recognition.onerror = () => setListening(false);
-    recognition.onend = () => setListening(false);
-    recognition.start();
-  }, [listening, sendMessage]);
-
-  /* ── Reset chat ── */
+  /* ── Reset ───────────────────────────────────────────── */
   const resetChat = () => {
-    window.speechSynthesis?.cancel();
-    recognitionRef.current?.stop();
+    vapiRef.current?.stop();
     setMessages([INITIAL]);
     setInput("");
-    setTranscript("");
-    setListening(false);
+    setCallStatus("idle");
+    setVapiError("");
   };
 
   const quickPrompts = [
@@ -252,6 +224,9 @@ export default function AssistantPanel() {
     "Book a demo for me",
     "What's your ROI guarantee?",
   ];
+
+  const isOnCall = callStatus === "active";
+  const isConnecting = callStatus === "connecting";
 
   return (
     <section
@@ -275,31 +250,39 @@ export default function AssistantPanel() {
 
         {/* Controls */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          {voiceSupported && (
-            <button
-              onClick={toggleVoice}
-              title={listening ? "Stop listening" : "Start voice input"}
-              className={`flex items-center gap-2 rounded-full border px-4 py-2.5 text-xs font-semibold transition-all duration-300 ${
-                listening
-                  ? "border-red-500/30 bg-red-950/20 text-red-300 hover:bg-red-950/30"
-                  : "border-gold/20 bg-gold/5 text-gold hover:bg-gold/10 hover:shadow-[0_0_16px_rgba(207,199,186,0.15)]"
-              }`}
-            >
-              {listening ? <MicOff size={14} /> : <Mic size={14} />}
-              <span>{listening ? "Stop" : "Voice"}</span>
-            </button>
-          )}
           <button
-            onClick={() => setSpeakEnabled((v) => !v)}
-            title={speakEnabled ? "Mute AI voice" : "Enable AI voice"}
-            className={`rounded-full border px-3 py-2.5 text-sm transition-all duration-300 ${
-              speakEnabled
-                ? "border-white/10 bg-white/5 text-foreground hover:bg-white/10"
-                : "border-white/5 bg-white/3 text-white/30"
+            onClick={toggleVoiceCall}
+            disabled={isConnecting}
+            title={isOnCall ? "End voice call" : "Start AI voice call"}
+            className={`flex items-center gap-2 rounded-full border px-4 py-2.5 text-xs font-semibold transition-all duration-300 disabled:opacity-60 ${
+              isOnCall
+                ? "border-red-500/30 bg-red-950/20 text-red-300 hover:bg-red-950/30"
+                : isConnecting
+                  ? "border-yellow-500/30 bg-yellow-950/20 text-yellow-300"
+                  : "border-gold/20 bg-gold/5 text-gold hover:bg-gold/10 hover:shadow-[0_0_16px_rgba(207,199,186,0.15)]"
             }`}
           >
-            {speakEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
+            {isOnCall ? <PhoneOff size={14} /> : <Mic size={14} />}
+            <span>
+              {isConnecting ? "Connecting…" : isOnCall ? "End Call" : "Voice"}
+            </span>
           </button>
+
+          {/* Mute (only while on call) */}
+          {isOnCall && (
+            <button
+              onClick={toggleMute}
+              title={isMuted ? "Unmute" : "Mute"}
+              className={`rounded-full border px-3 py-2.5 text-sm transition-all duration-300 ${
+                isMuted
+                  ? "border-white/5 bg-white/3 text-white/30"
+                  : "border-white/10 bg-white/5 text-foreground hover:bg-white/10"
+              }`}
+            >
+              {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+            </button>
+          )}
+
           <button
             onClick={resetChat}
             title="Reset conversation"
@@ -322,7 +305,6 @@ export default function AssistantPanel() {
                 transition={{ duration: 0.25 }}
                 className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
               >
-                {/* Avatar */}
                 <div
                   className={`flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center ${
                     msg.role === "assistant"
@@ -336,7 +318,6 @@ export default function AssistantPanel() {
                     <User size={15} />
                   )}
                 </div>
-                {/* Bubble */}
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                     msg.role === "assistant"
@@ -353,7 +334,6 @@ export default function AssistantPanel() {
               </motion.div>
             ))}
 
-            {/* Typing indicator */}
             {loading && (
               <motion.div
                 key="typing"
@@ -384,9 +364,9 @@ export default function AssistantPanel() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Voice transcript preview + Waveform */}
+        {/* Vapi call status bar + waveform */}
         <AnimatePresence>
-          {(listening || transcript || loading) && (
+          {(isOnCall || isConnecting || vapiError) && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
@@ -397,28 +377,30 @@ export default function AssistantPanel() {
                 <span className="relative flex h-2 w-2 flex-shrink-0">
                   <span
                     className={`absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping ${
-                      listening ? "bg-red-400" : "bg-gold/60"
+                      isOnCall ? "bg-emerald-400" : "bg-gold/60"
                     }`}
                   />
                   <span
                     className={`relative inline-flex h-2 w-2 rounded-full ${
-                      listening ? "bg-red-400" : "bg-gold"
+                      isOnCall ? "bg-emerald-400" : "bg-gold"
                     }`}
                   />
                 </span>
                 <p className="text-xs text-white/70 font-mono">
-                  {listening
-                    ? transcript || "Listening… speak now"
-                    : loading
-                      ? "AI Specialist is thinking…"
-                      : transcript}
+                  {vapiError
+                    ? vapiError
+                    : isConnecting
+                      ? "Connecting to AI specialist…"
+                      : isMuted
+                        ? "You are muted"
+                        : "Live voice call active — speak naturally"}
                 </p>
               </div>
               <div className="flex h-5 items-end justify-end gap-0.5 flex-shrink-0">
                 {Array.from({ length: 18 }).map((_, i) => (
                   <WaveBar
                     key={i}
-                    active={loading || listening}
+                    active={isOnCall && volumeLevel > 0.01}
                     delay={i * 0.04}
                   />
                 ))}
@@ -427,13 +409,13 @@ export default function AssistantPanel() {
           )}
         </AnimatePresence>
 
-        {/* Quick prompts chips directly above input */}
+        {/* Quick prompts */}
         <div className="border-t border-white/5 px-6 pt-4 flex flex-wrap gap-2">
           {quickPrompts.map((p) => (
             <button
               key={p}
               onClick={() => sendMessage(p)}
-              disabled={loading}
+              disabled={loading || isOnCall}
               className="rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs text-foreground/80 transition-all duration-200 hover:border-gold/30 hover:bg-gold/5 hover:text-gold disabled:opacity-40"
             >
               {p}
@@ -453,14 +435,16 @@ export default function AssistantPanel() {
                 if (e.key === "Enter") sendMessage(input);
               }}
               placeholder={
-                listening ? "Listening..." : "Ask our AI specialist a question…"
+                isOnCall
+                  ? "Voice call active — just speak"
+                  : "Ask our AI specialist a question…"
               }
-              disabled={loading || listening}
+              disabled={loading || isOnCall}
               className="flex-1 rounded-2xl border border-white/10 bg-[#0c1433]/80 px-4 py-3.5 text-sm text-white placeholder-white/30 outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition disabled:opacity-50"
             />
             <button
               onClick={() => sendMessage(input)}
-              disabled={loading || !input.trim()}
+              disabled={loading || !input.trim() || isOnCall}
               className="inline-flex items-center justify-center rounded-2xl bg-gold px-5 py-3.5 text-background font-bold transition hover:brightness-105 hover:shadow-[0_0_20px_rgba(207,199,186,0.25)] disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Send size={15} />
