@@ -69,6 +69,48 @@ interface Agent {
 
 type UploadState = 'idle' | 'dragging' | 'uploading' | 'success' | 'error';
 
+// ─── Bulk Import Helpers ──────────────────────────────────────────────────────
+
+interface RequiredImportField {
+  key: string;
+  label: string;
+  pattern: RegExp;
+}
+
+const REQUIRED_IMPORT_FIELDS: RequiredImportField[] = [
+  { key: 'name', label: 'Decision Maker Name', pattern: /name/i },
+  { key: 'email', label: 'Email', pattern: /e[-\s]?mail/i },
+  { key: 'phone', label: 'Phone', pattern: /phone|mobile|cell|contact\s*no/i },
+  { key: 'company', label: 'Company', pattern: /company|business|organi[sz]ation/i },
+  { key: 'remarks', label: 'Remarks', pattern: /remark|note|comment/i },
+];
+
+/** Parses a single CSV line into cell values, respecting quoted fields. */
+function parseCsvLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function AdminDashboard() {
@@ -115,6 +157,14 @@ export default function AdminDashboard() {
   const [uploadCampaignName, setUploadCampaignName] = useState('');
   const [uploadClientId, setUploadClientId] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // ── CSV Parsing Preview state ─────────────────────────────────────────────
+  const [parsedHeaders, setParsedHeaders] = useState<string[]>([]);
+  const [parsedRows, setParsedRows] = useState<string[][]>([]);
+  const [parsedRowCount, setParsedRowCount] = useState<number | null>(null);
+  const [isParsingFile, setIsParsingFile] = useState(false);
+  const [parseError, setParseError] = useState('');
+  const [estimatedLeadCount, setEstimatedLeadCount] = useState('500');
 
   // ─── Fetch Data ────────────────────────────────────────────────────────────
 
@@ -317,28 +367,91 @@ export default function AdminDashboard() {
     } catch { setDistributeStatus('Connection error.'); }
   };
 
-  // ─── CSV Upload Handlers ──────────────────────────────────────────────────
+  // ─── CSV / XLSX Upload Handlers ────────────────────────────────────────────
 
   const resetUpload = () => {
     setUploadState('idle');
     setUploadedFile(null);
     setUploadProgress(0);
     setUploadMessage('');
+    setParsedHeaders([]);
+    setParsedRows([]);
+    setParsedRowCount(null);
+    setParseError('');
+    setIsParsingFile(false);
+    setEstimatedLeadCount('500');
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const validateCsvFile = (file: File): string | null => {
-    if (!file.name.toLowerCase().endsWith('.csv')) return 'Only CSV files are accepted.';
+  const isXlsxFile = (file: File) => file.name.toLowerCase().endsWith('.xlsx');
+  const isCsvFile = (file: File) => file.name.toLowerCase().endsWith('.csv');
+
+  const validateImportFile = (file: File): string | null => {
+    if (!isCsvFile(file) && !isXlsxFile(file)) return 'Only .csv or .xlsx files are accepted.';
     if (file.size > 20 * 1024 * 1024) return 'File exceeds 20MB limit.';
     return null;
   };
 
+  /** Reads a CSV file client-side and builds the top-5-rows preview + header validation. */
+  const parseCsvPreview = (file: File) => {
+    setIsParsingFile(true);
+    setParseError('');
+    setParsedHeaders([]);
+    setParsedRows([]);
+    setParsedRowCount(null);
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const text = String(e.target?.result ?? '');
+        const lines = text.split(/\r\n|\n|\r/).filter((line) => line.trim().length > 0);
+
+        if (lines.length === 0) {
+          setParseError('The file appears to be empty.');
+          setIsParsingFile(false);
+          return;
+        }
+
+        const headers = parseCsvLine(lines[0]);
+        const dataLines = lines.slice(1);
+        const previewRows = dataLines.slice(0, 5).map(parseCsvLine);
+
+        setParsedHeaders(headers);
+        setParsedRows(previewRows);
+        setParsedRowCount(dataLines.length);
+      } catch {
+        setParseError('Unable to parse this file. Please check the formatting.');
+      } finally {
+        setIsParsingFile(false);
+      }
+    };
+
+    reader.onerror = () => {
+      setParseError('Failed to read the file from disk.');
+      setIsParsingFile(false);
+    };
+
+    reader.readAsText(file);
+  };
+
   const handleFileSelect = (file: File) => {
-    const error = validateCsvFile(file);
+    const error = validateImportFile(file);
     if (error) { setUploadState('error'); setUploadMessage(error); return; }
+
     setUploadedFile(file);
     setUploadState('idle');
     setUploadMessage('');
+    setParseError('');
+    setParsedHeaders([]);
+    setParsedRows([]);
+    setParsedRowCount(null);
+
+    // Only .csv can be safely read & parsed in-browser as plain text.
+    // .xlsx is a binary (zipped) format — its row count is validated server-side after upload.
+    if (isCsvFile(file)) {
+      parseCsvPreview(file);
+    }
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -361,8 +474,8 @@ export default function AdminDashboard() {
   };
 
   const handleCsvUpload = async () => {
-    if (!uploadedFile) { setUploadMessage('Please select a CSV file first.'); return; }
-    if (!uploadCampaignName.trim()) { setUploadMessage('Campaign name is required.'); return; }
+    if (!uploadedFile) { setUploadMessage('Please select a CSV or XLSX file first.'); return; }
+    if (!uploadCampaignName.trim()) { setUploadMessage('List identifier name is required.'); return; }
 
     const token = localStorage.getItem('token');
     if (!token) return;
@@ -381,6 +494,11 @@ export default function AdminDashboard() {
       formData.append('file', uploadedFile);
       formData.append('campaignName', uploadCampaignName.trim());
       if (uploadClientId) formData.append('clientId', uploadClientId);
+      // For XLSX files we can't compute a real row count in-browser, so we pass along
+      // the admin's manual estimate as a hint; the server will overwrite it with the real count.
+      if (isXlsxFile(uploadedFile)) {
+        formData.append('estimatedRecordCount', estimatedLeadCount);
+      }
 
       const res = await fetch('/api/crm/projects/upload-csv', {
         method: 'POST',
@@ -393,14 +511,18 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         const data = await res.json();
+        const importedCount = data.recordCount ?? parsedRowCount ?? estimatedLeadCount;
         setUploadState('success');
         setUploadMessage(
-          `Successfully uploaded "${uploadedFile.name}" with ${data.recordCount ?? '—'} leads. Pending admin approval.`
+          `Successfully uploaded "${uploadedFile.name}" with ${importedCount} leads. Pending admin approval.`
         );
         fetchData();
         setUploadCampaignName('');
         setUploadClientId('');
         setUploadedFile(null);
+        setParsedHeaders([]);
+        setParsedRows([]);
+        setParsedRowCount(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
       } else {
         const err = await res.json();
@@ -843,143 +965,271 @@ export default function AdminDashboard() {
             {/* Left column */}
             <div className="space-y-8 lg:col-span-8">
 
-              {/* ── CSV UPLOAD PANEL ── */}
+              {/* ── BULK IMPORT PROSPECTS PANEL ── */}
               <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
-                <div className="flex items-center gap-2">
-                  <Upload size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white font-sans">Upload Campaign CSV Spreadsheet</h2>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Upload size={18} className="text-gold" />
+                    <h2 className="text-lg font-bold text-white font-sans uppercase tracking-wide">Bulk Import Prospects</h2>
+                  </div>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-white/40">
+                    Leads Parser Gateway
+                  </span>
                 </div>
 
-                {/* Campaign meta fields */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">Campaign Name <span className="text-red-400">*</span></label>
-                    <input
-                      type="text"
-                      value={uploadCampaignName}
-                      onChange={(e) => setUploadCampaignName(e.target.value)}
-                      placeholder="e.g. Q3 Septic Outreach"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">Assign to Client (optional)</label>
-                    <select
-                      value={uploadClientId}
-                      onChange={(e) => setUploadClientId(e.target.value)}
-                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                <p className="text-xs text-white/50 leading-relaxed -mt-2">
+                  Upload a standard <code className="text-gold font-mono">.csv</code> or <code className="text-gold font-mono">.xlsx</code> prospect contact sheet.
+                  The system validates decision maker name, email, phone, company, and remarks before importing.
+                </p>
+
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+
+                  {/* ── Left: identifier, dropzone, client, submit ── */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                        List Identifier Name <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={uploadCampaignName}
+                        onChange={(e) => setUploadCampaignName(e.target.value)}
+                        placeholder="e.g. Q2 Outreach Campaign"
+                        className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">Assign to Client (optional)</label>
+                      <select
+                        value={uploadClientId}
+                        onChange={(e) => setUploadClientId(e.target.value)}
+                        className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                      >
+                        <option value="">-- No Client Selected --</option>
+                        {clients.map((c) => (
+                          <option key={c.id} value={c.id}>{c.companyName}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Drop zone */}
+                    <div
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onClick={() => !uploadedFile && fileInputRef.current?.click()}
+                      className={`relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all cursor-pointer py-10 px-6
+                        ${uploadState === 'dragging' ? 'border-gold bg-gold/5 scale-[1.01]' : ''}
+                        ${uploadState === 'success' ? 'border-emerald-500/50 bg-emerald-500/5 cursor-default' : ''}
+                        ${uploadState === 'error' ? 'border-red-500/50 bg-red-500/5 cursor-default' : ''}
+                        ${uploadState === 'uploading' ? 'border-white/20 bg-white/[0.01] cursor-default' : ''}
+                        ${!['dragging','success','error','uploading'].includes(uploadState) ? 'border-white/10 bg-white/[0.015] hover:border-gold/40 hover:bg-gold/[0.02]' : ''}
+                      `}
                     >
-                      <option value="">-- No Client Selected --</option>
-                      {clients.map((c) => (
-                        <option key={c.id} value={c.id}>{c.companyName}</option>
-                      ))}
-                    </select>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".csv,.xlsx"
+                        onChange={handleInputChange}
+                        className="hidden"
+                      />
+
+                      {uploadState === 'uploading' ? (
+                        <>
+                          <Loader2 size={32} className="text-gold animate-spin" />
+                          <p className="text-xs font-bold text-white">Uploading your file...</p>
+                          <div className="w-full max-w-xs h-1.5 rounded-full bg-white/10 overflow-hidden">
+                            <div
+                              className="h-full bg-gold rounded-full transition-all duration-300"
+                              style={{ width: `${uploadProgress}%` }}
+                            />
+                          </div>
+                          <p className="text-[10px] text-white/40 font-mono">{Math.round(uploadProgress)}%</p>
+                        </>
+                      ) : uploadState === 'success' ? (
+                        <>
+                          <CheckCircle2 size={32} className="text-emerald-400" />
+                          <p className="text-xs font-bold text-emerald-400 text-center">{uploadMessage}</p>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); resetUpload(); }}
+                            className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
+                          >
+                            Upload Another File
+                          </button>
+                        </>
+                      ) : uploadState === 'error' ? (
+                        <>
+                          <XCircle size={32} className="text-red-400" />
+                          <p className="text-xs font-bold text-red-400 text-center">{uploadMessage}</p>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); resetUpload(); }}
+                            className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
+                          >
+                            Try Again
+                          </button>
+                        </>
+                      ) : uploadedFile ? (
+                        <>
+                          <FileSpreadsheet size={32} className="text-gold" />
+                          <div className="text-center">
+                            <p className="text-xs font-bold text-white">{uploadedFile.name}</p>
+                            <p className="text-[10px] text-white/40 mt-0.5">
+                              {(uploadedFile.size / 1024).toFixed(1)} KB • {isXlsxFile(uploadedFile) ? 'XLSX' : 'CSV'}
+                              {parsedRowCount !== null && ` • ${parsedRowCount} rows detected`}
+                            </p>
+                          </div>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); resetUpload(); }}
+                            className="text-[10px] text-white/30 hover:text-red-400 transition underline"
+                          >
+                            Remove file
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                            <FileSpreadsheet size={28} className="text-white/30" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-bold text-white">Choose CSV Spreadsheet</p>
+                            <p className="text-xs text-white/40 mt-1">Drag &amp; drop or select files (max 20MB)</p>
+                          </div>
+                          <span className="text-[9px] font-bold uppercase tracking-widest text-white/20 border border-white/10 rounded-full px-3 py-1">
+                            .CSV or .XLSX files only
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Load estimate — shown only for XLSX, since row count can't be parsed client-side */}
+                    {uploadedFile && isXlsxFile(uploadedFile) && uploadState !== 'success' && uploadState !== 'uploading' && (
+                      <div>
+                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                          Load Estimate <span className="text-white/25 font-normal">(XLSX row count is verified after upload)</span>
+                        </label>
+                        <select
+                          value={estimatedLeadCount}
+                          onChange={(e) => setEstimatedLeadCount(e.target.value)}
+                          className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                        >
+                          <option value="100">~100 leads</option>
+                          <option value="500">~500 leads</option>
+                          <option value="1000">~1,000 leads</option>
+                          <option value="2500">~2,500 leads</option>
+                          <option value="5000">~5,000+ leads</option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* Submit button */}
+                    {uploadedFile && uploadState !== 'uploading' && uploadState !== 'success' && (
+                      <button
+                        onClick={handleCsvUpload}
+                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition"
+                      >
+                        <Upload size={14} />
+                        <span>Submit Leads</span>
+                      </button>
+                    )}
+
+                    {/* Inline error if not in dropzone */}
+                    {uploadState === 'error' && !uploadedFile && uploadMessage && (
+                      <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs text-red-400">
+                        <AlertCircle size={14} /><span>{uploadMessage}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ── Right: CSV Parsing Preview ── */}
+                  <div className="rounded-xl border border-white/10 bg-white/[0.015] p-4 space-y-3">
+                    <span className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">
+                      CSV Parsing Preview (Top 5 Rows)
+                    </span>
+
+                    {!uploadedFile ? (
+                      <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
+                        No files loaded. Select a CSV file to view parsing.
+                      </div>
+                    ) : isParsingFile ? (
+                      <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-white/40">
+                        <Loader2 size={20} className="animate-spin" />
+                        <span className="text-xs">Parsing spreadsheet…</span>
+                      </div>
+                    ) : parseError ? (
+                      <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-red-400">
+                        <XCircle size={20} />
+                        <span className="text-xs">{parseError}</span>
+                      </div>
+                    ) : isXlsxFile(uploadedFile) ? (
+                      <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-white/40">
+                        <FileSpreadsheet size={20} className="text-white/30" />
+                        <span className="text-xs">
+                          XLSX preview isn&apos;t rendered in-browser. Rows will be validated automatically after upload.
+                        </span>
+                      </div>
+                    ) : parsedHeaders.length > 0 ? (
+                      <div className="space-y-3">
+                        {/* Required field validation chips */}
+                        <div className="flex flex-wrap gap-1.5">
+                          {REQUIRED_IMPORT_FIELDS.map((field) => {
+                            const matched = parsedHeaders.some((h) => field.pattern.test(h));
+                            return (
+                              <span
+                                key={field.key}
+                                className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide ${
+                                  matched ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'
+                                }`}
+                              >
+                                {matched ? <CheckCircle2 size={10} /> : <XCircle size={10} />}
+                                {field.label}
+                              </span>
+                            );
+                          })}
+                        </div>
+
+                        <div className="overflow-x-auto rounded-lg border border-white/5">
+                          <table className="w-full text-left border-collapse text-[10px] text-white/70">
+                            <thead>
+                              <tr className="bg-white/5 text-white/40 uppercase tracking-wider">
+                                {parsedHeaders.map((h, idx) => (
+                                  <th key={idx} className="px-2.5 py-2 whitespace-nowrap">{h || `Col ${idx + 1}`}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                              {parsedRows.length === 0 ? (
+                                <tr>
+                                  <td colSpan={parsedHeaders.length} className="px-2.5 py-3 text-center text-white/30">
+                                    No data rows found below the header.
+                                  </td>
+                                </tr>
+                              ) : (
+                                parsedRows.map((row, rIdx) => (
+                                  <tr key={rIdx}>
+                                    {parsedHeaders.map((_, cIdx) => (
+                                      <td key={cIdx} className="px-2.5 py-1.5 whitespace-nowrap font-mono">{row[cIdx] ?? ''}</td>
+                                    ))}
+                                  </tr>
+                                ))
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        {parsedRowCount !== null && (
+                          <p className="text-[10px] text-white/40">
+                            <span className="font-bold text-gold">{parsedRowCount}</span> total leads detected in this file.
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
+                        No files loaded. Select a CSV file to view parsing.
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {/* Drop zone */}
-                <div
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onClick={() => !uploadedFile && fileInputRef.current?.click()}
-                  className={`relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all cursor-pointer py-10 px-6
-                    ${uploadState === 'dragging' ? 'border-gold bg-gold/5 scale-[1.01]' : ''}
-                    ${uploadState === 'success' ? 'border-emerald-500/50 bg-emerald-500/5 cursor-default' : ''}
-                    ${uploadState === 'error' ? 'border-red-500/50 bg-red-500/5 cursor-default' : ''}
-                    ${uploadState === 'uploading' ? 'border-white/20 bg-white/[0.01] cursor-default' : ''}
-                    ${!['dragging','success','error','uploading'].includes(uploadState) ? 'border-white/10 bg-white/[0.015] hover:border-gold/40 hover:bg-gold/[0.02]' : ''}
-                  `}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".csv"
-                    onChange={handleInputChange}
-                    className="hidden"
-                  />
-
-                  {uploadState === 'uploading' ? (
-                    <>
-                      <Loader2 size={32} className="text-gold animate-spin" />
-                      <p className="text-xs font-bold text-white">Uploading your CSV file...</p>
-                      <div className="w-full max-w-xs h-1.5 rounded-full bg-white/10 overflow-hidden">
-                        <div
-                          className="h-full bg-gold rounded-full transition-all duration-300"
-                          style={{ width: `${uploadProgress}%` }}
-                        />
-                      </div>
-                      <p className="text-[10px] text-white/40 font-mono">{Math.round(uploadProgress)}%</p>
-                    </>
-                  ) : uploadState === 'success' ? (
-                    <>
-                      <CheckCircle2 size={32} className="text-emerald-400" />
-                      <p className="text-xs font-bold text-emerald-400 text-center">{uploadMessage}</p>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); resetUpload(); }}
-                        className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
-                      >
-                        Upload Another File
-                      </button>
-                    </>
-                  ) : uploadState === 'error' ? (
-                    <>
-                      <XCircle size={32} className="text-red-400" />
-                      <p className="text-xs font-bold text-red-400 text-center">{uploadMessage}</p>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); resetUpload(); }}
-                        className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
-                      >
-                        Try Again
-                      </button>
-                    </>
-                  ) : uploadedFile ? (
-                    <>
-                      <FileSpreadsheet size={32} className="text-gold" />
-                      <div className="text-center">
-                        <p className="text-xs font-bold text-white">{uploadedFile.name}</p>
-                        <p className="text-[10px] text-white/40 mt-0.5">{(uploadedFile.size / 1024).toFixed(1)} KB • CSV</p>
-                      </div>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); resetUpload(); }}
-                        className="text-[10px] text-white/30 hover:text-red-400 transition underline"
-                      >
-                        Remove file
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                        <FileSpreadsheet size={28} className="text-white/30" />
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-bold text-white">Choose CSV Spreadsheet</p>
-                        <p className="text-xs text-white/40 mt-1">Drag &amp; drop or select files (max 20MB)</p>
-                      </div>
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-white/20 border border-white/10 rounded-full px-3 py-1">
-                        .CSV files only
-                      </span>
-                    </>
-                  )}
-                </div>
-
-                {/* Upload button */}
-                {uploadedFile && uploadState !== 'uploading' && uploadState !== 'success' && (
-                  <button
-                    onClick={handleCsvUpload}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition"
-                  >
-                    <Upload size={14} />
-                    <span>Upload & Submit for Approval</span>
-                  </button>
-                )}
-
-                {/* Inline error if not in dropzone */}
-                {uploadState === 'error' && !uploadedFile && uploadMessage && (
-                  <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs text-red-400">
-                    <AlertCircle size={14} /><span>{uploadMessage}</span>
-                  </div>
-                )}
               </div>
 
               {/* ── CAMPAIGN DATABASE APPROVAL ── */}
