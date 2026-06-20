@@ -1,19 +1,25 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Facebook, Mail, MessageCircle, Send, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Facebook,
+  Mail,
+  MessageCircle,
+  Send,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function ContactPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [business, setBusiness] = useState('');
-  const [message, setMessage] = useState('');
-  const [status, setStatus] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [business, setBusiness] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem("user");
     if (userStr) {
       try {
         const user = JSON.parse(userStr);
@@ -22,7 +28,7 @@ export default function ContactPage() {
         if (user.phone) setPhone(user.phone);
         if (user.business) setBusiness(user.business);
       } catch (e) {
-        console.error('Failed to parse user details', e);
+        console.error("Failed to parse user details", e);
       }
     }
   }, []);
@@ -30,32 +36,32 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setStatus('');
+    setStatus("");
 
     try {
-      const response = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           email,
           phone,
           business,
-          source: 'Web Form',
-          clientId: 'client-default'
-        })
+          source: "Web Form",
+          clientId: "client-default",
+        }),
       });
 
-      if (!response.ok) throw new Error('Submission failed');
+      if (!response.ok) throw new Error("Submission failed");
 
-      setStatus('success');
-      setName('');
-      setEmail('');
-      setPhone('');
-      setBusiness('');
-      setMessage('');
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setPhone("");
+      setBusiness("");
+      setMessage("");
     } catch (err) {
-      setStatus('error');
+      setStatus("error");
     } finally {
       setLoading(false);
     }
@@ -65,40 +71,57 @@ export default function ContactPage() {
     <main className="mx-auto mt-28 max-w-7xl px-6 pb-24 md:px-12">
       <div className="rounded-[32px] border border-white/10 bg-glass p-8 md:p-12 shadow-glow">
         <div className="mb-10 max-w-3xl">
-          <p className="text-sm uppercase tracking-[0.3em] text-gold">Contact Sales</p>
-          <h1 className="mt-3 text-4xl font-semibold text-white">Let’s scale your operations.</h1>
+          <p className="text-sm uppercase tracking-[0.3em] text-gold">
+            Contact Sales
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold text-white">
+            Let’s scale your operations.
+          </h1>
           <p className="mt-4 text-foreground/80 leading-relaxed">
-            Get in touch with our enterprise AI automation architects. Submit your details below to design a custom voice or chat agent flow for your team.
+            Get in touch with our enterprise AI automation architects. Submit
+            your details below to design a custom voice or chat agent flow for
+            your team.
           </p>
         </div>
 
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           {/* Left Column: Form */}
           <section className="rounded-3xl border border-white/10 bg-[#08102e]/60 p-6 md:p-8">
-            <h2 className="text-xl font-semibold text-white mb-6">Request Consultation</h2>
-            
-            {status === 'success' ? (
+            <h2 className="text-xl font-semibold text-white mb-6">
+              Request Consultation
+            </h2>
+
+            {status === "success" ? (
               <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
                 <CheckCircle2 className="h-12 w-12 text-green-400 animate-pulse" />
-                <h3 className="text-lg font-semibold text-white">Request Submitted Successfully</h3>
+                <h3 className="text-lg font-semibold text-white">
+                  Request Submitted Successfully
+                </h3>
                 <p className="text-sm text-foreground/70 max-w-sm">
-                  Our team has registered your lead in our database. You can log in to the dashboard to see your lead details live in the active tables!
+                  Our team has registered your lead in our database. You can log
+                  in to the dashboard to see your lead details live in the
+                  active tables!
                 </p>
                 <button
-                  onClick={() => setStatus('')}
+                  onClick={() => setStatus("")}
                   className="mt-4 rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-xs text-foreground transition hover:bg-white/10"
                 >
                   Submit Another
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
-                {status === 'error' && (
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-5"
+                autoComplete="off"
+              >
+                {status === "error" && (
                   <div className="rounded-xl border border-red-500/20 bg-red-950/20 p-4 text-xs text-red-300">
-                    Failed to submit. Please ensure the backend server is running.
+                    Failed to submit. Please ensure the backend server is
+                    running.
                   </div>
                 )}
-                
+
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block text-xs uppercase tracking-wider text-white/60">
                     Full Name
@@ -170,7 +193,7 @@ export default function ContactPage() {
                   className="inline-flex w-full items-center justify-center rounded-full bg-gold py-3.5 text-sm font-semibold text-background transition hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {loading ? (
-                    'Submitting...'
+                    "Submitting..."
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" /> Send Request
@@ -183,46 +206,28 @@ export default function ContactPage() {
 
           {/* Right Column: Direct Channels */}
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-white mb-6">Direct Channels</h2>
+            <h2 className="text-xl font-semibold text-white mb-6">
+              Direct Channels
+            </h2>
 
             <div className="grid gap-6">
               {[
                 {
-                  name: 'WhatsApp',
-                  value: '+1 (888) 555-0199',
-                  desc: 'Instant click-to-chat. Best for quick integration support.',
-                  url: 'https://wa.me/18885550199',
-                  color: 'border-green-500/20 hover:border-green-500/40 bg-green-950/5',
-                  icon: (
-                    <div className="rounded-2xl bg-green-500/10 p-3.5 text-green-400">
-                      <MessageCircle className="h-6 w-6" />
-                    </div>
-                  )
+                  name: "WhatsApp",
+                  value: "+977 9712039972",
+                  url: "https://wa.me/message/FKV26Z3XPSIOL1",
+                  color:
+                    "border-emerald-500/20 hover:border-emerald-500/40 bg-emerald-950/10 text-emerald-400",
+                  icon: <MessageCircle className="h-6 w-6" />,
                 },
                 {
-                  name: 'Gmail',
-                  value: 'hello@aigrowthsystems.com',
-                  desc: 'Traditional email support for partnership queries.',
-                  url: 'mailto:hello@aigrowthsystems.com',
-                  color: 'border-red-500/20 hover:border-red-500/40 bg-red-950/5',
-                  icon: (
-                    <div className="rounded-2xl bg-red-500/10 p-3.5 text-red-400">
-                      <Mail className="h-6 w-6" />
-                    </div>
-                  )
+                  name: "Email",
+                  value: "info@digihoodstudio.com",
+                  url: "mailto:info@digihoodstudio.com",
+                  color:
+                    "border-rose-500/20 hover:border-rose-500/40 bg-rose-950/10 text-rose-400",
+                  icon: <Mail className="h-6 w-6" />,
                 },
-                {
-                  name: 'Facebook',
-                  value: 'AI Growth Systems',
-                  desc: 'Follow us for latest AI research and client cases.',
-                  url: 'https://facebook.com/aigrowthsystems',
-                  color: 'border-blue-500/20 hover:border-blue-500/40 bg-blue-950/5',
-                  icon: (
-                    <div className="rounded-2xl bg-blue-500/10 p-3.5 text-blue-400">
-                      <Facebook className="h-6 w-6" />
-                    </div>
-                  )
-                }
               ].map((channel) => (
                 <a
                   key={channel.name}
@@ -234,11 +239,19 @@ export default function ContactPage() {
                   {channel.icon}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base font-semibold text-white">{channel.name}</h3>
-                      <span className="text-[10px] uppercase tracking-wider text-gold bg-gold/5 px-2 py-0.5 rounded-full border border-gold/10">Active</span>
+                      <h3 className="text-base font-semibold text-white">
+                        {channel.name}
+                      </h3>
+                      <span className="text-[10px] uppercase tracking-wider text-gold bg-gold/5 px-2 py-0.5 rounded-full border border-gold/10">
+                        Active
+                      </span>
                     </div>
-                    <p className="text-sm font-semibold text-white/95">{channel.value}</p>
-                    <p className="text-xs text-foreground/75 leading-relaxed">{channel.desc}</p>
+                    <p className="text-sm font-semibold text-white/95">
+                      {channel.value}
+                    </p>
+                    <p className="text-xs text-foreground/75 leading-relaxed">
+                      {channel.desc}
+                    </p>
                   </div>
                 </a>
               ))}
