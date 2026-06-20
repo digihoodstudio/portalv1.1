@@ -24,8 +24,7 @@ export default function Footer() {
             DIGIHOOD STUDIO
           </p>
           <p className="mt-3 max-w-sm text-foreground/70 leading-relaxed">
-            Digihood Studio for enterprise teams. Voice agents, automation and
-            voice-first revenue growth.
+            Portal for enterprise teams.
           </p>
         </div>
         {Object.entries(footerLinks).map(([group, links]) => (
