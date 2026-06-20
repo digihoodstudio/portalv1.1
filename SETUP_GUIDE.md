@@ -1,8 +1,9 @@
-# AI Growth Systems - Setup & Troubleshooting Guide
+# Digihood Studio - Setup & Troubleshooting Guide
 
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 - Git
 - PostgreSQL (or Docker)
@@ -10,6 +11,7 @@
 ### Installation
 
 1. **Install Dependencies**
+
 ```bash
 npm install
 npm --workspace frontend install
@@ -19,6 +21,7 @@ npm --workspace backend install
 2. **Configure Environment Variables**
 
 **For Frontend** (`frontend/.env.local`):
+
 ```env
 NEXT_PUBLIC_API_URL=http://127.0.0.1:4000/api
 NEXTAUTH_URL=http://127.0.0.1:3001
@@ -28,6 +31,7 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
 **For Backend** (`backend/.env`):
+
 ```env
 DATABASE_URL=file:./dev.db
 JWT_SECRET=your-jwt-secret-key
@@ -43,6 +47,7 @@ ELEVENLABS_API_KEY=your-elevenlabs-key
 ```
 
 3. **Database Setup**
+
 ```bash
 # Push Prisma schema to database (in simulation mode, dev.db is in-memory/local SQLite)
 npm --workspace backend exec prisma db push
@@ -51,18 +56,21 @@ npm --workspace backend exec prisma db push
 4. **Start Development Servers**
 
 **Terminal 1 - Backend:**
+
 ```bash
 npm --workspace backend run dev
 # Backend runs on http://127.0.0.1:4000
 ```
 
 **Terminal 2 - Frontend:**
+
 ```bash
 npm --workspace frontend run dev
 # Frontend runs on http://127.0.0.1:3001
 ```
 
 ### Verify Setup
+
 - Frontend: http://127.0.0.1:3001
 - Backend API: http://127.0.0.1:4000/api
 - Health Check: http://127.0.0.1:4000/api/health
@@ -70,6 +78,7 @@ npm --workspace frontend run dev
 ## Authentication Flow
 
 ### Test Registration
+
 1. Navigate to http://localhost:3000/login
 2. Click "Sign Up"
 3. Enter credentials:
@@ -81,6 +90,7 @@ npm --workspace frontend run dev
 4. Click "Sign Up"
 
 ### Test Login
+
 1. After registration, you'll be auto-logged in
 2. Token is stored in localStorage
 3. Dashboard should load with mock data
@@ -95,50 +105,65 @@ npm --workspace frontend run dev
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
 
 ### Dashboard
+
 - `GET /api/dashboard` - Get metrics (requires auth)
 
 ### Leads
+
 - `GET /api/leads?clientId=xxx` - List leads (requires auth)
 - `POST /api/leads` - Create lead (public)
 
 ### Chatbot
+
 - `POST /api/chatbot/conversation` - AI assistant chat
 
 ### Voice
+
 - `POST /api/voice/call` - Initiate voice call
 
 ## Troubleshooting
 
 ### "Failed to execute 'json' on 'Response': Unexpected token" Error
-**Solution**: 
+
+**Solution**:
+
 - Ensure backend is running on port 4000
 - Check `NEXT_PUBLIC_API_URL` is set correctly in `.env.local`
 - Verify API proxy routes exist in `app/app/api/`
 
 ### Cannot connect to database
+
 **Solution**:
+
 - Check PostgreSQL is running
 - Verify `DATABASE_URL` in `.env`
 - Run `npm --workspace server exec prisma db push`
 
 ### Login fails with "Invalid credentials"
+
 **Solution**:
+
 - Use test credentials: `admin@aigrowthsystems.com` / `AdminPass123!`
 - Or register new account via signup form
 - Check that mock database roles match (ADMIN, CLIENT, etc.)
 
 ### API returns 401 Unauthorized
+
 **Solution**:
+
 - Token may be expired or malformed
 - Clear localStorage and login again
 - Check JWT_SECRET matches between frontend & backend
 
 ### Build errors with TypeScript
+
 **Solution**:
+
 - Run `npm run build` to verify compilation
 - Check that all API routes are created correctly
 - Ensure environment variables are set before build
@@ -146,16 +171,19 @@ npm --workspace frontend run dev
 ## Docker Deployment
 
 ### Local with Docker Compose
+
 ```bash
 docker-compose up
 ```
 
 This will start:
+
 - PostgreSQL database
 - Express API backend
 - Next.js frontend
 
 ### Production Build
+
 ```bash
 npm run build
 npm --workspace app run build
@@ -167,13 +195,14 @@ npm --workspace server run build
 ### Adding a New API Route
 
 **Backend** (`server/src/routes/new-feature.ts`):
+
 ```typescript
-import { Router } from 'express';
-import { requireAuth } from '../middleware/auth';
+import { Router } from "express";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
-router.post('/', requireAuth, async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   // Your logic here
   res.json({ success: true });
 });
@@ -182,21 +211,23 @@ export default router;
 ```
 
 Add to `server/src/index.ts`:
+
 ```typescript
-app.use('/api/new-feature', newFeatureRoutes);
+app.use("/api/new-feature", newFeatureRoutes);
 ```
 
 **Frontend** (`app/app/api/new-feature/route.ts`):
+
 ```typescript
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const response = await fetch(`${API_URL}/new-feature`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
   return NextResponse.json(await response.json(), { status: response.status });
@@ -204,11 +235,13 @@ export async function POST(request: NextRequest) {
 ```
 
 ### Debugging Backend
+
 - Check logs in terminal where `npm run dev` is running
 - Enable verbose logging: `DEBUG=*`
 - Test endpoints with curl or Postman
 
 ### Debugging Frontend
+
 - Use React DevTools browser extension
 - Check Network tab for API calls
 - View localStorage for token/user data
@@ -233,6 +266,7 @@ export async function POST(request: NextRequest) {
 ## Support
 
 For issues or questions:
+
 1. Check this troubleshooting guide first
 2. Review error logs in terminal
 3. Check browser console for frontend errors

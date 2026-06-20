@@ -81,7 +81,7 @@ export default function ContactSection() {
       icon: <MessageCircle className="h-6 w-6" />,
     },
     {
-      name: "E-mail",
+      name: "Email",
       value: "info@digihoodstudio.com",
       url: "mailto:info@digihoodstudio.com",
       color:

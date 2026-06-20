@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# AI Growth Systems - Verification Script (Mac/Linux)
+# Digihood Studio - Verification Script (Mac/Linux)
 # Check if system is ready to run the application
 
 echo ""
 echo "======================================"
-echo "   AI GROWTH SYSTEMS - Verification"
+echo "   DIGIHOOD STUDIO - Verification"
 echo "======================================"
 echo ""
 

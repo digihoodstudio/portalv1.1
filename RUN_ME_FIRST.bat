@@ -1,10 +1,10 @@
 @echo off
-REM AI Growth Systems - One-Click Start Script for Windows
+REM Digihood Studio - One-Click Start Script for Windows
 REM This script installs dependencies and starts the application
 
 echo.
 echo ======================================
-echo   AI GROWTH SYSTEMS - Starting...
+echo   DIGIHOOD STUDIO - Starting...
 echo ======================================
 echo.
 

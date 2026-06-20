@@ -1,10 +1,10 @@
 @echo off
-REM AI Growth Systems - Verification Script
+REM Digihood Studio - Verification Script
 REM Check if system is ready to run the application
 
 echo.
 echo ======================================
-echo   AI GROWTH SYSTEMS - Verification
+echo   DIGIHOOD STUDIO - Verification
 echo ======================================
 echo.
 

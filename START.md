@@ -1,6 +1,7 @@
 # ▶️ HOW TO RUN THIS APPLICATION
 
 ## 📌 Prerequisites
+
 - **Node.js 18+** installed ([Download](https://nodejs.org/))
 - **npm** comes with Node.js
 - An open terminal/command prompt
@@ -28,6 +29,7 @@ npm run dev
 ```
 
 This starts BOTH servers at once:
+
 - **Frontend**: http://localhost:3001
 - **Backend**: http://localhost:4000
 
@@ -37,7 +39,7 @@ This starts BOTH servers at once:
 
 1. Open your web browser
 2. Go to: **http://localhost:3001**
-3. You should see the AI Growth Systems homepage
+3. You should see the Digihood Studio homepage
 4. Click "Sign In" or "Sign Up" to get started
 
 ---
@@ -58,11 +60,13 @@ Or click "Sign Up" to create your own account instantly.
 ## 📊 What You'll See
 
 ### On First Load
+
 - Homepage with services and pricing
 - AI Assistant chatbot on the right
 - Navigation menu at top
 
 ### After Login
+
 - Dashboard with metrics
 - List of leads
 - Admin/SuperAdmin controls (if logged in as admin)
@@ -78,16 +82,19 @@ Press `CTRL+C` in terminal
 ## ⚠️ If Something Goes Wrong
 
 **Backend won't start?**
+
 ```bash
 npm --workspace server run dev
 ```
 
 **Frontend won't start?**
+
 ```bash
 npm --workspace app run dev
 ```
 
 **Port already in use?**
+
 - Backend uses port 4000
 - Frontend uses port 3001
 - If busy, check what's using those ports and stop it

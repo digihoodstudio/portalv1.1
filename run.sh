@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# AI Growth Systems - One-Click Start Script for Mac/Linux
+# Digihood Studio - One-Click Start Script for Mac/Linux
 # This script installs dependencies and starts the application
 
 echo ""
 echo "======================================"
-echo "   AI GROWTH SYSTEMS - Starting..."
+echo "   DIGIHOOD STUDIO - Starting..."
 echo "======================================"
 echo ""
 

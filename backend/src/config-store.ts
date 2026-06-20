@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const CONFIG_FILE_PATH = path.resolve(__dirname, '../prisma/configs.json');
+const CONFIG_FILE_PATH = path.resolve(__dirname, "../prisma/configs.json");
 
 export interface SystemConfigs {
   openaiApiKey: string;
@@ -23,10 +23,10 @@ export interface SystemConfigs {
 }
 
 const defaultConfigs: SystemConfigs = {
-  openaiApiKey: process.env.OPENAI_API_KEY || 'mock-key',
-  openaiModel: 'gpt-4o-mini',
+  openaiApiKey: process.env.OPENAI_API_KEY || "mock-key",
+  openaiModel: "gpt-4o-mini",
   openaiTemperature: 0.3,
-  systemPrompt: `You are a warm, consultative, high-ticket sales specialist for AI Growth Systems — a premium enterprise AI automation agency.
+  systemPrompt: `You are a warm, consultative, high-ticket sales specialist for Digihood Studio — a premium enterprise AI automation agency.
 
 COMPANY SERVICES:
 1. AI Receptionist & Appointment Setter – 24/7 inbound call answering, lead qualification, appointment booking, weekly reporting. Live within 48 hours.
@@ -34,9 +34,9 @@ COMPANY SERVICES:
 3. Dead Lead Reactivation – AI email/SMS campaigns to revive cold contacts with lead scoring and revenue recovery reporting.
 
 PRICING PACKAGES:
-- Starter ($1,497/mo): AI receptionist, custom scripts, weekly reports, email support
-- Growth ($2,997/mo): Everything in Starter + missed call recovery, SMS follow-ups, CRM integration, bi-weekly strategy calls
-- Dominance ($5,997/mo): Everything in Growth + dead lead reactivation, unlimited contacts, brand-trained voice, dedicated success manager
+- Starter: AI receptionist, custom scripts, weekly reports, email support
+- Growth: Everything in Starter + missed call recovery, SMS follow-ups, CRM integration, bi-weekly strategy calls
+- Dominance: Everything in Growth + dead lead reactivation, unlimited contacts, brand-trained voice, dedicated success manager
 
 GUARANTEES:
 - Live AI agent setup within 48 hours
@@ -49,21 +49,28 @@ YOUR ROLE:
 - Guide conversations toward booking a demo consultation (redirect them to Book Demo page)
 - Be concise, professional, and results-focused
 - Keep responses under 150 words. Be conversational, not robotic.`,
-  twilioAccountSid: process.env.TWILIO_ACCOUNT_SID || 'ACmock',
-  twilioAuthToken: process.env.TWILIO_AUTH_TOKEN || 'mocktoken',
-  twilioPhoneNumber: process.env.TWILIO_PHONE_NUMBER || '+15550199',
-  elevenLabsApiKey: 'mock-eleven-labs-key',
-  voiceProfile: 'Rachel',
+  twilioAccountSid: process.env.TWILIO_ACCOUNT_SID || "ACmock",
+  twilioAuthToken: process.env.TWILIO_AUTH_TOKEN || "mocktoken",
+  twilioPhoneNumber: process.env.TWILIO_PHONE_NUMBER || "+15550199",
+  elevenLabsApiKey: "mock-eleven-labs-key",
+  voiceProfile: "Rachel",
   crmConnected: {
     gohighlevel: true,
     hubspot: false,
-    salesforce: false
+    salesforce: false,
   },
   kbEntries: [
-    { q: 'What is the setup time?', a: 'AI receptionist setup is live within 48 hours.' },
-    { q: 'Is there a contract?', a: 'All packages are month-to-month with no long-term contract.' }
+    {
+      q: "What is the setup time?",
+      a: "AI receptionist setup is live within 48 hours.",
+    },
+    {
+      q: "Is there a contract?",
+      a: "All packages are month-to-month with no long-term contract.",
+    },
   ],
-  publisherNote: 'Delivery Agent Note: Integrated ServiceTitan. AI Callback rules successfully live.'
+  publisherNote:
+    "Delivery Agent Note: Integrated ServiceTitan. AI Callback rules successfully live.",
 };
 
 let activeConfigs: SystemConfigs = { ...defaultConfigs };
@@ -71,17 +78,21 @@ let activeConfigs: SystemConfigs = { ...defaultConfigs };
 // Load configurations on import
 try {
   if (fs.existsSync(CONFIG_FILE_PATH)) {
-    const rawData = fs.readFileSync(CONFIG_FILE_PATH, 'utf-8');
+    const rawData = fs.readFileSync(CONFIG_FILE_PATH, "utf-8");
     const parsed = JSON.parse(rawData);
     activeConfigs = { ...defaultConfigs, ...parsed };
-    console.log('Successfully loaded persisted server configurations.');
+    console.log("Successfully loaded persisted server configurations.");
   } else {
     // Write defaults
-    fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(defaultConfigs, null, 2), 'utf-8');
-    console.log('Created new default configs.json file.');
+    fs.writeFileSync(
+      CONFIG_FILE_PATH,
+      JSON.stringify(defaultConfigs, null, 2),
+      "utf-8",
+    );
+    console.log("Created new default configs.json file.");
   }
 } catch (error) {
-  console.error('Failed to load or initialize server configurations:', error);
+  console.error("Failed to load or initialize server configurations:", error);
 }
 
 export function getConfigs(): SystemConfigs {
@@ -92,15 +103,19 @@ export function updateConfigs(updates: Partial<SystemConfigs>): SystemConfigs {
   activeConfigs = {
     ...activeConfigs,
     ...updates,
-    crmConnected: updates.crmConnected 
+    crmConnected: updates.crmConnected
       ? { ...activeConfigs.crmConnected, ...updates.crmConnected }
-      : activeConfigs.crmConnected
+      : activeConfigs.crmConnected,
   };
 
   try {
-    fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(activeConfigs, null, 2), 'utf-8');
+    fs.writeFileSync(
+      CONFIG_FILE_PATH,
+      JSON.stringify(activeConfigs, null, 2),
+      "utf-8",
+    );
   } catch (error) {
-    console.error('Failed to persist server configurations:', error);
+    console.error("Failed to persist server configurations:", error);
   }
 
   return activeConfigs;
