@@ -201,7 +201,7 @@ export default function Navbar() {
             }}
             className="font-semibold text-lg tracking-[0.18em] text-gold"
           >
-            Digihood Studio
+            DIGIHOOD STUDIO
           </Link>
 
           {/* Desktop Nav */}
