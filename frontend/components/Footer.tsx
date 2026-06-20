@@ -21,15 +21,11 @@ export default function Footer() {
       <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr] md:items-start">
         <div>
           <p className="font-semibold text-lg tracking-[0.14em] text-gold">
-            AI GROWTH SYSTEMS
+            DIGIHOOD STUDIO
           </p>
           <p className="mt-3 max-w-sm text-foreground/70 leading-relaxed">
-            Premium AI agency infrastructure for enterprise teams — voice
-            agents, automation, and voice-first revenue growth.
-          </p>
-          <p className="mt-5 text-xs text-foreground/40">
-            Operating in simulation mode — connect your OpenAI and Twilio keys
-            to activate live agents.
+            Digihood Studio for enterprise teams. Voice agents, automation and
+            voice-first revenue growth.
           </p>
         </div>
         {Object.entries(footerLinks).map(([group, links]) => (
@@ -55,7 +51,7 @@ export default function Footer() {
           © 2026 Digihood Studio. All rights reserved.
         </p>
         <p className="text-xs text-foreground/40">
-          Powered by Next.js · Express · In-memory data store
+          Powered by Digihood Studio.
         </p>
       </div>
     </footer>
