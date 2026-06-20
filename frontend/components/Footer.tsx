@@ -27,7 +27,6 @@ export default function Footer() {
             Portal for enterprise teams.
           </p>
           <div class="mt-8">
-            <div class="font-semibold mb-4">Follow Us</div>
             <div class="flex gap-4">
               <a
                 href="https://www.instagram.com/digihoodstudio"
