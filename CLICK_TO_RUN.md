@@ -52,7 +52,7 @@ npm run dev
 
 ### Browser Should Show:
 
-- AI Growth Systems homepage
+- Digihood Studio homepage
 - Navigation bar with Sign In/Sign Up
 - Chatbot panel on right side
 - Pricing and services sections
