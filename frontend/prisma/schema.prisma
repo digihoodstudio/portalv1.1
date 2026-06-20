@@ -358,8 +358,11 @@ model EmployeeTask {
 // ─── Chatbot Logs ─────────────────────────────────────────────────────────────
 model ChatbotLog {
   id        String   @id @default(cuid())
+  sessionId String?
+  role      String   @default("assistant")
   message   String?
   response  String?
+  metadata  String?
   createdAt DateTime @default(now())
 
   @@map("chatbot_logs")
