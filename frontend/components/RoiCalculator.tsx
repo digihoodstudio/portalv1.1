@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { DollarSign, CheckCircle2, TrendingUp } from "lucide-react";
+
 
 const industryParams: Record<
   string,
@@ -131,20 +131,22 @@ export default function RoiCalculator() {
             </div>
 
             {/* Main recovered sum */}
-            <div className="flex items-baseline gap-1 text-white">
-              <DollarSign className="h-8 w-8 text-gold flex-shrink-0 self-center" />
-              <motion.span
-                key={stats.recoveredRevenue}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-5xl font-extrabold tracking-tight"
-              >
-                {stats.recoveredRevenue.toLocaleString()}
-              </motion.span>
-              <span className="text-xs text-white/40 ml-2 font-mono">
-                / month
-              </span>
-            </div>
+           <div className="flex items-baseline gap-2 text-white">
+  <span className="text-2xl md:text-3xl font-bold text-gold flex-shrink-0 self-center">
+    NPR
+  </span>
+  <motion.span
+    key={stats.recoveredRevenue}
+    initial={{ opacity: 0, y: -10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="text-5xl font-extrabold tracking-tight"
+  >
+    {stats.recoveredRevenue.toLocaleString()}
+  </motion.span>
+  <span className="text-xs text-white/40 ml-2 font-mono">
+    / month
+  </span>
+</div>
 
             {/* Analytics Grid */}
             <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6 mt-2">
@@ -169,11 +171,11 @@ export default function RoiCalculator() {
             <div className="flex items-center gap-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 px-4 py-3 text-2xs text-emerald-400 leading-normal">
               <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
               <span>
-                Based on a{" "}
-                {Math.round(industryParams[selectedIndustry].closeRate * 100)}%
-                closing conversion and NPR{" "}
-                {industryParams[selectedIndustry].jobValue} average ticket.
-              </span>
+  Based on a{" "}
+  {Math.round(industryParams[selectedIndustry].closeRate * 100)}%
+  closing conversion and NPR{" "}
+  {industryParams[selectedIndustry].jobValue.toLocaleString()} average ticket.
+</span>
             </div>
           </div>
 
