@@ -49,9 +49,6 @@ export default function Footer() {
         <p className="text-xs text-foreground/50">
           © 2026 Digihood Studio. All rights reserved.
         </p>
-        <p className="text-xs text-foreground/40">
-          Powered by Digihood Studio.
-        </p>
       </div>
     </footer>
   );
