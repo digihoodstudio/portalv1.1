@@ -74,6 +74,10 @@ export default function AdminDashboard() {
   const [calls, setCalls] = useState<Call[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]);
+  const [csvPreview, setCsvPreview] = useState<any[]>([]);
+  const [listName, setListName] = useState('');
+  const [prospectStatusMsg, setProspectStatusMsg] = useState('');
+  const [uploadingCsv, setUploadingCsv] = useState(false);
 
   // Config State
   const [kbEntries, setKbEntries] = useState('');
@@ -378,6 +382,95 @@ export default function AdminDashboard() {
       console.error(err);
     }
   };
+  const handleCSVFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  setListName(file.name.replace(/\.[^/.]+$/, ""));
+  setProspectStatusMsg("Reading CSV...");
+
+  const reader = new FileReader();
+
+  reader.onload = async (event) => {
+    try {
+      const text = event.target?.result as string;
+
+      const token = localStorage.getItem('token');
+
+      const res = await fetch(
+        '/api/superadmin/prospects/upload-preview',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            csvContent: text
+          })
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error);
+      }
+
+      setCsvPreview(data.preview || []);
+      setProspectStatusMsg(
+        `${data.preview?.length || 0} leads ready for upload`
+      );
+    } catch (err) {
+      setProspectStatusMsg('CSV preview failed.');
+    }
+  };
+
+  reader.readAsText(file);
+};
+
+const confirmProspectsUpload = async () => {
+  if (!csvPreview.length) {
+    alert('No CSV data loaded');
+    return;
+  }
+
+  try {
+    setUploadingCsv(true);
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch(
+      '/api/superadmin/prospects/upload-confirm',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          listName,
+          prospects: csvPreview
+        })
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error();
+    }
+
+    setProspectStatusMsg(
+      `${csvPreview.length} leads uploaded successfully`
+    );
+
+    setCsvPreview([]);
+    fetchData();
+  } catch {
+    setProspectStatusMsg('Upload failed');
+  } finally {
+    setUploadingCsv(false);
+  }
+};
 
   const handleLeadSplits = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -999,10 +1092,51 @@ export default function AdminDashboard() {
               
               {/* Approval Center */}
               <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-4">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white font-sans">Campaign Database Approval</h2>
-                </div>
+                <div className="flex items-center justify-between">
+  <div className="flex items-center gap-2">
+    <ShieldCheck size={18} className="text-gold" />
+    <h2 className="text-lg font-bold text-white font-sans">
+      Campaign Database Approval
+    </h2>
+  </div>
+
+  <div className="relative">
+    <input
+      type="file"
+      accept=".csv"
+      onChange={handleCSVFileChange}
+      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+    />
+
+    <button
+      type="button"
+      className="rounded-xl bg-gold text-background px-4 py-2 text-xs font-bold"
+    >
+      Upload CSV
+    </button>
+  </div>
+</div>
+{prospectStatusMsg && (
+  <div className="rounded-xl border border-gold/20 bg-gold/5 px-4 py-3 text-xs text-gold">
+    {prospectStatusMsg}
+  </div>
+)}
+
+{csvPreview.length > 0 && (
+  <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-center justify-between">
+    <span className="text-white text-xs">
+      CSV Preview Loaded: {csvPreview.length} Leads
+    </span>
+
+    <button
+      onClick={confirmProspectsUpload}
+      disabled={uploadingCsv}
+      className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white"
+    >
+      {uploadingCsv ? 'Uploading...' : 'Confirm Upload'}
+    </button>
+  </div>
+)}
 
                 <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
                   <table className="w-full text-left border-collapse text-xs text-white/80">
