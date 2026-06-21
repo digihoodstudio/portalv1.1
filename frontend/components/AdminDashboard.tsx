@@ -25,14 +25,9 @@ import {
   XCircle,
   Loader2,
   LayoutDashboard,
-  Bell,
-  FileText,
-  CreditCard,
-  UserCircle,
-  Search,
-  ChevronDown,
   TrendingUp,
   Activity,
+  ChevronDown,
 } from "lucide-react";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
@@ -192,12 +187,13 @@ export default function AdminDashboard() {
   const [parseError, setParseError] = useState("");
   const [estimatedLeadCount, setEstimatedLeadCount] = useState("500");
 
-  const [searchQuery, setSearchQuery] = useState("");
-
   // ─── Fetch Data ────────────────────────────────────────────────────────────
   const fetchData = useCallback(async () => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -661,15 +657,7 @@ export default function AdminDashboard() {
     }
   };
 
-  if (loading && clients.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 text-white/50">
-        <p className="animate-pulse text-xs uppercase tracking-widest font-bold">
-          Syncing Admin Console...
-        </p>
-      </div>
-    );
-  }
+  // Skip loading screen — render dashboard immediately with empty state
 
   // ─── Computed Stats for Overview ───────────────────────────────────────────
   const totalLeads = projects.reduce(
@@ -694,8 +682,8 @@ export default function AdminDashboard() {
         ).toFixed(0)
       : 87;
 
-  const sidebarItems = [
-    { id: "overview", label: "Dashboard", icon: LayoutDashboard },
+  const tabs = [
+    { id: "overview", label: "Overview", icon: LayoutDashboard },
     { id: "clients", label: "Clients", icon: Users },
     { id: "appointments", label: "Appointments", icon: Calendar },
     { id: "calls", label: "Call Coaching", icon: PhoneCall },
@@ -705,818 +693,1328 @@ export default function AdminDashboard() {
 
   // ─── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="flex min-h-screen bg-background text-white">
-      {/* ── SIDEBAR ── */}
-      <aside className="w-60 shrink-0 border-r border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-6">
-        <div className="flex items-center gap-2.5 pb-5 border-b border-white/10">
-          <div className="w-8 h-8 rounded-lg bg-gold/15 border border-gold/30 flex items-center justify-center">
-            <span className="text-gold font-black text-sm">D</span>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-white">Digihood</p>
-            <p className="text-[9px] text-white/40 uppercase tracking-wider">
-              Admin Portal
-            </p>
-          </div>
-        </div>
+    <div className="space-y-6">
+      {/* ── Tab Navigation ── */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/10 pb-2">
+        {tabs.map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            onClick={() => setActiveTab(id as typeof activeTab)}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
+              activeTab === id
+                ? "bg-gold/15 border border-gold/30 text-gold shadow-glow-sm"
+                : "text-white/60 hover:bg-white/5 hover:text-white border border-transparent"
+            }`}
+          >
+            <Icon size={14} />
+            <span>{label}</span>
+          </button>
+        ))}
+      </div>
 
-        <nav className="space-y-1">
-          {sidebarItems.map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id as typeof activeTab)}
-              className={`w-full flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all text-left ${
-                activeTab === id
-                  ? "bg-gold/15 border border-gold/30 text-gold shadow-glow-sm"
-                  : "text-white/60 hover:bg-white/5 hover:text-white border border-transparent"
-              }`}
-            >
-              <Icon size={14} />
-              <span>{label}</span>
-            </button>
-          ))}
-        </nav>
+      {/* ── OVERVIEW TAB ── */}
+      {activeTab === "overview" && (
+        <div className="space-y-6">
+          {/* TOP ROW */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            {/* Today Card */}
+            <div className="lg:col-span-4 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                  Today
+                </span>
+                <button className="inline-flex items-center gap-1 text-[10px] font-bold text-white/50 hover:text-white border border-white/10 rounded-full px-2.5 py-1 bg-white/5">
+                  <span>Last 5 days</span>
+                  <ChevronDown size={10} />
+                </button>
+              </div>
 
-        <div className="pt-5 border-t border-white/10 space-y-1">
-          {[
-            { label: "Reports", icon: FileText },
-            { label: "Payments", icon: CreditCard },
-            { label: "Accounts", icon: UserCircle },
-          ].map(({ label, icon: Icon }) => (
-            <button
-              key={label}
-              className="w-full flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-white/40 hover:bg-white/5 hover:text-white/70 transition-all text-left"
-            >
-              <Icon size={14} />
-              <span>{label}</span>
-            </button>
-          ))}
-        </div>
-      </aside>
+              <div>
+                <h2 className="text-4xl font-black text-white tracking-tight">
+                  ${((totalLeads * 250) / 100).toFixed(0).toLocaleString()}
+                </h2>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <TrendingUp size={11} className="text-emerald-400" />
+                  <span className="text-[11px] font-bold text-emerald-400">
+                    +2.14%
+                  </span>
+                  <span className="text-[11px] text-white/40">
+                    vs last week
+                  </span>
+                </div>
+              </div>
 
-      {/* ── MAIN CONTENT ── */}
-      <main className="flex-1 overflow-x-hidden">
-        {/* ── TOP BAR ── */}
-        <header className="sticky top-0 z-30 flex items-center justify-between gap-4 px-8 py-4 border-b border-white/10 bg-background/80 backdrop-blur-md">
-          <div className="flex items-center gap-3 flex-1 max-w-md">
-            <div className="relative w-full">
-              <Search
-                size={14}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30"
-              />
-              <input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                type="text"
-                placeholder="Search clients, campaigns, calls..."
-                className="w-full rounded-xl bg-white/5 border border-white/10 pl-10 pr-4 py-2.5 text-xs text-white placeholder-white/30 outline-none focus:border-gold/40 transition"
-              />
+              <div className="flex items-end justify-between gap-2 h-20 pt-2">
+                {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 flex flex-col items-center gap-1.5"
+                  >
+                    <div
+                      className="w-full rounded-t-md bg-gradient-to-t from-gold/80 to-gold/30 hover:from-gold hover:to-gold/50 transition-all cursor-pointer"
+                      style={{ height: `${h}%` }}
+                    />
+                    <span className="text-[8px] font-mono text-white/30">
+                      {i + 1}/5
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Timeline Project */}
+            <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-white">
+                  Timeline Project
+                </h3>
+                <button className="inline-flex items-center gap-1 text-[10px] font-bold text-gold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 hover:bg-gold/10">
+                  View Report
+                </button>
+              </div>
+
+              <div className="flex items-end justify-between gap-3 h-32 pt-2">
+                {["Apr 1", "Apr 8", "Apr 15", "Apr 22", "Apr 29"].map(
+                  (label, i) => {
+                    const heights = [55, 80, 45, 90, 70];
+                    return (
+                      <div
+                        key={i}
+                        className="flex-1 flex flex-col items-center gap-2"
+                      >
+                        <div className="w-full flex items-end gap-1 h-full">
+                          <div
+                            className="flex-1 rounded-t-md bg-gradient-to-t from-gold/80 to-gold/40"
+                            style={{ height: `${heights[i]}%` }}
+                          />
+                          <div
+                            className="flex-1 rounded-t-md bg-gradient-to-t from-amber-700/60 to-amber-600/30"
+                            style={{ height: `${heights[i] * 0.6}%` }}
+                          />
+                        </div>
+                        <span className="text-[9px] font-mono text-white/30">
+                          {label}
+                        </span>
+                      </div>
+                    );
+                  },
+                )}
+              </div>
+            </div>
+
+            {/* Donut Chart */}
+            <div className="lg:col-span-3 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
+              <div className="flex flex-col items-center">
+                <div className="relative w-32 h-32">
+                  <svg
+                    viewBox="0 0 100 100"
+                    className="w-full h-full -rotate-90"
+                  >
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="rgba(255,255,255,0.05)"
+                      strokeWidth="12"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="rgb(202, 158, 87)"
+                      strokeWidth="12"
+                      strokeDasharray={`${40 * 2.51}`}
+                      strokeDashoffset={`${40 * 2.51 * (1 - 0.4)}`}
+                      strokeLinecap="round"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="rgba(202, 158, 87, 0.5)"
+                      strokeWidth="12"
+                      strokeDasharray={`${40 * 2.51}`}
+                      strokeDashoffset={`${40 * 2.51 * (1 - 0.33)}`}
+                      strokeLinecap="round"
+                      transform="rotate(144 50 50)"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="rgba(202, 158, 87, 0.25)"
+                      strokeWidth="12"
+                      strokeDasharray={`${40 * 2.51}`}
+                      strokeDashoffset={`${40 * 2.51 * (1 - 0.27)}`}
+                      strokeLinecap="round"
+                      transform="rotate(263 50 50)"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-xs font-mono text-white/60">
+                      Live
+                    </span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 w-full mt-3 text-center">
+                  <div>
+                    <p className="text-xs font-bold text-gold">40%</p>
+                    <p className="text-[8px] text-white/30 uppercase">Hot</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-gold/70">33%</p>
+                    <p className="text-[8px] text-white/30 uppercase">Warm</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-gold/40">28%</p>
+                    <p className="text-[8px] text-white/30 uppercase">Cold</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* PIPELINE STAGES */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <h4 className="text-xs font-bold text-white">Contacted</h4>
+                <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+                  {calls.length}
+                </span>
+              </div>
+              <div className="space-y-2.5">
+                {clients.slice(0, 2).map((c) => (
+                  <div key={c.id} className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/30 flex items-center justify-center text-gold text-xs font-bold shrink-0">
+                      {c.companyName?.charAt(0) || "C"}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-bold text-white truncate">
+                        {c.contactName || c.companyName}
+                      </p>
+                      <p className="text-[9px] text-white/40 truncate">
+                        {c.contactEmail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {clients.length === 0 && (
+                  <p className="text-[10px] text-white/30 text-center py-2">
+                    No contacts
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <h4 className="text-xs font-bold text-white">Negotiation</h4>
+                <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+                  {projects.length}
+                </span>
+              </div>
+              <div className="space-y-2.5">
+                {projects.slice(0, 2).map((p) => (
+                  <div key={p.id} className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs font-bold shrink-0">
+                      {p.name?.charAt(0) || "P"}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-bold text-white truncate">
+                        {p.name}
+                      </p>
+                      <p className="text-[9px] text-white/40">
+                        {p.uploadedFiles?.[0]?.recordCount || 0} leads
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {projects.length === 0 && (
+                  <p className="text-[10px] text-white/30 text-center py-2">
+                    No deals
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <h4 className="text-xs font-bold text-white">Offer Sent</h4>
+                <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+                  {appointments.length}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {appointments.slice(0, 2).map((a) => (
+                  <div
+                    key={a.id}
+                    className="rounded-xl bg-white/5 border border-white/10 p-2.5"
+                  >
+                    <p className="text-[11px] font-bold text-white truncate">
+                      {a.title}
+                    </p>
+                    <p className="text-[9px] text-gold mt-0.5">
+                      {a.clientName || "Lead"}
+                    </p>
+                    <p className="text-[8px] text-white/30 mt-1 font-mono">
+                      {new Date(a.scheduledAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+                {appointments.length === 0 && (
+                  <p className="text-[10px] text-white/30 text-center py-2">
+                    No offers
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <h4 className="text-xs font-bold text-white">Deal Closed</h4>
+                <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
+                  {bookedCalls}
+                </span>
+              </div>
+              <div className="space-y-2.5">
+                {calls
+                  .filter((c) => c.outcome === "BOOKED")
+                  .slice(0, 3)
+                  .map((c) => (
+                    <div key={c.id} className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold shrink-0">
+                        {c.leadName?.charAt(0) || "?"}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] font-bold text-white truncate">
+                          {c.leadName}
+                        </p>
+                        <p className="text-[9px] text-emerald-400 font-mono">
+                          ${(c.durationSec * 5).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                {bookedCalls === 0 && (
+                  <p className="text-[10px] text-white/30 text-center py-2">
+                    No closed
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* BOTTOM ROW */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <div className="lg:col-span-4 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6">
+              <div className="grid grid-cols-2 gap-5">
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="relative w-20 h-20">
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="w-full h-full -rotate-90"
+                    >
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="40"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.05)"
+                        strokeWidth="8"
+                      />
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="40"
+                        fill="none"
+                        stroke="rgb(202, 158, 87)"
+                        strokeWidth="8"
+                        strokeDasharray={`${40 * 2.51}`}
+                        strokeDashoffset={`${40 * 2.51 * (1 - Number(avgGreeting) / 100)}`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm font-bold text-white">
+                        {avgGreeting}%
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                    Greeting Score
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center text-center space-y-2">
+                  <div className="relative w-20 h-20">
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="w-full h-full -rotate-90"
+                    >
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="40"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.05)"
+                        strokeWidth="8"
+                      />
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="40"
+                        fill="none"
+                        stroke="rgb(202, 158, 87)"
+                        strokeWidth="8"
+                        strokeDasharray={`${40 * 2.51}`}
+                        strokeDashoffset={`${40 * 2.51 * (1 - Number(avgCompliance) / 100)}`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm font-bold text-white">
+                        {avgCompliance}%
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                    Compliance
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3 rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/10 to-amber-700/5 backdrop-blur-md p-6 flex flex-col justify-center">
+              <p className="text-[9px] uppercase font-bold text-gold/70 tracking-widest">
+                Total Pipeline
+              </p>
+              <h3 className="text-3xl font-black text-white mt-1">
+                ${(totalLeads * 250).toLocaleString()}
+              </h3>
+              <div className="flex items-center gap-1.5 mt-2">
+                <Activity size={11} className="text-emerald-400" />
+                <span className="text-[10px] text-emerald-400 font-bold">
+                  {conversionRate}% conversion
+                </span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-bold text-white">
+                  Performance Trend
+                </h4>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-gold" />
+                    <span className="text-[9px] text-white/40">
+                      Last 4 Days
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-white/30" />
+                    <span className="text-[9px] text-white/40">Last Week</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-32 relative">
+                <svg viewBox="0 0 500 120" className="w-full h-full">
+                  <defs>
+                    <linearGradient id="gold-grad" x1="0" y1="0" x2="0" y2="1">
+                      <stop
+                        offset="0%"
+                        stopColor="rgb(202, 158, 87)"
+                        stopOpacity="0.3"
+                      />
+                      <stop
+                        offset="100%"
+                        stopColor="rgb(202, 158, 87)"
+                        stopOpacity="0"
+                      />
+                    </linearGradient>
+                  </defs>
+                  <line
+                    x1="0"
+                    y1="30"
+                    x2="500"
+                    y2="30"
+                    stroke="rgba(255,255,255,0.05)"
+                    strokeDasharray="3 3"
+                  />
+                  <line
+                    x1="0"
+                    y1="60"
+                    x2="500"
+                    y2="60"
+                    stroke="rgba(255,255,255,0.05)"
+                    strokeDasharray="3 3"
+                  />
+                  <line
+                    x1="0"
+                    y1="90"
+                    x2="500"
+                    y2="90"
+                    stroke="rgba(255,255,255,0.05)"
+                    strokeDasharray="3 3"
+                  />
+
+                  <path
+                    d="M 0,70 C 80,40 120,80 200,50 S 320,90 400,40 S 480,70 500,55"
+                    fill="none"
+                    stroke="rgb(202, 158, 87)"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M 0,70 C 80,40 120,80 200,50 S 320,90 400,40 S 480,70 500,55 L 500,120 L 0,120 Z"
+                    fill="url(#gold-grad)"
+                  />
+                  <path
+                    d="M 0,85 C 80,75 120,95 200,80 S 320,100 400,75 S 480,90 500,80"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.3)"
+                    strokeWidth="2"
+                    strokeDasharray="4 4"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── CLIENT ACCOUNTS TAB ── */}
+      {activeTab === "clients" && (
+        <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center gap-2">
+              <Users size={18} className="text-gold" />
+              <h2 className="text-lg font-bold text-white">
+                Client Accounts Management
+              </h2>
+            </div>
             <button
-              className="p-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition"
-              title="Notifications"
+              onClick={openAddClientModal}
+              className="inline-flex items-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 px-5 py-2.5 text-xs font-bold transition"
             >
-              <Bell size={14} />
+              <Plus size={14} />
+              <span>Add Client Account</span>
             </button>
+          </div>
+
+          <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
+            <table className="w-full text-left border-collapse text-xs text-white/80">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                  <th className="px-4 py-3">Company Name</th>
+                  <th className="px-4 py-3">Primary Contact</th>
+                  <th className="px-4 py-3">Plan</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 font-medium">
+                {clients.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="px-4 py-6 text-center text-white/30"
+                    >
+                      No client records found.
+                    </td>
+                  </tr>
+                ) : (
+                  clients.map((c) => (
+                    <tr
+                      key={c.id}
+                      className="hover:bg-white/[0.01] transition-colors"
+                    >
+                      <td className="px-4 py-3.5 font-bold text-white">
+                        {c.companyName}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="space-y-0.5">
+                          <p className="text-white/80">{c.contactName}</p>
+                          <p className="text-[10px] text-white/40">
+                            {c.contactEmail} • {c.contactPhone || "No phone"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span className="rounded bg-white/5 border border-white/10 px-2 py-0.5 font-mono text-[10px] font-bold text-gold">
+                          {c.plan}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span
+                          className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${c.status === "ACTIVE" ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`}
+                        >
+                          {c.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5 text-right space-x-1.5">
+                        <button
+                          onClick={() => openEditClientModal(c)}
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
+                          title="Edit"
+                        >
+                          <Edit2 size={11} />
+                        </button>
+                        <button
+                          onClick={() => deleteClient(c.id)}
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-red-950/20 border border-red-500/20 text-red-300 hover:bg-red-900/30 transition"
+                          title="Delete"
+                        >
+                          <Trash2 size={11} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── APPOINTMENTS TAB ── */}
+      {activeTab === "appointments" && (
+        <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center gap-2">
+              <Calendar size={18} className="text-gold" />
+              <h2 className="text-lg font-bold text-white">
+                Appointments Booked via AI
+              </h2>
+            </div>
             <button
               onClick={fetchData}
-              className="p-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition"
-              title="Refresh"
+              className="text-white/40 hover:text-white transition"
             >
               <RefreshCw size={14} />
             </button>
-            <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/30 flex items-center justify-center text-gold font-bold text-xs">
-              A
-            </div>
           </div>
-        </header>
 
-        {/* ── PAGE CONTENT ── */}
-        <div className="p-8 space-y-6">
-          {/* ── PAGE TITLE + ACTIONS ── */}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h1 className="text-2xl font-bold text-white tracking-tight">
-                {activeTab === "overview" && "Admin Dashboard"}
-                {activeTab === "clients" && "Client Accounts"}
-                {activeTab === "appointments" && "Appointments Booked"}
-                {activeTab === "calls" && "AI Voice Coaching"}
-                {activeTab === "configs" && "AI Agent Configuration"}
-                {activeTab === "campaigns" && "Workloads & Splits"}
-              </h1>
-              <p className="text-[11px] text-white/40 mt-0.5 uppercase tracking-wider font-bold">
-                Real-time growth control center
+          <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
+            <table className="w-full text-left border-collapse text-xs text-white/80">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                  <th className="px-4 py-3">Lead / Title</th>
+                  <th className="px-4 py-3">Scheduled At</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3 text-right">
+                    Confirmation Status Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 font-medium">
+                {appointments.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="px-4 py-6 text-center text-white/30"
+                    >
+                      No booked appointments found.
+                    </td>
+                  </tr>
+                ) : (
+                  appointments.map((appt) => (
+                    <tr
+                      key={appt.id}
+                      className="hover:bg-white/[0.01] transition-colors"
+                    >
+                      <td className="px-4 py-3.5">
+                        <div className="space-y-0.5">
+                          <p className="font-bold text-white">{appt.title}</p>
+                          <p className="text-[10px] text-white/40">
+                            {appt.clientName ||
+                              "Lead Phone: " + appt.clientPhone}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5 font-mono text-white/70">
+                        {new Date(appt.scheduledAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span
+                          className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${appt.status === "CONFIRMED" ? "bg-emerald-500/20 text-emerald-400" : appt.status === "CANCELLED" ? "bg-red-500/20 text-red-400" : "bg-blue-500/20 text-blue-400"}`}
+                        >
+                          {appt.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5 text-right space-x-1.5">
+                        {appt.status !== "CONFIRMED" && (
+                          <button
+                            onClick={() =>
+                              updateAppointmentStatus(appt.id, "CONFIRMED")
+                            }
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-white transition"
+                            title="Confirm"
+                          >
+                            <Check size={11} />
+                          </button>
+                        )}
+                        {appt.status !== "CANCELLED" && (
+                          <button
+                            onClick={() =>
+                              updateAppointmentStatus(appt.id, "CANCELLED")
+                            }
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white transition"
+                            title="Cancel"
+                          >
+                            <X size={11} />
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── AI VOICE COACHING TAB ── */}
+      {activeTab === "calls" && (
+        <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center gap-2">
+              <PhoneCall size={18} className="text-gold" />
+              <h2 className="text-lg font-bold text-white">
+                Outbound Call Performance & Auditing
+              </h2>
+            </div>
+            <button
+              onClick={fetchData}
+              className="text-white/40 hover:text-white transition"
+            >
+              <RefreshCw size={14} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
+              <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+                Avg Greeting Check
+              </span>
+              <p className="text-2xl font-bold font-mono mt-2 text-emerald-400">
+                {calls.length > 0
+                  ? (
+                      calls.reduce(
+                        (s, c) => s + (c.coaching?.greeting || 0),
+                        0,
+                      ) / calls.length
+                    ).toFixed(1)
+                  : "91.2"}
+                %
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <button className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 text-xs font-bold text-white/70 transition">
-                <Settings size={12} />
-                <span>Settings</span>
-                <ChevronDown size={12} />
-              </button>
-              <button className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-4 py-2 text-xs font-bold text-white/70 transition">
-                <BarChart2 size={12} />
-                <span>Reports</span>
-                <ChevronDown size={12} />
-              </button>
+            <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
+              <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+                Avg Compliance Check
+              </span>
+              <p className="text-2xl font-bold font-mono mt-2 text-gold">
+                {calls.length > 0
+                  ? (
+                      calls.reduce(
+                        (s, c) => s + (c.coaching?.compliance || 0),
+                        0,
+                      ) / calls.length
+                    ).toFixed(1)
+                  : "86.7"}
+                %
+              </p>
+            </div>
+            <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
+              <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+                Conversion Ratio
+              </span>
+              <p className="text-2xl font-bold font-mono mt-2 text-blue-400">
+                {calls.length > 0
+                  ? (
+                      (calls.filter((c) => c.outcome === "BOOKED").length /
+                        calls.length) *
+                      100
+                    ).toFixed(0)
+                  : "66"}
+                %
+              </p>
             </div>
           </div>
 
-          {/* ── OVERVIEW TAB - NEW SALES DASHBOARD LAYOUT ── */}
-          {activeTab === "overview" && (
-            <div className="space-y-6">
-              {/* ── TOP ROW: TODAY + TIMELINE + DONUT ── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-                {/* Today Card */}
-                <div className="lg:col-span-4 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
-                      Today
-                    </span>
-                    <button className="inline-flex items-center gap-1 text-[10px] font-bold text-white/50 hover:text-white border border-white/10 rounded-full px-2.5 py-1 bg-white/5">
-                      <span>Last 5 days</span>
-                      <ChevronDown size={10} />
-                    </button>
+          <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
+            <table className="w-full text-left border-collapse text-xs text-white/80">
+              <thead>
+                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                  <th className="px-4 py-3">Lead Caller</th>
+                  <th className="px-4 py-3">Duration</th>
+                  <th className="px-4 py-3">Greeting / Compliance</th>
+                  <th className="px-4 py-3">Sentiment</th>
+                  <th className="px-4 py-3">Outcome</th>
+                  <th className="px-4 py-3 text-right">Logs</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 font-medium">
+                {calls.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="px-4 py-6 text-center text-white/30"
+                    >
+                      No call logs found.
+                    </td>
+                  </tr>
+                ) : (
+                  calls.map((c) => (
+                    <tr
+                      key={c.id}
+                      className="hover:bg-white/[0.01] transition-colors"
+                    >
+                      <td className="px-4 py-3.5">
+                        <div className="space-y-0.5">
+                          <p className="font-bold text-white">{c.leadName}</p>
+                          <p className="text-[10px] text-white/40">{c.phone}</p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5 font-mono">
+                        {c.durationSec}s
+                      </td>
+                      <td className="px-4 py-3.5 font-mono">
+                        <span className="text-emerald-400">
+                          {c.coaching?.greeting}%
+                        </span>
+                        <span className="text-white/30 mx-1">/</span>
+                        <span className="text-gold">
+                          {c.coaching?.compliance}%
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${c.coaching?.sentiment === "Positive" ? "bg-emerald-500/10 text-emerald-400" : "bg-white/5 text-white/60"}`}
+                        >
+                          {c.coaching?.sentiment || "Neutral"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span
+                          className={`text-[9px] font-extrabold uppercase rounded px-1.5 py-0.5 ${c.outcome === "BOOKED" ? "bg-emerald-500/20 text-emerald-400" : c.outcome === "VOICEMAIL" ? "bg-blue-500/20 text-blue-400" : "bg-white/10 text-white/60"}`}
+                        >
+                          {c.outcome}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3.5 text-right">
+                        <button
+                          onClick={() => setSelectedCall(c)}
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-1.5 text-[10px] text-white hover:text-gold transition font-bold"
+                        >
+                          <Play size={10} />
+                          <span>Audit Call</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── AI AGENT CONFIG TAB ── */}
+      {activeTab === "configs" && (
+        <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
+          <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+            <Settings size={18} className="text-gold" />
+            <h2 className="text-lg font-bold text-white">
+              AI Agents Live Config Center
+            </h2>
+          </div>
+
+          <form onSubmit={saveConfigs} className="space-y-5 text-left">
+            <div>
+              <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                Knowledge Base (FAQs & Business Rules)
+              </label>
+              <textarea
+                rows={5}
+                value={kbEntries}
+                onChange={(e) => setKbEntries(e.target.value)}
+                placeholder="Rule 1: Standard Septic pump outs start at $1497..."
+                className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              <div>
+                <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                  Voice Agent Greeting Script
+                </label>
+                <textarea
+                  rows={4}
+                  value={voiceScript}
+                  onChange={(e) => setVoiceScript(e.target.value)}
+                  placeholder="Greeting script used when dialing contacts..."
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                  AI Specialist System Prompt
+                </label>
+                <textarea
+                  rows={4}
+                  value={systemPrompt}
+                  onChange={(e) => setSystemPrompt(e.target.value)}
+                  placeholder="Overall system prompt governing agent behavior..."
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                Client Workspace Announcement Note
+              </label>
+              <textarea
+                rows={2}
+                value={publisherNote}
+                onChange={(e) => setPublisherNote(e.target.value)}
+                placeholder="Important updates published directly on Client dashboards..."
+                className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+              />
+            </div>
+
+            {configStatus && (
+              <div className="flex items-center gap-2 rounded-xl border border-gold/20 bg-gold/5 px-4 py-3 text-xs text-gold">
+                <AlertCircle size={14} className="text-gold" />
+                <span>{configStatus}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="inline-flex items-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 px-6 py-3.5 text-xs font-bold transition"
+            >
+              <Save size={14} />
+              <span>Deploy Configurations Live</span>
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* ── CAMPAIGNS TAB ── */}
+      {activeTab === "campaigns" && (
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div className="space-y-6 lg:col-span-8">
+            {/* BULK IMPORT */}
+            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+                <div className="flex items-center gap-2">
+                  <Upload size={18} className="text-gold" />
+                  <h2 className="text-lg font-bold text-white uppercase tracking-wide">
+                    Bulk Import Prospects
+                  </h2>
+                </div>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-white/40">
+                  Leads Parser Gateway
+                </span>
+              </div>
+
+              <p className="text-xs text-white/50 leading-relaxed">
+                Upload a standard{" "}
+                <code className="text-gold font-mono">.csv</code> or{" "}
+                <code className="text-gold font-mono">.xlsx</code> prospect
+                sheet. Validates name, email, phone, company, and remarks before
+                importing.
+              </p>
+
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                      List Identifier Name{" "}
+                      <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={uploadCampaignName}
+                      onChange={(e) => setUploadCampaignName(e.target.value)}
+                      placeholder="e.g. Q2 Outreach Campaign"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                    />
                   </div>
 
                   <div>
-                    <h2 className="text-4xl font-black text-white tracking-tight">
-                      ${((totalLeads * 250) / 100).toFixed(0).toLocaleString()}
-                    </h2>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <TrendingUp size={11} className="text-emerald-400" />
-                      <span className="text-[11px] font-bold text-emerald-400">
-                        +2.14%
-                      </span>
-                      <span className="text-[11px] text-white/40">
-                        vs last week
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Mini Bar Chart */}
-                  <div className="flex items-end justify-between gap-2 h-20 pt-2">
-                    {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 flex flex-col items-center gap-1.5"
-                      >
-                        <div
-                          className="w-full rounded-t-md bg-gradient-to-t from-gold/80 to-gold/30 hover:from-gold hover:to-gold/50 transition-all cursor-pointer"
-                          style={{ height: `${h}%` }}
-                        />
-                        <span className="text-[8px] font-mono text-white/30">
-                          {i + 1}/5
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Timeline Project (Bar Chart) */}
-                <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-white">
-                      Timeline Project
-                    </h3>
-                    <button className="inline-flex items-center gap-1 text-[10px] font-bold text-gold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 hover:bg-gold/10">
-                      View Report
-                    </button>
-                  </div>
-
-                  <div className="flex items-end justify-between gap-3 h-32 pt-2">
-                    {["Apr 1", "Apr 8", "Apr 15", "Apr 22", "Apr 29"].map(
-                      (label, i) => {
-                        const heights = [55, 80, 45, 90, 70];
-                        return (
-                          <div
-                            key={i}
-                            className="flex-1 flex flex-col items-center gap-2"
-                          >
-                            <div className="w-full flex items-end gap-1 h-full">
-                              <div
-                                className="flex-1 rounded-t-md bg-gradient-to-t from-gold/80 to-gold/40"
-                                style={{ height: `${heights[i]}%` }}
-                              />
-                              <div
-                                className="flex-1 rounded-t-md bg-gradient-to-t from-amber-700/60 to-amber-600/30"
-                                style={{ height: `${heights[i] * 0.6}%` }}
-                              />
-                            </div>
-                            <span className="text-[9px] font-mono text-white/30">
-                              {label}
-                            </span>
-                          </div>
-                        );
-                      },
-                    )}
-                  </div>
-                </div>
-
-                {/* Donut Chart */}
-                <div className="lg:col-span-3 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
-                  <div className="flex flex-col items-center">
-                    <div className="relative w-32 h-32">
-                      <svg
-                        viewBox="0 0 100 100"
-                        className="w-full h-full -rotate-90"
-                      >
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="rgba(255,255,255,0.05)"
-                          strokeWidth="12"
-                        />
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="rgb(202, 158, 87)"
-                          strokeWidth="12"
-                          strokeDasharray={`${40 * 2.51}`}
-                          strokeDashoffset={`${40 * 2.51 * (1 - 0.4)}`}
-                          strokeLinecap="round"
-                        />
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="rgba(202, 158, 87, 0.5)"
-                          strokeWidth="12"
-                          strokeDasharray={`${40 * 2.51}`}
-                          strokeDashoffset={`${40 * 2.51 * (1 - 0.33)}`}
-                          strokeLinecap="round"
-                          transform="rotate(144 50 50)"
-                        />
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="rgba(202, 158, 87, 0.25)"
-                          strokeWidth="12"
-                          strokeDasharray={`${40 * 2.51}`}
-                          strokeDashoffset={`${40 * 2.51 * (1 - 0.27)}`}
-                          strokeLinecap="round"
-                          transform="rotate(263 50 50)"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xs font-mono text-white/60">
-                          Live
-                        </span>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 w-full mt-3 text-center">
-                      <div>
-                        <p className="text-xs font-bold text-gold">40%</p>
-                        <p className="text-[8px] text-white/30 uppercase">
-                          Hot
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-gold/70">33%</p>
-                        <p className="text-[8px] text-white/30 uppercase">
-                          Warm
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-gold/40">28%</p>
-                        <p className="text-[8px] text-white/30 uppercase">
-                          Cold
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ── MIDDLE ROW: PIPELINE STAGES ── */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                {/* Contacted */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h4 className="text-xs font-bold text-white">Contacted</h4>
-                    <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
-                      {calls.length}
-                    </span>
-                  </div>
-                  <div className="space-y-2.5">
-                    {clients.slice(0, 2).map((c, i) => (
-                      <div key={c.id} className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/30 flex items-center justify-center text-gold text-xs font-bold shrink-0">
-                          {c.companyName?.charAt(0) || "C"}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-[11px] font-bold text-white truncate">
-                            {c.contactName || c.companyName}
-                          </p>
-                          <p className="text-[9px] text-white/40 truncate">
-                            {c.contactEmail}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                    {clients.length === 0 && (
-                      <p className="text-[10px] text-white/30 text-center py-2">
-                        No contacts
-                      </p>
-                    )}
-                  </div>
-                  <div className="text-[9px] text-white/40 pt-2 border-t border-white/5">
-                    Last 4 Days
-                  </div>
-                </div>
-
-                {/* Negotiation */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h4 className="text-xs font-bold text-white">
-                      Negotiation
-                    </h4>
-                    <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
-                      {projects.length}
-                    </span>
-                  </div>
-                  <div className="space-y-2.5">
-                    {projects.slice(0, 2).map((p) => (
-                      <div key={p.id} className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xs font-bold shrink-0">
-                          {p.name?.charAt(0) || "P"}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-[11px] font-bold text-white truncate">
-                            {p.name}
-                          </p>
-                          <p className="text-[9px] text-white/40">
-                            {p.uploadedFiles?.[0]?.recordCount || 0} leads
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                    {projects.length === 0 && (
-                      <p className="text-[10px] text-white/30 text-center py-2">
-                        No deals
-                      </p>
-                    )}
-                  </div>
-                  <div className="text-[9px] text-white/40 pt-2 border-t border-white/5">
-                    Last Week
-                  </div>
-                </div>
-
-                {/* Offer Sent */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h4 className="text-xs font-bold text-white">Offer Sent</h4>
-                    <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
-                      {appointments.length}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    {appointments.slice(0, 2).map((a) => (
-                      <div
-                        key={a.id}
-                        className="rounded-xl bg-white/5 border border-white/10 p-2.5"
-                      >
-                        <p className="text-[11px] font-bold text-white truncate">
-                          {a.title}
-                        </p>
-                        <p className="text-[9px] text-gold mt-0.5">
-                          {a.clientName || "Lead"}
-                        </p>
-                        <p className="text-[8px] text-white/30 mt-1 font-mono">
-                          {new Date(a.scheduledAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                    ))}
-                    {appointments.length === 0 && (
-                      <p className="text-[10px] text-white/30 text-center py-2">
-                        No offers
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Deal Closed */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h4 className="text-xs font-bold text-white">
-                      Deal Closed
-                    </h4>
-                    <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
-                      {bookedCalls}
-                    </span>
-                  </div>
-                  <div className="space-y-2.5">
-                    {calls
-                      .filter((c) => c.outcome === "BOOKED")
-                      .slice(0, 3)
-                      .map((c) => (
-                        <div key={c.id} className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xs font-bold shrink-0">
-                            {c.leadName?.charAt(0) || "?"}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-[11px] font-bold text-white truncate">
-                              {c.leadName}
-                            </p>
-                            <p className="text-[9px] text-emerald-400 font-mono">
-                              ${(c.durationSec * 5).toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
+                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                      Assign to Client (optional)
+                    </label>
+                    <select
+                      value={uploadClientId}
+                      onChange={(e) => setUploadClientId(e.target.value)}
+                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                    >
+                      <option value="">-- No Client Selected --</option>
+                      {clients.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.companyName}
+                        </option>
                       ))}
-                    {bookedCalls === 0 && (
-                      <p className="text-[10px] text-white/30 text-center py-2">
-                        No closed
-                      </p>
+                    </select>
+                  </div>
+
+                  <div
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onClick={() =>
+                      !uploadedFile && fileInputRef.current?.click()
+                    }
+                    className={`relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all cursor-pointer py-10 px-6
+                      ${uploadState === "dragging" ? "border-gold bg-gold/5 scale-[1.01]" : ""}
+                      ${uploadState === "success" ? "border-emerald-500/50 bg-emerald-500/5 cursor-default" : ""}
+                      ${uploadState === "error" ? "border-red-500/50 bg-red-500/5 cursor-default" : ""}
+                      ${uploadState === "uploading" ? "border-white/20 bg-white/[0.01] cursor-default" : ""}
+                      ${!["dragging", "success", "error", "uploading"].includes(uploadState) ? "border-white/10 bg-white/[0.015] hover:border-gold/40 hover:bg-gold/[0.02]" : ""}
+                    `}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".csv,.xlsx"
+                      onChange={handleInputChange}
+                      className="hidden"
+                    />
+
+                    {uploadState === "uploading" ? (
+                      <>
+                        <Loader2 size={32} className="text-gold animate-spin" />
+                        <p className="text-xs font-bold text-white">
+                          Uploading your file...
+                        </p>
+                        <div className="w-full max-w-xs h-1.5 rounded-full bg-white/10 overflow-hidden">
+                          <div
+                            className="h-full bg-gold rounded-full transition-all duration-300"
+                            style={{ width: `${uploadProgress}%` }}
+                          />
+                        </div>
+                        <p className="text-[10px] text-white/40 font-mono">
+                          {Math.round(uploadProgress)}%
+                        </p>
+                      </>
+                    ) : uploadState === "success" ? (
+                      <>
+                        <CheckCircle2 size={32} className="text-emerald-400" />
+                        <p className="text-xs font-bold text-emerald-400 text-center">
+                          {uploadMessage}
+                        </p>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            resetUpload();
+                          }}
+                          className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
+                        >
+                          Upload Another File
+                        </button>
+                      </>
+                    ) : uploadState === "error" ? (
+                      <>
+                        <XCircle size={32} className="text-red-400" />
+                        <p className="text-xs font-bold text-red-400 text-center">
+                          {uploadMessage}
+                        </p>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            resetUpload();
+                          }}
+                          className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
+                        >
+                          Try Again
+                        </button>
+                      </>
+                    ) : uploadedFile ? (
+                      <>
+                        <FileSpreadsheet size={32} className="text-gold" />
+                        <div className="text-center">
+                          <p className="text-xs font-bold text-white">
+                            {uploadedFile.name}
+                          </p>
+                          <p className="text-[10px] text-white/40 mt-0.5">
+                            {(uploadedFile.size / 1024).toFixed(1)} KB •{" "}
+                            {isXlsxFile(uploadedFile) ? "XLSX" : "CSV"}
+                            {parsedRowCount !== null &&
+                              ` • ${parsedRowCount} rows`}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            resetUpload();
+                          }}
+                          className="text-[10px] text-white/30 hover:text-red-400 transition underline"
+                        >
+                          Remove file
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                          <FileSpreadsheet
+                            size={28}
+                            className="text-white/30"
+                          />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-sm font-bold text-white">
+                            Choose CSV Spreadsheet
+                          </p>
+                          <p className="text-xs text-white/40 mt-1">
+                            Drag &amp; drop or select files (max 20MB)
+                          </p>
+                        </div>
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-white/20 border border-white/10 rounded-full px-3 py-1">
+                          .CSV or .XLSX files only
+                        </span>
+                      </>
                     )}
                   </div>
-                </div>
-              </div>
 
-              {/* ── BOTTOM ROW: METRIC CIRCLES + REVENUE + LINE CHART ── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-                {/* Metric Circles */}
-                <div className="lg:col-span-4 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6">
-                  <div className="grid grid-cols-2 gap-5">
-                    <div className="flex flex-col items-center text-center space-y-2">
-                      <div className="relative w-20 h-20">
-                        <svg
-                          viewBox="0 0 100 100"
-                          className="w-full h-full -rotate-90"
-                        >
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="rgba(255,255,255,0.05)"
-                            strokeWidth="8"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="rgb(202, 158, 87)"
-                            strokeWidth="8"
-                            strokeDasharray={`${40 * 2.51}`}
-                            strokeDashoffset={`${40 * 2.51 * (1 - 0.87)}`}
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-sm font-bold text-white">
-                            {avgGreeting}%
+                  {uploadedFile &&
+                    isXlsxFile(uploadedFile) &&
+                    uploadState !== "success" &&
+                    uploadState !== "uploading" && (
+                      <div>
+                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                          Load Estimate{" "}
+                          <span className="text-white/25 font-normal">
+                            (verified after upload)
                           </span>
-                        </div>
-                      </div>
-                      <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
-                        Greeting Score
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col items-center text-center space-y-2">
-                      <div className="relative w-20 h-20">
-                        <svg
-                          viewBox="0 0 100 100"
-                          className="w-full h-full -rotate-90"
+                        </label>
+                        <select
+                          value={estimatedLeadCount}
+                          onChange={(e) =>
+                            setEstimatedLeadCount(e.target.value)
+                          }
+                          className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
                         >
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="rgba(255,255,255,0.05)"
-                            strokeWidth="8"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="rgb(202, 158, 87)"
-                            strokeWidth="8"
-                            strokeDasharray={`${40 * 2.51}`}
-                            strokeDashoffset={`${40 * 2.51 * (1 - Number(avgCompliance) / 100)}`}
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-sm font-bold text-white">
-                            {avgCompliance}%
-                          </span>
-                        </div>
+                          <option value="100">~100 leads</option>
+                          <option value="500">~500 leads</option>
+                          <option value="1000">~1,000 leads</option>
+                          <option value="2500">~2,500 leads</option>
+                          <option value="5000">~5,000+ leads</option>
+                        </select>
                       </div>
-                      <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
-                        Compliance
-                      </p>
-                    </div>
-                  </div>
+                    )}
+
+                  {uploadedFile &&
+                    uploadState !== "uploading" &&
+                    uploadState !== "success" && (
+                      <button
+                        onClick={handleCsvUpload}
+                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition"
+                      >
+                        <Upload size={14} />
+                        <span>Submit Leads</span>
+                      </button>
+                    )}
+
+                  {uploadState === "error" &&
+                    !uploadedFile &&
+                    uploadMessage && (
+                      <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs text-red-400">
+                        <AlertCircle size={14} />
+                        <span>{uploadMessage}</span>
+                      </div>
+                    )}
                 </div>
 
-                {/* Revenue Big Card */}
-                <div className="lg:col-span-3 rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/10 to-amber-700/5 backdrop-blur-md p-6 flex flex-col justify-center">
-                  <p className="text-[9px] uppercase font-bold text-gold/70 tracking-widest">
-                    Total Pipeline
-                  </p>
-                  <h3 className="text-3xl font-black text-white mt-1">
-                    ${(totalLeads * 250).toLocaleString()}
-                  </h3>
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <Activity size={11} className="text-emerald-400" />
-                    <span className="text-[10px] text-emerald-400 font-bold">
-                      {conversionRate}% conversion
-                    </span>
-                  </div>
-                </div>
+                <div className="rounded-xl border border-white/10 bg-white/[0.015] p-4 space-y-3">
+                  <span className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">
+                    CSV Parsing Preview (Top 5 Rows)
+                  </span>
 
-                {/* Line Chart */}
-                <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-bold text-white">
-                      Performance Trend
-                    </h4>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 rounded-full bg-gold" />
-                        <span className="text-[9px] text-white/40">
-                          Last 4 Days
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 rounded-full bg-white/30" />
-                        <span className="text-[9px] text-white/40">
-                          Last Week
-                        </span>
-                      </div>
+                  {!uploadedFile ? (
+                    <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
+                      No files loaded. Select a CSV file to view parsing.
                     </div>
-                  </div>
+                  ) : isParsingFile ? (
+                    <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-white/40">
+                      <Loader2 size={20} className="animate-spin" />
+                      <span className="text-xs">Parsing spreadsheet…</span>
+                    </div>
+                  ) : parseError ? (
+                    <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-red-400">
+                      <XCircle size={20} />
+                      <span className="text-xs">{parseError}</span>
+                    </div>
+                  ) : isXlsxFile(uploadedFile) ? (
+                    <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-white/40">
+                      <FileSpreadsheet size={20} className="text-white/30" />
+                      <span className="text-xs">
+                        XLSX preview isn&apos;t rendered in-browser. Rows will
+                        be validated after upload.
+                      </span>
+                    </div>
+                  ) : parsedHeaders.length > 0 ? (
+                    <div className="space-y-3">
+                      <div className="flex flex-wrap gap-1.5">
+                        {REQUIRED_IMPORT_FIELDS.map((field) => {
+                          const matched = parsedHeaders.some((h) =>
+                            field.pattern.test(h),
+                          );
+                          return (
+                            <span
+                              key={field.key}
+                              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide ${matched ? "bg-emerald-500/15 text-emerald-400" : "bg-red-500/15 text-red-400"}`}
+                            >
+                              {matched ? (
+                                <CheckCircle2 size={10} />
+                              ) : (
+                                <XCircle size={10} />
+                              )}
+                              {field.label}
+                            </span>
+                          );
+                        })}
+                      </div>
 
-                  <div className="h-32 relative">
-                    <svg viewBox="0 0 500 120" className="w-full h-full">
-                      <defs>
-                        <linearGradient
-                          id="gold-grad"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="rgb(202, 158, 87)"
-                            stopOpacity="0.3"
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="rgb(202, 158, 87)"
-                            stopOpacity="0"
-                          />
-                        </linearGradient>
-                      </defs>
-                      <line
-                        x1="0"
-                        y1="30"
-                        x2="500"
-                        y2="30"
-                        stroke="rgba(255,255,255,0.05)"
-                        strokeDasharray="3 3"
-                      />
-                      <line
-                        x1="0"
-                        y1="60"
-                        x2="500"
-                        y2="60"
-                        stroke="rgba(255,255,255,0.05)"
-                        strokeDasharray="3 3"
-                      />
-                      <line
-                        x1="0"
-                        y1="90"
-                        x2="500"
-                        y2="90"
-                        stroke="rgba(255,255,255,0.05)"
-                        strokeDasharray="3 3"
-                      />
+                      <div className="overflow-x-auto rounded-lg border border-white/5">
+                        <table className="w-full text-left border-collapse text-[10px] text-white/70">
+                          <thead>
+                            <tr className="bg-white/5 text-white/40 uppercase tracking-wider">
+                              {parsedHeaders.map((h, idx) => (
+                                <th
+                                  key={idx}
+                                  className="px-2.5 py-2 whitespace-nowrap"
+                                >
+                                  {h || `Col ${idx + 1}`}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-white/5">
+                            {parsedRows.length === 0 ? (
+                              <tr>
+                                <td
+                                  colSpan={parsedHeaders.length}
+                                  className="px-2.5 py-3 text-center text-white/30"
+                                >
+                                  No data rows.
+                                </td>
+                              </tr>
+                            ) : (
+                              parsedRows.map((row, rIdx) => (
+                                <tr key={rIdx}>
+                                  {parsedHeaders.map((_, cIdx) => (
+                                    <td
+                                      key={cIdx}
+                                      className="px-2.5 py-1.5 whitespace-nowrap font-mono"
+                                    >
+                                      {row[cIdx] ?? ""}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
 
-                      <path
-                        d="M 0,70 C 80,40 120,80 200,50 S 320,90 400,40 S 480,70 500,55"
-                        fill="none"
-                        stroke="rgb(202, 158, 87)"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 0,70 C 80,40 120,80 200,50 S 320,90 400,40 S 480,70 500,55 L 500,120 L 0,120 Z"
-                        fill="url(#gold-grad)"
-                      />
-                      <path
-                        d="M 0,85 C 80,75 120,95 200,80 S 320,100 400,75 S 480,90 500,80"
-                        fill="none"
-                        stroke="rgba(255,255,255,0.3)"
-                        strokeWidth="2"
-                        strokeDasharray="4 4"
-                      />
-                    </svg>
-                  </div>
+                      {parsedRowCount !== null && (
+                        <p className="text-[10px] text-white/40">
+                          <span className="font-bold text-gold">
+                            {parsedRowCount}
+                          </span>{" "}
+                          total leads detected.
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
+                      No files loaded.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          )}
 
-          {/* ── CLIENT ACCOUNTS TAB ── */}
-          {activeTab === "clients" && (
-            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-2">
-                  <Users size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white">
-                    Client Accounts Management
-                  </h2>
-                </div>
-                <button
-                  onClick={openAddClientModal}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 px-5 py-2.5 text-xs font-bold transition"
-                >
-                  <Plus size={14} />
-                  <span>Add Client Account</span>
-                </button>
+            {/* CAMPAIGN APPROVAL */}
+            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-4">
+              <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+                <ShieldCheck size={18} className="text-gold" />
+                <h2 className="text-lg font-bold text-white">
+                  Campaign Database Approval
+                </h2>
               </div>
 
               <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
                 <table className="w-full text-left border-collapse text-xs text-white/80">
                   <thead>
                     <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
-                      <th className="px-4 py-3">Company Name</th>
-                      <th className="px-4 py-3">Primary Contact</th>
-                      <th className="px-4 py-3">Plan</th>
+                      <th className="px-4 py-3">Client Company</th>
+                      <th className="px-4 py-3">Campaign File</th>
+                      <th className="px-4 py-3">Leads Count</th>
                       <th className="px-4 py-3">Status</th>
                       <th className="px-4 py-3 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5 font-medium">
-                    {clients.length === 0 ? (
+                    {projects.length === 0 ? (
                       <tr>
                         <td
                           colSpan={5}
                           className="px-4 py-6 text-center text-white/30"
                         >
-                          No client records found.
+                          No databases in queue.
                         </td>
                       </tr>
                     ) : (
-                      clients.map((c) => (
-                        <tr
-                          key={c.id}
-                          className="hover:bg-white/[0.01] transition-colors"
-                        >
+                      projects.map((p) => (
+                        <tr key={p.id}>
                           <td className="px-4 py-3.5 font-bold text-white">
-                            {c.companyName}
+                            {p.client?.companyName || "Septic Specialists"}
                           </td>
-                          <td className="px-4 py-3.5">
-                            <div className="space-y-0.5">
-                              <p className="text-white/80">{c.contactName}</p>
-                              <p className="text-[10px] text-white/40">
-                                {c.contactEmail} •{" "}
-                                {c.contactPhone || "No phone"}
-                              </p>
-                            </div>
+                          <td className="px-4 py-3.5 font-mono text-[11px] text-white/70">
+                            {p.uploadedFiles?.[0]?.fileName || "leads.csv"}
                           </td>
-                          <td className="px-4 py-3.5">
-                            <span className="rounded bg-white/5 border border-white/10 px-2 py-0.5 font-mono text-[10px] font-bold text-gold">
-                              {c.plan}
-                            </span>
+                          <td className="px-4 py-3.5 font-mono">
+                            {p.uploadedFiles?.[0]?.recordCount || 500}
                           </td>
                           <td className="px-4 py-3.5">
                             <span
-                              className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${c.status === "ACTIVE" ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`}
+                              className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${p.status === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" : p.status === "PENDING_APPROVAL" ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}
                             >
-                              {c.status}
+                              {p.status.replace("_", " ")}
                             </span>
                           </td>
-                          <td className="px-4 py-3.5 text-right space-x-1.5">
-                            <button
-                              onClick={() => openEditClientModal(c)}
-                              className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
-                              title="Edit"
-                            >
-                              <Edit2 size={11} />
-                            </button>
-                            <button
-                              onClick={() => deleteClient(c.id)}
-                              className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-red-950/20 border border-red-500/20 text-red-300 hover:bg-red-900/30 transition"
-                              title="Delete"
-                            >
-                              <Trash2 size={11} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* ── APPOINTMENTS TAB ── */}
-          {activeTab === "appointments" && (
-            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-2">
-                  <Calendar size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white">
-                    Appointments Booked via AI
-                  </h2>
-                </div>
-                <button
-                  onClick={fetchData}
-                  className="text-white/40 hover:text-white transition"
-                >
-                  <RefreshCw size={14} />
-                </button>
-              </div>
-
-              <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-                <table className="w-full text-left border-collapse text-xs text-white/80">
-                  <thead>
-                    <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
-                      <th className="px-4 py-3">Lead / Title</th>
-                      <th className="px-4 py-3">Scheduled At</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3 text-right">
-                        Confirmation Status Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5 font-medium">
-                    {appointments.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan={4}
-                          className="px-4 py-6 text-center text-white/30"
-                        >
-                          No booked appointments found.
-                        </td>
-                      </tr>
-                    ) : (
-                      appointments.map((appt) => (
-                        <tr
-                          key={appt.id}
-                          className="hover:bg-white/[0.01] transition-colors"
-                        >
-                          <td className="px-4 py-3.5">
-                            <div className="space-y-0.5">
-                              <p className="font-bold text-white">
-                                {appt.title}
-                              </p>
-                              <p className="text-[10px] text-white/40">
-                                {appt.clientName ||
-                                  "Lead Phone: " + appt.clientPhone}
-                              </p>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3.5 font-mono text-white/70">
-                            {new Date(appt.scheduledAt).toLocaleString()}
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <span
-                              className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${appt.status === "CONFIRMED" ? "bg-emerald-500/20 text-emerald-400" : appt.status === "CANCELLED" ? "bg-red-500/20 text-red-400" : "bg-blue-500/20 text-blue-400"}`}
-                            >
-                              {appt.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5 text-right space-x-1.5">
-                            {appt.status !== "CONFIRMED" && (
-                              <button
-                                onClick={() =>
-                                  updateAppointmentStatus(appt.id, "CONFIRMED")
-                                }
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-white transition"
-                                title="Confirm"
-                              >
-                                <Check size={11} />
-                              </button>
-                            )}
-                            {appt.status !== "CANCELLED" && (
-                              <button
-                                onClick={() =>
-                                  updateAppointmentStatus(appt.id, "CANCELLED")
-                                }
-                                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white transition"
-                                title="Cancel"
-                              >
-                                <X size={11} />
-                              </button>
+                          <td className="px-4 py-3.5 text-right space-x-2">
+                            {p.status === "PENDING_APPROVAL" && (
+                              <>
+                                <button
+                                  onClick={() =>
+                                    handleCampaignApproval(p.id, true)
+                                  }
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-white transition"
+                                  title="Approve"
+                                >
+                                  <Check size={12} />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleCampaignApproval(p.id, false)
+                                  }
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white transition"
+                                  title="Reject"
+                                >
+                                  <X size={12} />
+                                </button>
+                              </>
                             )}
                           </td>
                         </tr>
@@ -1526,833 +2024,168 @@ export default function AdminDashboard() {
                 </table>
               </div>
             </div>
-          )}
 
-          {/* ── AI VOICE COACHING TAB ── */}
-          {activeTab === "calls" && (
-            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <div className="flex items-center gap-2">
-                  <PhoneCall size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white">
-                    Outbound Call Performance & Auditing
-                  </h2>
-                </div>
-                <button
-                  onClick={fetchData}
-                  className="text-white/40 hover:text-white transition"
-                >
-                  <RefreshCw size={14} />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
-                  <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
-                    Avg Greeting Check
-                  </span>
-                  <p className="text-2xl font-bold font-mono mt-2 text-emerald-400">
-                    {calls.length > 0
-                      ? (
-                          calls.reduce(
-                            (s, c) => s + (c.coaching?.greeting || 0),
-                            0,
-                          ) / calls.length
-                        ).toFixed(1)
-                      : "91.2"}
-                    %
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
-                  <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
-                    Avg Compliance Check
-                  </span>
-                  <p className="text-2xl font-bold font-mono mt-2 text-gold">
-                    {calls.length > 0
-                      ? (
-                          calls.reduce(
-                            (s, c) => s + (c.coaching?.compliance || 0),
-                            0,
-                          ) / calls.length
-                        ).toFixed(1)
-                      : "86.7"}
-                    %
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
-                  <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
-                    Conversion Ratio
-                  </span>
-                  <p className="text-2xl font-bold font-mono mt-2 text-blue-400">
-                    {calls.length > 0
-                      ? (
-                          (calls.filter((c) => c.outcome === "BOOKED").length /
-                            calls.length) *
-                          100
-                        ).toFixed(0)
-                      : "66"}
-                    %
-                  </p>
-                </div>
-              </div>
-
-              <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-                <table className="w-full text-left border-collapse text-xs text-white/80">
-                  <thead>
-                    <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
-                      <th className="px-4 py-3">Lead Caller</th>
-                      <th className="px-4 py-3">Duration</th>
-                      <th className="px-4 py-3">Greeting / Compliance</th>
-                      <th className="px-4 py-3">Sentiment</th>
-                      <th className="px-4 py-3">Outcome</th>
-                      <th className="px-4 py-3 text-right">Logs</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5 font-medium">
-                    {calls.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan={6}
-                          className="px-4 py-6 text-center text-white/30"
-                        >
-                          No call logs found.
-                        </td>
-                      </tr>
-                    ) : (
-                      calls.map((c) => (
-                        <tr
-                          key={c.id}
-                          className="hover:bg-white/[0.01] transition-colors"
-                        >
-                          <td className="px-4 py-3.5">
-                            <div className="space-y-0.5">
-                              <p className="font-bold text-white">
-                                {c.leadName}
-                              </p>
-                              <p className="text-[10px] text-white/40">
-                                {c.phone}
-                              </p>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3.5 font-mono">
-                            {c.durationSec}s
-                          </td>
-                          <td className="px-4 py-3.5 font-mono">
-                            <span className="text-emerald-400">
-                              {c.coaching?.greeting}%
-                            </span>
-                            <span className="text-white/30 mx-1">/</span>
-                            <span className="text-gold">
-                              {c.coaching?.compliance}%
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <span
-                              className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${c.coaching?.sentiment === "Positive" ? "bg-emerald-500/10 text-emerald-400" : "bg-white/5 text-white/60"}`}
-                            >
-                              {c.coaching?.sentiment || "Neutral"}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <span
-                              className={`text-[9px] font-extrabold uppercase rounded px-1.5 py-0.5 ${c.outcome === "BOOKED" ? "bg-emerald-500/20 text-emerald-400" : c.outcome === "VOICEMAIL" ? "bg-blue-500/20 text-blue-400" : "bg-white/10 text-white/60"}`}
-                            >
-                              {c.outcome}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5 text-right">
-                            <button
-                              onClick={() => setSelectedCall(c)}
-                              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-1.5 text-[10px] text-white hover:text-gold transition font-bold"
-                            >
-                              <Play size={10} />
-                              <span>Audit Call</span>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* ── AI AGENT CONFIG TAB ── */}
-          {activeTab === "configs" && (
-            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
+            {/* WORKLOAD SPLITS */}
+            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
               <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                <Settings size={18} className="text-gold" />
+                <Database size={18} className="text-gold" />
                 <h2 className="text-lg font-bold text-white">
-                  AI Agents Live Config Center
+                  Leads workload split engine
                 </h2>
               </div>
 
-              <form onSubmit={saveConfigs} className="space-y-5 text-left">
-                <div>
-                  <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                    Knowledge Base (FAQs & Business Rules)
-                  </label>
-                  <textarea
-                    rows={5}
-                    value={kbEntries}
-                    onChange={(e) => setKbEntries(e.target.value)}
-                    placeholder="Rule 1: Standard Septic pump outs start at $1497..."
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
-                  />
-                </div>
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+              <form onSubmit={handleLeadSplits} className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                      Voice Agent Greeting Script
+                      Select Approved Campaign
                     </label>
-                    <textarea
-                      rows={4}
-                      value={voiceScript}
-                      onChange={(e) => setVoiceScript(e.target.value)}
-                      placeholder="Greeting script used when dialing contacts..."
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
-                    />
+                    <select
+                      value={selectedProjectId}
+                      onChange={(e) => setSelectedProjectId(e.target.value)}
+                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                    >
+                      <option value="">-- Choose Campaign --</option>
+                      {projects
+                        .filter((p) => p.status === "APPROVED")
+                        .map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name} ({p.uploadedFiles?.[0]?.recordCount || 500}{" "}
+                            records)
+                          </option>
+                        ))}
+                    </select>
                   </div>
+
                   <div>
                     <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                      AI Specialist System Prompt
+                      Distribution Split Method
                     </label>
-                    <textarea
-                      rows={4}
-                      value={systemPrompt}
-                      onChange={(e) => setSystemPrompt(e.target.value)}
-                      placeholder="Overall system prompt governing agent behavior..."
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
-                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setUseAutoSplit(true)}
+                        className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"}`}
+                      >
+                        Auto Equal Split
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setUseAutoSplit(false)}
+                        className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${!useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"}`}
+                      >
+                        Manual Split
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                    Client Workspace Announcement Note
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={publisherNote}
-                    onChange={(e) => setPublisherNote(e.target.value)}
-                    placeholder="Important updates published directly on Client dashboards..."
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
-                  />
                 </div>
 
-                {configStatus && (
-                  <div className="flex items-center gap-2 rounded-xl border border-gold/20 bg-gold/5 px-4 py-3 text-xs text-gold">
-                    <AlertCircle size={14} className="text-gold" />
-                    <span>{configStatus}</span>
+                {!useAutoSplit && selectedProjectId && (
+                  <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-3.5">
+                    <span className="block text-[10px] font-bold text-gold uppercase tracking-wider">
+                      Allocate Splits Per Agent
+                    </span>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {agents.map((agent) => (
+                        <div
+                          key={agent.id}
+                          className="flex items-center justify-between gap-4"
+                        >
+                          <span className="text-xs text-white/80">
+                            {agent.name}
+                          </span>
+                          <input
+                            type="number"
+                            placeholder="Leads count"
+                            value={manualSplits[agent.id] || ""}
+                            onChange={(e) =>
+                              setManualSplits((prev) => ({
+                                ...prev,
+                                [agent.id]: Number(e.target.value),
+                              }))
+                            }
+                            className="w-[120px] rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white outline-none focus:border-gold font-mono"
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 px-6 py-3.5 text-xs font-bold transition"
+                  disabled={!selectedProjectId}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition disabled:opacity-50"
                 >
-                  <Save size={14} />
-                  <span>Deploy Configurations Live</span>
+                  <span>Trigger Workload Allocation</span>
                 </button>
               </form>
+
+              {distributeStatus && (
+                <div className="flex items-center gap-2 rounded-xl border border-gold/20 bg-gold/5 px-4 py-3 text-xs text-gold">
+                  <AlertCircle size={14} className="text-gold" />
+                  <span>{distributeStatus}</span>
+                </div>
+              )}
             </div>
-          )}
+          </div>
 
-          {/* ── WORKLOADS & SPLITS TAB ── */}
-          {activeTab === "campaigns" && (
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-              <div className="space-y-6 lg:col-span-8">
-                {/* BULK IMPORT */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
-                    <div className="flex items-center gap-2">
-                      <Upload size={18} className="text-gold" />
-                      <h2 className="text-lg font-bold text-white uppercase tracking-wide">
-                        Bulk Import Prospects
-                      </h2>
-                    </div>
-                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-white/40">
-                      Leads Parser Gateway
-                    </span>
-                  </div>
+          {/* AGENT CAPACITY SIDEBAR */}
+          <div className="space-y-6 lg:col-span-4">
+            <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
+              <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+                <BarChart2 size={16} className="text-gold" />
+                <h2 className="text-md font-bold text-white">
+                  Agent Capacity Status
+                </h2>
+              </div>
 
-                  <p className="text-xs text-white/50 leading-relaxed">
-                    Upload a standard{" "}
-                    <code className="text-gold font-mono">.csv</code> or{" "}
-                    <code className="text-gold font-mono">.xlsx</code> prospect
-                    sheet. Validates name, email, phone, company, and remarks
-                    before importing.
-                  </p>
-
-                  <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                          List Identifier Name{" "}
-                          <span className="text-red-400">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={uploadCampaignName}
-                          onChange={(e) =>
-                            setUploadCampaignName(e.target.value)
-                          }
-                          placeholder="e.g. Q2 Outreach Campaign"
-                          className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                          Assign to Client (optional)
-                        </label>
-                        <select
-                          value={uploadClientId}
-                          onChange={(e) => setUploadClientId(e.target.value)}
-                          className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
-                        >
-                          <option value="">-- No Client Selected --</option>
-                          {clients.map((c) => (
-                            <option key={c.id} value={c.id}>
-                              {c.companyName}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onClick={() =>
-                          !uploadedFile && fileInputRef.current?.click()
-                        }
-                        className={`relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all cursor-pointer py-10 px-6
-                          ${uploadState === "dragging" ? "border-gold bg-gold/5 scale-[1.01]" : ""}
-                          ${uploadState === "success" ? "border-emerald-500/50 bg-emerald-500/5 cursor-default" : ""}
-                          ${uploadState === "error" ? "border-red-500/50 bg-red-500/5 cursor-default" : ""}
-                          ${uploadState === "uploading" ? "border-white/20 bg-white/[0.01] cursor-default" : ""}
-                          ${!["dragging", "success", "error", "uploading"].includes(uploadState) ? "border-white/10 bg-white/[0.015] hover:border-gold/40 hover:bg-gold/[0.02]" : ""}
-                        `}
+              <div className="space-y-4">
+                {agents.map((agent) => (
+                  <div
+                    key={agent.id}
+                    className="rounded-xl border border-white/5 bg-white/[0.01] p-3.5 space-y-3"
+                  >
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-white">{agent.name}</span>
+                      <span
+                        className={`text-[9px] uppercase font-mono px-2 py-0.5 rounded ${agent.activeTasks > 0 ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400"}`}
                       >
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept=".csv,.xlsx"
-                          onChange={handleInputChange}
-                          className="hidden"
-                        />
-
-                        {uploadState === "uploading" ? (
-                          <>
-                            <Loader2
-                              size={32}
-                              className="text-gold animate-spin"
-                            />
-                            <p className="text-xs font-bold text-white">
-                              Uploading your file...
-                            </p>
-                            <div className="w-full max-w-xs h-1.5 rounded-full bg-white/10 overflow-hidden">
-                              <div
-                                className="h-full bg-gold rounded-full transition-all duration-300"
-                                style={{ width: `${uploadProgress}%` }}
-                              />
-                            </div>
-                            <p className="text-[10px] text-white/40 font-mono">
-                              {Math.round(uploadProgress)}%
-                            </p>
-                          </>
-                        ) : uploadState === "success" ? (
-                          <>
-                            <CheckCircle2
-                              size={32}
-                              className="text-emerald-400"
-                            />
-                            <p className="text-xs font-bold text-emerald-400 text-center">
-                              {uploadMessage}
-                            </p>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                resetUpload();
-                              }}
-                              className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
-                            >
-                              Upload Another File
-                            </button>
-                          </>
-                        ) : uploadState === "error" ? (
-                          <>
-                            <XCircle size={32} className="text-red-400" />
-                            <p className="text-xs font-bold text-red-400 text-center">
-                              {uploadMessage}
-                            </p>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                resetUpload();
-                              }}
-                              className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
-                            >
-                              Try Again
-                            </button>
-                          </>
-                        ) : uploadedFile ? (
-                          <>
-                            <FileSpreadsheet size={32} className="text-gold" />
-                            <div className="text-center">
-                              <p className="text-xs font-bold text-white">
-                                {uploadedFile.name}
-                              </p>
-                              <p className="text-[10px] text-white/40 mt-0.5">
-                                {(uploadedFile.size / 1024).toFixed(1)} KB •{" "}
-                                {isXlsxFile(uploadedFile) ? "XLSX" : "CSV"}
-                                {parsedRowCount !== null &&
-                                  ` • ${parsedRowCount} rows`}
-                              </p>
-                            </div>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                resetUpload();
-                              }}
-                              className="text-[10px] text-white/30 hover:text-red-400 transition underline"
-                            >
-                              Remove file
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                              <FileSpreadsheet
-                                size={28}
-                                className="text-white/30"
-                              />
-                            </div>
-                            <div className="text-center">
-                              <p className="text-sm font-bold text-white">
-                                Choose CSV Spreadsheet
-                              </p>
-                              <p className="text-xs text-white/40 mt-1">
-                                Drag &amp; drop or select files (max 20MB)
-                              </p>
-                            </div>
-                            <span className="text-[9px] font-bold uppercase tracking-widest text-white/20 border border-white/10 rounded-full px-3 py-1">
-                              .CSV or .XLSX files only
-                            </span>
-                          </>
-                        )}
-                      </div>
-
-                      {uploadedFile &&
-                        isXlsxFile(uploadedFile) &&
-                        uploadState !== "success" &&
-                        uploadState !== "uploading" && (
-                          <div>
-                            <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                              Load Estimate{" "}
-                              <span className="text-white/25 font-normal">
-                                (verified after upload)
-                              </span>
-                            </label>
-                            <select
-                              value={estimatedLeadCount}
-                              onChange={(e) =>
-                                setEstimatedLeadCount(e.target.value)
-                              }
-                              className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
-                            >
-                              <option value="100">~100 leads</option>
-                              <option value="500">~500 leads</option>
-                              <option value="1000">~1,000 leads</option>
-                              <option value="2500">~2,500 leads</option>
-                              <option value="5000">~5,000+ leads</option>
-                            </select>
-                          </div>
-                        )}
-
-                      {uploadedFile &&
-                        uploadState !== "uploading" &&
-                        uploadState !== "success" && (
-                          <button
-                            onClick={handleCsvUpload}
-                            className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition"
-                          >
-                            <Upload size={14} />
-                            <span>Submit Leads</span>
-                          </button>
-                        )}
-
-                      {uploadState === "error" &&
-                        !uploadedFile &&
-                        uploadMessage && (
-                          <div className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-xs text-red-400">
-                            <AlertCircle size={14} />
-                            <span>{uploadMessage}</span>
-                          </div>
-                        )}
-                    </div>
-
-                    <div className="rounded-xl border border-white/10 bg-white/[0.015] p-4 space-y-3">
-                      <span className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">
-                        CSV Parsing Preview (Top 5 Rows)
+                        {agent.activeTasks > 0
+                          ? `${agent.activeTasks} Tasks`
+                          : "Available"}
                       </span>
-
-                      {!uploadedFile ? (
-                        <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
-                          No files loaded. Select a CSV file to view parsing.
-                        </div>
-                      ) : isParsingFile ? (
-                        <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-white/40">
-                          <Loader2 size={20} className="animate-spin" />
-                          <span className="text-xs">Parsing spreadsheet…</span>
-                        </div>
-                      ) : parseError ? (
-                        <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-red-400">
-                          <XCircle size={20} />
-                          <span className="text-xs">{parseError}</span>
-                        </div>
-                      ) : isXlsxFile(uploadedFile) ? (
-                        <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-white/40">
-                          <FileSpreadsheet
-                            size={20}
-                            className="text-white/30"
-                          />
-                          <span className="text-xs">
-                            XLSX preview isn&apos;t rendered in-browser. Rows
-                            will be validated after upload.
-                          </span>
-                        </div>
-                      ) : parsedHeaders.length > 0 ? (
-                        <div className="space-y-3">
-                          <div className="flex flex-wrap gap-1.5">
-                            {REQUIRED_IMPORT_FIELDS.map((field) => {
-                              const matched = parsedHeaders.some((h) =>
-                                field.pattern.test(h),
-                              );
-                              return (
-                                <span
-                                  key={field.key}
-                                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide ${matched ? "bg-emerald-500/15 text-emerald-400" : "bg-red-500/15 text-red-400"}`}
-                                >
-                                  {matched ? (
-                                    <CheckCircle2 size={10} />
-                                  ) : (
-                                    <XCircle size={10} />
-                                  )}
-                                  {field.label}
-                                </span>
-                              );
-                            })}
-                          </div>
-
-                          <div className="overflow-x-auto rounded-lg border border-white/5">
-                            <table className="w-full text-left border-collapse text-[10px] text-white/70">
-                              <thead>
-                                <tr className="bg-white/5 text-white/40 uppercase tracking-wider">
-                                  {parsedHeaders.map((h, idx) => (
-                                    <th
-                                      key={idx}
-                                      className="px-2.5 py-2 whitespace-nowrap"
-                                    >
-                                      {h || `Col ${idx + 1}`}
-                                    </th>
-                                  ))}
-                                </tr>
-                              </thead>
-                              <tbody className="divide-y divide-white/5">
-                                {parsedRows.length === 0 ? (
-                                  <tr>
-                                    <td
-                                      colSpan={parsedHeaders.length}
-                                      className="px-2.5 py-3 text-center text-white/30"
-                                    >
-                                      No data rows.
-                                    </td>
-                                  </tr>
-                                ) : (
-                                  parsedRows.map((row, rIdx) => (
-                                    <tr key={rIdx}>
-                                      {parsedHeaders.map((_, cIdx) => (
-                                        <td
-                                          key={cIdx}
-                                          className="px-2.5 py-1.5 whitespace-nowrap font-mono"
-                                        >
-                                          {row[cIdx] ?? ""}
-                                        </td>
-                                      ))}
-                                    </tr>
-                                  ))
-                                )}
-                              </tbody>
-                            </table>
-                          </div>
-
-                          {parsedRowCount !== null && (
-                            <p className="text-[10px] text-white/40">
-                              <span className="font-bold text-gold">
-                                {parsedRowCount}
-                              </span>{" "}
-                              total leads detected.
-                            </p>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
-                          No files loaded.
-                        </div>
-                      )}
                     </div>
-                  </div>
-                </div>
-
-                {/* CAMPAIGN APPROVAL */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-4">
-                  <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                    <ShieldCheck size={18} className="text-gold" />
-                    <h2 className="text-lg font-bold text-white">
-                      Campaign Database Approval
-                    </h2>
-                  </div>
-
-                  <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-                    <table className="w-full text-left border-collapse text-xs text-white/80">
-                      <thead>
-                        <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
-                          <th className="px-4 py-3">Client Company</th>
-                          <th className="px-4 py-3">Campaign File</th>
-                          <th className="px-4 py-3">Leads Count</th>
-                          <th className="px-4 py-3">Status</th>
-                          <th className="px-4 py-3 text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5 font-medium">
-                        {projects.length === 0 ? (
-                          <tr>
-                            <td
-                              colSpan={5}
-                              className="px-4 py-6 text-center text-white/30"
-                            >
-                              No databases in queue.
-                            </td>
-                          </tr>
-                        ) : (
-                          projects.map((p) => (
-                            <tr key={p.id}>
-                              <td className="px-4 py-3.5 font-bold text-white">
-                                {p.client?.companyName || "Septic Specialists"}
-                              </td>
-                              <td className="px-4 py-3.5 font-mono text-[11px] text-white/70">
-                                {p.uploadedFiles?.[0]?.fileName || "leads.csv"}
-                              </td>
-                              <td className="px-4 py-3.5 font-mono">
-                                {p.uploadedFiles?.[0]?.recordCount || 500}
-                              </td>
-                              <td className="px-4 py-3.5">
-                                <span
-                                  className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${p.status === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" : p.status === "PENDING_APPROVAL" ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}
-                                >
-                                  {p.status.replace("_", " ")}
-                                </span>
-                              </td>
-                              <td className="px-4 py-3.5 text-right space-x-2">
-                                {p.status === "PENDING_APPROVAL" && (
-                                  <>
-                                    <button
-                                      onClick={() =>
-                                        handleCampaignApproval(p.id, true)
-                                      }
-                                      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-white transition"
-                                      title="Approve"
-                                    >
-                                      <Check size={12} />
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleCampaignApproval(p.id, false)
-                                      }
-                                      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white transition"
-                                      title="Reject"
-                                    >
-                                      <X size={12} />
-                                    </button>
-                                  </>
-                                )}
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* WORKLOAD SPLITS */}
-                <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
-                  <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                    <Database size={18} className="text-gold" />
-                    <h2 className="text-lg font-bold text-white">
-                      Leads workload split engine
-                    </h2>
-                  </div>
-
-                  <form onSubmit={handleLeadSplits} className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <div>
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                          Select Approved Campaign
-                        </label>
-                        <select
-                          value={selectedProjectId}
-                          onChange={(e) => setSelectedProjectId(e.target.value)}
-                          className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
-                        >
-                          <option value="">-- Choose Campaign --</option>
-                          {projects
-                            .filter((p) => p.status === "APPROVED")
-                            .map((p) => (
-                              <option key={p.id} value={p.id}>
-                                {p.name} (
-                                {p.uploadedFiles?.[0]?.recordCount || 500}{" "}
-                                records)
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                          Distribution Split Method
-                        </label>
-                        <div className="grid grid-cols-2 gap-2">
-                          <button
-                            type="button"
-                            onClick={() => setUseAutoSplit(true)}
-                            className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"}`}
-                          >
-                            Auto Equal Split
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setUseAutoSplit(false)}
-                            className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${!useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"}`}
-                          >
-                            Manual Split
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {!useAutoSplit && selectedProjectId && (
-                      <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-3.5">
-                        <span className="block text-[10px] font-bold text-gold uppercase tracking-wider">
-                          Allocate Splits Per Agent
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-[9px] text-white/40 uppercase">
+                        <span>Assigned capacity</span>
+                        <span>
+                          {agent.activeTasks * 250 || 0} / {agent.capacity}{" "}
+                          leads
                         </span>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                          {agents.map((agent) => (
-                            <div
-                              key={agent.id}
-                              className="flex items-center justify-between gap-4"
-                            >
-                              <span className="text-xs text-white/80">
-                                {agent.name}
-                              </span>
-                              <input
-                                type="number"
-                                placeholder="Leads count"
-                                value={manualSplits[agent.id] || ""}
-                                onChange={(e) =>
-                                  setManualSplits((prev) => ({
-                                    ...prev,
-                                    [agent.id]: Number(e.target.value),
-                                  }))
-                                }
-                                className="w-[120px] rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white outline-none focus:border-gold font-mono"
-                              />
-                            </div>
-                          ))}
-                        </div>
                       </div>
-                    )}
-
-                    <button
-                      type="submit"
-                      disabled={!selectedProjectId}
-                      className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition disabled:opacity-50"
-                    >
-                      <span>Trigger Workload Allocation</span>
-                    </button>
-                  </form>
-
-                  {distributeStatus && (
-                    <div className="flex items-center gap-2 rounded-xl border border-gold/20 bg-gold/5 px-4 py-3 text-xs text-gold">
-                      <AlertCircle size={14} className="text-gold" />
-                      <span>{distributeStatus}</span>
+                      <div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
+                        <div
+                          className="h-full bg-gold rounded-full"
+                          style={{
+                            width: `${Math.min(((agent.activeTasks * 250) / agent.capacity) * 100, 100)}%`,
+                          }}
+                        />
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
-
-              {/* AGENT CAPACITY SIDEBAR */}
-              <div className="space-y-6 lg:col-span-4">
-                <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
-                  <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                    <BarChart2 size={16} className="text-gold" />
-                    <h2 className="text-md font-bold text-white">
-                      Agent Capacity Status
-                    </h2>
+                    <div className="flex items-center justify-between text-[9.5px] text-white/40 border-t border-white/5 pt-2 font-semibold">
+                      <span>Performance rate:</span>
+                      <span className="text-emerald-400 font-mono">
+                        {agent.completionRate}%
+                      </span>
+                    </div>
                   </div>
-
-                  <div className="space-y-4">
-                    {agents.map((agent) => (
-                      <div
-                        key={agent.id}
-                        className="rounded-xl border border-white/5 bg-white/[0.01] p-3.5 space-y-3"
-                      >
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="font-bold text-white">
-                            {agent.name}
-                          </span>
-                          <span
-                            className={`text-[9px] uppercase font-mono px-2 py-0.5 rounded ${agent.activeTasks > 0 ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400"}`}
-                          >
-                            {agent.activeTasks > 0
-                              ? `${agent.activeTasks} Tasks`
-                              : "Available"}
-                          </span>
-                        </div>
-                        <div className="space-y-1">
-                          <div className="flex items-center justify-between text-[9px] text-white/40 uppercase">
-                            <span>Assigned capacity</span>
-                            <span>
-                              {agent.activeTasks * 250 || 0} / {agent.capacity}{" "}
-                              leads
-                            </span>
-                          </div>
-                          <div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
-                            <div
-                              className="h-full bg-gold rounded-full"
-                              style={{
-                                width: `${Math.min(((agent.activeTasks * 250) / agent.capacity) * 100, 100)}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between text-[9.5px] text-white/40 border-t border-white/5 pt-2 font-semibold">
-                          <span>Performance rate:</span>
-                          <span className="text-emerald-400 font-mono">
-                            {agent.completionRate}%
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </main>
+      )}
 
       {/* ── CLIENT MODAL ── */}
       <AnimatePresence>

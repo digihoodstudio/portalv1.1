@@ -17,12 +17,21 @@ const navItems = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+
+  // ── Hide navbar on dashboard/superadmin routes ──
+  if (
+    pathname?.startsWith("/dashboard") ||
+    pathname?.startsWith("/superadmin")
+  ) {
+    return null;
+  }
+
   // ── Auth state (legacy localStorage + next-auth) ──
   const { data: session } = useSession();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
 
   // ── Glow tracking ──
   const headerRef = useRef<HTMLElement>(null);
@@ -161,12 +170,7 @@ export default function Navbar() {
     }
   }
 
-  const allNavItems = [
-    ...navItems,
-    // Dashboard and Admin panels removed by user request
-    // ...(dashboardLink ? [dashboardLink] : []),
-    ...(profileLink ? [profileLink] : []),
-  ];
+  const allNavItems = [...navItems, ...(profileLink ? [profileLink] : [])];
 
   return (
     <>
@@ -190,7 +194,6 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={(e) => {
-              // If already on home, scroll to top; otherwise navigate home
               if (
                 typeof window !== "undefined" &&
                 window.location.pathname === "/"
@@ -222,7 +225,6 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {effectiveLoggedIn ? (
               <>
-                {/* Google user avatar */}
                 {session?.user?.image && (
                   <Image
                     src={session.user.image}
@@ -251,7 +253,6 @@ export default function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-3">
-                {/* Google Sign In button */}
                 <button
                   onClick={() => signIn("google")}
                   className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm text-foreground transition-all duration-300 hover:bg-white/10 hover:border-gold/30 hover:shadow-[0_0_20px_rgba(66,133,244,0.15)] hover:scale-[1.03] group"
@@ -283,7 +284,6 @@ export default function Navbar() {
                   </span>
                 </button>
 
-                {/* Portal Login */}
                 <Link
                   href="/login"
                   className="rounded-full border border-gold/20 bg-gold/5 px-5 py-2.5 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/10 hover:shadow-[0_0_20px_rgba(207,199,186,0.2)] hover:scale-[1.03]"
