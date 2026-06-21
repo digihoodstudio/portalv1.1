@@ -4,8 +4,22 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, ArrowRight, Bot, AlertCircle } from "lucide-react";
+import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react"; // Removed Bot
 import { createClient } from "@/lib/supabase/client";
+
+// --- New Logo Component ---
+function DigihoodLogo() {
+  return (
+    <div className="flex flex-col items-center justify-center leading-none">
+      <span className="text-2xl font-bold tracking-wide text-white">
+        DIGIHOOD
+      </span>
+      <span className="text-xs font-bold tracking-[0.2em] text-gold uppercase mt-0.5">
+        STUDIO
+      </span>
+    </div>
+  );
+}
 
 function GoogleIcon() {
   return (
@@ -155,15 +169,13 @@ function LoginContent() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="w-full max-w-[440px] rounded-[24px] border border-white/10 bg-background/80 p-8 shadow-glow text-white backdrop-blur-md"
       >
-        {/* Icon */}
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 p-2.5 shadow-md">
-          <div className="flex h-full w-full items-center justify-center rounded-lg text-gold">
-            <Bot size={24} className="animate-pulse" />
-          </div>
+        {/* Logo Section */}
+        <div className="mx-auto flex h-16 w-full items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 p-4 shadow-md mb-4">
+          <DigihoodLogo />
         </div>
 
         {/* Header */}
-        <div className="mt-5 text-center">
+        <div className="text-center">
           <h1 className="text-2xl font-bold tracking-tight text-white">
             Welcome Back
           </h1>
