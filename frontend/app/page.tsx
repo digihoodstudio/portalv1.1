@@ -11,81 +11,69 @@ import PricingSection from '@/components/PricingSection';
 import ContactSection from '@/components/ContactSection';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
+import FloatingOrbs from '@/components/FloatingOrbs';
+
+function Section({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   return (
-    <main className="relative overflow-hidden px-6 pb-24 pt-24 md:px-12">
-      <section className="mx-auto max-w-7xl">
-        <HeroSection />
-      </section>
+    <>
+      <FloatingOrbs count={4} />
+      <main className="relative z-10 overflow-hidden px-6 pb-0 pt-20 md:px-12">
+        <section className="mx-auto max-w-7xl">
+          <HeroSection />
+        </section>
 
-      <motion.section
-        initial={mounted ? { opacity: 0, y: 40 } : false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="mx-auto mt-20 max-w-7xl"
-      >
-        <ValuePillars />
-      </motion.section>
+        <Section className="mx-auto mt-16 max-w-7xl">
+          <ValuePillars />
+        </Section>
 
-      <motion.section
-        initial={mounted ? { opacity: 0, y: 40 } : false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="mx-auto mt-20 max-w-7xl"
-      >
-        <IndustriesSection />
-      </motion.section>
+        <Section className="mx-auto mt-16 max-w-7xl">
+          <IndustriesSection />
+        </Section>
 
-      <motion.section
-        initial={mounted ? { opacity: 0, y: 40 } : false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.1 }}
-        className="mx-auto mt-24 max-w-7xl"
-      >
-        <AssistantPanel />
-      </motion.section>
+        <Section className="mx-auto mt-16 max-w-7xl">
+          <AssistantPanel />
+        </Section>
 
-      <motion.section
-        initial={mounted ? { opacity: 0, y: 40 } : false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.15 }}
-        className="mx-auto mt-24 max-w-7xl"
-      >
-        <RoiCalculator />
-      </motion.section>
+        <Section className="mx-auto mt-16 max-w-7xl">
+          <RoiCalculator />
+        </Section>
 
-      <motion.section
-        initial={mounted ? { opacity: 0, y: 40 } : false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="mx-auto mt-24 max-w-6xl"
-      >
-        <PricingSection />
-      </motion.section>
+        <Section className="mx-auto mt-16 max-w-6xl">
+          <PricingSection />
+        </Section>
 
-      <motion.section
-        initial={mounted ? { opacity: 0, y: 40 } : false}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="mx-auto mt-24 max-w-7xl"
-      >
-        <ContactSection />
-      </motion.section>
+        <Section className="mx-auto mt-16 max-w-7xl">
+          <ContactSection />
+        </Section>
 
-      <CTASection />
-      <Footer />
-    </main>
+        <Section>
+          <CTASection />
+        </Section>
+        <Footer />
+      </main>
+    </>
   );
 }

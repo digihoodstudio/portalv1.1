@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
+import TiltCard from "@/components/TiltCard";
 
 const tiers = [
   {
@@ -50,7 +51,7 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="scroll-mt-28 rounded-[32px] border border-white/10 bg-glass p-8 shadow-glow md:p-12"
+      className="glass-shine glass-border-glow scroll-mt-28 rounded-[32px] border border-white/10 bg-glass-deep p-8 shadow-glow-lg md:p-12"
     >
       <div className="mb-10 text-center">
         <p className="text-sm uppercase tracking-[0.3em] text-gold">Pricing</p>
@@ -65,19 +66,20 @@ export default function PricingSection() {
 
       <div className="grid gap-6 md:grid-cols-3">
         {tiers.map((tier) => (
-          <div
-            key={tier.title}
-            className={`relative flex flex-col rounded-[28px] border p-6 transition ${
-              tier.highlight
-                ? "border-gold/40 bg-gradient-to-b from-gold/10 to-gold/5 shadow-glow"
-                : "border-white/10 bg-[#07102f]"
-            }`}
-          >
+          <TiltCard key={tier.title} tiltDegree={3} glare={true}>
             {tier.highlight && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-gold/30 bg-gold/10 px-4 py-1 text-xs font-semibold text-gold">
-                Most Popular
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 -rotate-[3deg] rounded-lg bg-gold px-3 py-1.5 text-xs font-bold text-background shadow-[0_4px_16px_rgba(207,199,186,0.35)] z-20">
+                ★ Most Popular
               </div>
             )}
+            <div
+              className={`flex h-full flex-col rounded-[28px] border transition overflow-hidden ${
+                tier.highlight
+                  ? "border-gold/40 bg-gradient-to-b from-gold/10 to-gold/5 shadow-glow-lg p-6"
+                  : "border-white/10 bg-glass-deep shadow-glow p-6"
+              }`}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
             <div className="mb-5">
               <p className="text-xs uppercase tracking-[0.2em] text-gold">
                 {tier.service}
@@ -121,6 +123,7 @@ export default function PricingSection() {
               Book a Demo
             </Link>
           </div>
+          </TiltCard>
         ))}
       </div>
     </section>

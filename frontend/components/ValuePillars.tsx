@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PhoneIncoming, Send, Activity, ArrowRight } from 'lucide-react';
+import TiltCard from '@/components/TiltCard';
 
 const pillars = [
   {
@@ -62,56 +63,58 @@ export default function ValuePillars() {
 
       <div className="grid gap-6 md:grid-cols-3">
         {pillars.map((pillar, idx) => (
-          <motion.article
-            key={pillar.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: idx * 0.15 }}
-            className="group flex flex-col justify-between rounded-[28px] border border-white/10 bg-white/5 p-6 md:p-8 shadow-glow transition duration-300 hover:border-gold/30 hover:bg-white/8 hover:scale-[1.01]"
-          >
-            <div>
-              {/* Header */}
-              <div className="flex justify-between items-start">
-                <div className="rounded-xl bg-gold/10 p-3 mb-4 group-hover:bg-gold/25 transition">
-                  {pillar.icon}
+          <TiltCard key={pillar.id} tiltDegree={4} glare={true}>
+            <motion.article
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.15 }}
+              className="group glass-shine glass-border-glow flex h-full flex-col justify-between rounded-[28px] border border-white/10 bg-glass-deep p-6 md:p-8 shadow-glow transition duration-300 hover:border-gold/30 hover:shadow-glow-lg overflow-hidden"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div>
+                {/* Header */}
+                <div className="flex justify-between items-start">
+                  <div className="rounded-xl bg-gold/10 p-3 mb-4 group-hover:bg-gold/25 transition">
+                    {pillar.icon}
+                  </div>
+                  <span className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[9px] text-white/50 font-semibold uppercase tracking-wider">
+                    {pillar.subtitle}
+                  </span>
                 </div>
-                <span className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[9px] text-white/50 font-semibold uppercase tracking-wider">
-                  {pillar.subtitle}
-                </span>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-white mt-1 group-hover:text-gold transition duration-300" style={{ transform: 'translateZ(15px)' }}>
+                  {pillar.title}
+                </h3>
+
+                <p className="mt-4 text-xs text-foreground/80 leading-relaxed min-h-[72px]" style={{ transform: 'translateZ(8px)' }}>
+                  {pillar.description}
+                </p>
+
+                {/* Bullet Features */}
+                <ul className="mt-6 space-y-2 border-t border-white/5 pt-4">
+                  {pillar.features.map((feat, fIdx) => (
+                    <li key={fIdx} className="flex items-center gap-2 text-[11px] text-white/60">
+                      <span className="h-1 w-1 rounded-full bg-gold/70" />
+                      <span>{feat}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              {/* Title */}
-              <h3 className="text-2xl font-bold text-white mt-1 group-hover:text-gold transition duration-300">
-                {pillar.title}
-              </h3>
-
-              <p className="mt-4 text-xs text-foreground/80 leading-relaxed min-h-[72px]">
-                {pillar.description}
-              </p>
-
-              {/* Bullet Features */}
-              <ul className="mt-6 space-y-2 border-t border-white/5 pt-4">
-                {pillar.features.map((feat, fIdx) => (
-                  <li key={fIdx} className="flex items-center gap-2 text-[11px] text-white/60">
-                    <span className="h-1 w-1 rounded-full bg-gold/70" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* CTA action */}
-            <div className="mt-8 pt-4 border-t border-white/5">
-              <a
-                href="#contact"
-                className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold text-white transition hover:bg-white/10 hover:border-gold/30 hover:text-gold"
-              >
-                <span>{pillar.cta}</span>
-                <ArrowRight className="h-3 w-3 transition group-hover:translate-x-1" />
-              </a>
-            </div>
-          </motion.article>
+              {/* CTA action */}
+              <div className="mt-8 pt-4 border-t border-white/5" style={{ transform: 'translateZ(20px)' }}>
+                <a
+                  href="#contact"
+                  className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-xs font-semibold text-white transition hover:bg-white/10 hover:border-gold/30 hover:text-gold"
+                >
+                  <span>{pillar.cta}</span>
+                  <ArrowRight className="h-3 w-3 transition group-hover:translate-x-1" />
+                </a>
+              </div>
+            </motion.article>
+          </TiltCard>
         ))}
       </div>
     </section>

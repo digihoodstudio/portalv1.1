@@ -48,6 +48,18 @@ button, input, textarea, select {
   -webkit-backdrop-filter: blur(24px);
 }
 
+.bg-glass-deep {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+}
+
+.bg-glass-strong {
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+}
+
 .text-gold {
   color: var(--color-gold);
 }
@@ -60,12 +72,89 @@ button, input, textarea, select {
   box-shadow: 0 20px 80px rgba(143, 122, 103, 0.18), 0 1px 0 rgba(255,255,255,0.04) inset;
 }
 
+.shadow-glow-lg {
+  box-shadow: 0 30px 120px rgba(143, 122, 103, 0.15), 0 1px 0 rgba(255,255,255,0.06) inset;
+}
+
 .shadow-glow-sm {
   box-shadow: 0 10px 30px rgba(143, 122, 103, 0.10), 0 1px 0 rgba(255,255,255,0.04) inset;
 }
 
 .border-glass {
   border-color: rgba(207, 199, 186, 0.12);
+}
+
+.border-glass-light {
+  border-color: rgba(207, 199, 186, 0.08);
+}
+
+/* ── 3D perspective utility ── */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* ── Glass shine overlay ── */
+.glass-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-shine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.04) 45%,
+    rgba(207, 199, 186, 0.06) 50%,
+    rgba(255, 255, 255, 0.04) 55%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Animated glass border gradient ── */
+.glass-border-glow {
+  position: relative;
+}
+
+.glass-border-glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(207,199,186,0.15),
+    rgba(207,199,186,0.05) 30%,
+    transparent 50%,
+    rgba(207,199,186,0.05) 70%,
+    rgba(207,199,186,0.15)
+  );
+  z-index: -1;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  transition: opacity 0.4s;
+}
+
+.glass-border-glow:hover::after {
+  background: linear-gradient(
+    135deg,
+    rgba(207,199,186,0.3),
+    rgba(207,199,186,0.1) 30%,
+    rgba(255,255,255,0.05) 50%,
+    rgba(207,199,186,0.1) 70%,
+    rgba(207,199,186,0.3)
+  );
 }
 
 /* ── Focus ring reset ── */
@@ -82,4 +171,36 @@ main {
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Wave bar animation ── */
+@keyframes wave {
+  0%, 100% { height: 6px; }
+  25% { height: 28px; }
+  50% { height: 10px; }
+  75% { height: 22px; }
+}
+
+/* ── Floating orbs animation ── */
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25% { transform: translate(30px, -40px) scale(1.05) rotate(3deg); }
+  50% { transform: translate(-20px, -60px) scale(0.95) rotate(-2deg); }
+  75% { transform: translate(40px, -20px) scale(1.02) rotate(4deg); }
+}
+
+@keyframes floatOrbSlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 30px) scale(1.03); }
+  66% { transform: translate(25px, -15px) scale(0.97); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.3; filter: blur(60px); }
+  50% { opacity: 0.6; filter: blur(80px); }
 }

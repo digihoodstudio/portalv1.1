@@ -179,7 +179,7 @@ export default function Navbar() {
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-background/95 backdrop-blur-xl overflow-hidden"
+        className="glass-border-glow fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-2xl overflow-hidden"
       >
         {/* ── Mouse-tracking glow ── */}
         <div

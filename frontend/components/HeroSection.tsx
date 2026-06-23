@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Play, Phone, TrendingUp, Users, PhoneIncoming, LayoutDashboard } from 'lucide-react';
+import TiltCard from '@/components/TiltCard';
 
 // ── Live activity feed items ──
 const activityPool = [
@@ -23,13 +24,14 @@ const dotColors: Record<string, string> = {
   revenue: 'bg-rose-400',
 };
 
-// ── Animated waveform bar heights ──
 function WaveBar({ delay }: { delay: number }) {
   return (
-    <motion.div
+    <div
       className="w-1 rounded-full bg-gold/70"
-      animate={{ height: ['6px', '28px', '10px', '22px', '6px'] }}
-      transition={{ duration: 1.4, delay, repeat: Infinity, ease: 'easeInOut' }}
+      style={{
+        height: '6px',
+        animation: `wave 1.4s ease-in-out ${delay}s infinite`,
+      }}
     />
   );
 }
@@ -42,11 +44,28 @@ export default function HeroSection() {
   const [revenue, setRevenue] = useState(24800);
   const [activityLog, setActivityLog] = useState(activityPool.slice(0, 4));
   const [pingActivity, setPingActivity] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const tickRef = useRef(0);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem('token'));
     setMounted(true);
+  }, []);
+
+  // Mouse tracking for gradient
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--mouse-x', `${x}%`);
+      el.style.setProperty('--mouse-y', `${y}%`);
+    };
+    el.addEventListener('mousemove', handleMove);
+    return () => el.removeEventListener('mousemove', handleMove);
   }, []);
 
   // Simulate live data ticking
@@ -75,12 +94,30 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="home" className="relative overflow-hidden rounded-[32px] border border-white/10 bg-glass p-8 shadow-glow md:p-12">
+    <section
+      ref={heroRef}
+      id="home"
+      className="glass-shine glass-border-glow relative overflow-hidden rounded-[32px] border border-white/10 bg-glass-deep p-8 shadow-glow-lg md:p-12"
+    >
+      {/* Animated gradient background */}
+      <div className="pointer-events-none absolute -inset-[1px] rounded-[32px] opacity-20">
+        <div
+          className="absolute inset-0 rounded-[32px]"
+          style={{
+            background: `radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(207,199,186,0.08), transparent 40%)`,
+          }}
+        />
+      </div>
+
       <div className="grid gap-12 lg:grid-cols-[1.35fr_0.9fr] lg:items-center">
 
         {/* ── Left: Hero copy ── */}
-        <div className="space-y-8">
+        <div className="space-y-8" style={{ transform: 'translateZ(20px)' }}>
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.24em] text-gold">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
+            </span>
             Enterprise AI Automation
           </div>
           <motion.h1
@@ -89,33 +126,38 @@ export default function HeroSection() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl text-5xl font-semibold leading-tight text-white md:text-6xl"
           >
-            Your AI Workforce Never Sleeps.
+            Your AI Workforce{' '}
+            <span className="bg-gradient-to-r from-gold via-white to-gold bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_4s_ease-in-out_infinite]">
+              Never Sleeps.
+            </span>
           </motion.h1>
 
           <div className="flex flex-col gap-4 sm:flex-row">
             {isLoggedIn ? (
-              <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_24px_rgba(207,199,186,0.35)] hover:scale-[1.03]">
+              <Link href="/dashboard" className="group inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_24px_rgba(207,199,186,0.35)] hover:scale-[1.03]">
                 Go to Dashboard
               </Link>
             ) : (
-              <Link href="/book-demo" className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_24px_rgba(207,199,186,0.35)] hover:scale-[1.03]">
+              <Link href="/book-demo" className="group inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_24px_rgba(207,199,186,0.35)] hover:scale-[1.03]">
                 Book Demo
               </Link>
             )}
-            <Link href="/watch-demo" className="inline-flex items-center justify-center rounded-full border border-white/10 px-8 py-4 text-sm text-foreground transition-all duration-300 hover:border-gold/50 hover:text-gold hover:shadow-[0_0_20px_rgba(207,199,186,0.12)] hover:scale-[1.03]">
-              <Play className="mr-2 h-4 w-4" />
+            <Link href="/watch-demo" className="group inline-flex items-center justify-center rounded-full border border-white/10 px-8 py-4 text-sm text-foreground transition-all duration-300 hover:border-gold/50 hover:text-gold hover:shadow-[0_0_20px_rgba(207,199,186,0.12)] hover:scale-[1.03]">
+              <Play className="mr-2 h-4 w-4 transition-transform group-hover:scale-110" />
               Watch Demo
             </Link>
           </div>
         </div>
 
-        {/* ── Right: Live Dashboard ── */}
-        <motion.div
-          initial={mounted ? { opacity: 0, x: 30 } : false}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#060e26] p-5 shadow-glow"
-        >
+        {/* ── Right: Live Dashboard with 3D tilt ── */}
+        <TiltCard tiltDegree={5} glare={true} borderRadius="28px">
+          <motion.div
+            initial={mounted ? { opacity: 0, x: 30, rotateY: 3 } : false}
+            animate={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[#060e26] p-5 shadow-glow-lg"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
           {/* Header */}
           <div className="mb-4 flex items-center justify-between">
             <div>
@@ -218,6 +260,7 @@ export default function HeroSection() {
             </div>
           </div>
         </motion.div>
+        </TiltCard>
 
       </div>
 
