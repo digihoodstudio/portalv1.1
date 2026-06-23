@@ -1,24 +1,25 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageSquare, X, Send, Bot, User } from "lucide-react";
 
 interface Message {
-  role: 'assistant' | 'user';
+  role: "assistant" | "user";
   text: string;
   id: string;
 }
 
 const SESSION_ID = `floating-session-${Date.now()}`;
-const INITIAL_MSG = "Hello! I am your AI Growth Assistant. I can help you with packages, pricing, how to register, or missed call recovery information. How can I help you today?";
+const INITIAL_MSG =
+  "Hello! I am your AI Growth Assistant. I can help you with packages, pricing, how to register, or missed call recovery information. How can I help you today?";
 
 export default function FloatingAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', text: INITIAL_MSG, id: 'init' }
+    { role: "assistant", text: INITIAL_MSG, id: "init" },
   ]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showNotification, setShowNotification] = useState(true);
 
@@ -27,7 +28,7 @@ export default function FloatingAssistant() {
   // Auto-scroll to bottom of chat
   useEffect(() => {
     if (isOpen) {
-      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isOpen]);
 
@@ -42,56 +43,65 @@ export default function FloatingAssistant() {
     if (!textToSend.trim() || loading) return;
 
     const userMsg: Message = {
-      role: 'user',
+      role: "user",
       text: textToSend.trim(),
-      id: `u-${Date.now()}`
+      id: `u-${Date.now()}`,
     };
 
-    setMessages(prev => [...prev, userMsg]);
-    setInput('');
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
     setLoading(true);
 
     try {
-      const chatHistory = [...messages, userMsg].map(m => ({
+      const chatHistory = [...messages, userMsg].map((m) => ({
         role: m.role,
-        text: m.text
+        text: m.text,
       }));
 
-      const res = await fetch('/api/chatbot/conversation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/chatbot/conversation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sessionId: SESSION_ID,
-          messages: chatHistory
-        })
+          messages: chatHistory,
+        }),
       });
 
-      if (!res.ok) throw new Error('API Error');
+      if (!res.ok) throw new Error("API Error");
 
       const data = await res.json();
       const assistantMsg: Message = {
-        role: 'assistant',
+        role: "assistant",
         text: data.answer || "I'm here to help — could you rephrase that?",
-        id: `a-${Date.now()}`
+        id: `a-${Date.now()}`,
       };
 
-      setMessages(prev => [...prev, assistantMsg]);
+      setMessages((prev) => [...prev, assistantMsg]);
     } catch (err) {
       const errorMsg: Message = {
-        role: 'assistant',
+        role: "assistant",
         text: "Sorry, I'm having trouble connecting right now. Please try again.",
-        id: `err-${Date.now()}`
+        id: `err-${Date.now()}`,
       };
-      setMessages(prev => [...prev, errorMsg]);
+      setMessages((prev) => [...prev, errorMsg]);
     } finally {
       setLoading(false);
     }
   };
 
   const quickPrompts = [
-    { label: 'What are the pricing plans?', text: 'What are your pricing plans?' },
-    { label: 'How does missed call recovery work?', text: 'How does missed call recovery work?' },
-    { label: 'How do I register?', text: 'How do I register on this platform?' }
+    {
+      label: "What are the pricing plans?",
+      text: "What are your pricing plans?",
+    },
+    {
+      label: "How does missed call recovery work?",
+      text: "How does missed call recovery work?",
+    },
+    {
+      label: "How do I register?",
+      text: "How do I register on this platform?",
+    },
   ];
 
   return (
@@ -102,7 +112,7 @@ export default function FloatingAssistant() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             className="mb-3 w-[320px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-[20px] border border-white/10 bg-background/95 shadow-glow backdrop-blur-xl md:w-[340px]"
           >
             {/* Header */}
@@ -112,10 +122,14 @@ export default function FloatingAssistant() {
                   <Bot size={16} className="animate-pulse" />
                 </div>
                 <div>
-                  <h3 className="text-xs font-bold tracking-wide text-white">AI Growth Assistant</h3>
+                  <h3 className="text-xs font-bold tracking-wide text-white">
+                    AI Growth Assistant
+                  </h3>
                   <div className="flex items-center gap-1 mt-0.5">
                     <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[9px] text-white/50 font-medium font-mono uppercase">Online</span>
+                    <span className="text-[9px] text-white/50 font-medium font-mono uppercase">
+                      Online
+                    </span>
                   </div>
                 </div>
               </div>
@@ -132,22 +146,41 @@ export default function FloatingAssistant() {
               {messages.map((msg) => (
                 <div key={msg.id} className="space-y-2">
                   <div
-                    className={`flex gap-2.5 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
+                    className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
                   >
-                    <div className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${
-                      msg.role === 'assistant' ? 'bg-gold/10 text-gold' : 'bg-white/10 text-white'
-                    }`}>
-                      {msg.role === 'assistant' ? <Bot size={12} /> : <User size={12} />}
+                    <div
+                      className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full ${
+                        msg.role === "assistant"
+                          ? "bg-gold/10 text-gold"
+                          : "bg-white/10 text-white"
+                      }`}
+                    >
+                      {msg.role === "assistant" ? (
+                        <Bot size={12} />
+                      ) : (
+                        <User size={12} />
+                      )}
                     </div>
-                    <div className={`max-w-[80%] rounded-xl px-3 py-2 text-[11px] leading-relaxed ${
-                      msg.role === 'assistant'
-                        ? 'bg-white/5 border border-white/5 text-white/90 rounded-tl-none'
-                        : 'bg-gold/15 border border-gold/10 text-white rounded-tr-none'
-                    }`}>
-                      {msg.text.split('\n').map((line, i) => (
-                        <p key={i} className={i > 0 ? 'mt-1.5' : ''}>
-                          {line.split('**').map((part, idx) => 
-                            idx % 2 === 1 ? <strong key={idx} className="font-semibold text-gold">{part}</strong> : part
+                    <div
+                      className={`max-w-[80%] rounded-xl px-3 py-2 text-[11px] leading-relaxed ${
+                        msg.role === "assistant"
+                          ? "bg-white/5 border border-white/5 text-white/90 rounded-tl-none"
+                          : "bg-gold/15 border border-gold/10 text-white rounded-tr-none"
+                      }`}
+                    >
+                      {msg.text.split("\n").map((line, i) => (
+                        <p key={i} className={i > 0 ? "mt-1.5" : ""}>
+                          {line.split("**").map((part, idx) =>
+                            idx % 2 === 1 ? (
+                              <strong
+                                key={idx}
+                                className="font-semibold text-gold"
+                              >
+                                {part}
+                              </strong>
+                            ) : (
+                              part
+                            ),
                           )}
                         </p>
                       ))}
@@ -155,7 +188,7 @@ export default function FloatingAssistant() {
                   </div>
 
                   {/* Quick prompts choice buttons inside chat content if it is welcome message & no inputs yet */}
-                  {msg.id === 'init' && messages.length === 1 && (
+                  {msg.id === "init" && messages.length === 1 && (
                     <div className="ml-8 mt-2 flex flex-col gap-2">
                       {quickPrompts.map((chip, idx) => (
                         <button
@@ -182,8 +215,15 @@ export default function FloatingAssistant() {
                       <motion.span
                         key={i}
                         className="h-1 w-1 rounded-full bg-gold/60"
-                        animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.1, 0.8] }}
-                        transition={{ duration: 0.9, delay: d, repeat: Infinity }}
+                        animate={{
+                          opacity: [0.3, 1, 0.3],
+                          scale: [0.8, 1.1, 0.8],
+                        }}
+                        transition={{
+                          duration: 0.9,
+                          delay: d,
+                          repeat: Infinity,
+                        }}
                       />
                     ))}
                   </div>

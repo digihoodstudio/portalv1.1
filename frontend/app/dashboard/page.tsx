@@ -25,23 +25,52 @@ export default function UnifiedDashboardPage() {
         return;
       }
 
+      // Try to read role from Supabase profiles table
       const { data: profile } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", session.user.id)
         .single();
 
-      const role = profile?.role || "CLIENT";
+      let role = profile?.role;
+
+      // Sync to backend — this creates the user in the mock DB if missing
+      // and returns the authoritative role + JWT
+      try {
+        const syncRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/auth/supabase-sync`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: session.user.email,
+              name: profile?.full_name || session.user.email,
+              role: role || "CLIENT",
+            }),
+          },
+        );
+        if (syncRes.ok) {
+          const syncData = await syncRes.json();
+          localStorage.setItem("token", syncData.token);
+          // Use the backend's authoritative role
+          role = syncData.user.role;
+        } else {
+          console.warn("Backend sync failed, API calls may not work");
+        }
+      } catch {
+        console.warn("Backend sync failed, API calls may not work");
+      }
+
+      role = role || "CLIENT";
       setUserRole(role);
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: profile?.full_name || session.user.email,
-          email: session.user.email,
-          role,
-        }),
-      );
+      const userInfo = {
+        name: profile?.full_name || session.user.email,
+        email: session.user.email,
+        role,
+      };
+
+      localStorage.setItem("user", JSON.stringify(userInfo));
 
       setLoading(false);
     };

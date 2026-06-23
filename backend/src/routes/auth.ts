@@ -124,6 +124,74 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Sync Supabase-authenticated user to backend DB and return a JWT
+router.post("/supabase-sync", async (req, res) => {
+  try {
+    const { email, name, role } = req.body;
+    if (!email || !role) {
+      return res.status(400).json({ error: "Email and role are required" });
+    }
+
+    const roleRec = await prisma.role.findUnique({ where: { name: role.toUpperCase() } });
+    if (!roleRec) {
+      return res.status(400).json({ error: `Invalid role: ${role}` });
+    }
+
+    let user = await prisma.user.findUnique({
+      where: { email },
+      include: { role: true, client: true },
+    });
+
+    if (!user) {
+      let clientId: string | undefined;
+      if (["CLIENT", "ADMIN", "USER"].includes(roleRec.name)) {
+        const client = await prisma.client.create({
+          data: {
+            companyName: name || email.split('@')[0],
+            contactName: name || email.split('@')[0],
+            contactEmail: email,
+            contactPhone: "",
+            plan: "GROWTH",
+          },
+        });
+        clientId = client.id;
+      }
+
+      user = await prisma.user.create({
+        data: {
+          email,
+          name: name || email.split('@')[0],
+          passwordHash: "supabase-managed",
+          roleId: roleRec.id,
+          clientId,
+        },
+        include: { role: true, client: true },
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role.name },
+      process.env.JWT_SECRET ?? "secret",
+      { expiresIn: "7d" },
+    );
+
+    return res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role.name,
+        phone: user.client?.contactPhone || "",
+        business: user.client?.companyName || "",
+      },
+    });
+  } catch (error: any) {
+    console.error("Supabase sync error:", error?.message || error);
+    return res.status(500).json({ error: `Failed to sync user: ${error?.message || error}` });
+  }
+});
+
 router.get("/profile", requireAuth, async (req: AuthRequest, res) => {
   try {
     const user = await prisma.user.findUnique({

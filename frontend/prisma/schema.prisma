@@ -144,6 +144,7 @@ model UploadedFile {
   fileType    String   @default("CSV")
   recordCount Int      @default(0)
   status      String   @default("PENDING_APPROVAL")
+  storageUrl  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

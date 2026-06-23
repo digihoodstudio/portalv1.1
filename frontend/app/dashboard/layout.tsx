@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { createClient } from "@/lib/supabase/client";
 import {
   LayoutDashboard,
   Users,
@@ -63,9 +64,11 @@ export default function DashboardLayout({
     }
   }, [session]);
 
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    const supabase = createClient();
+    await supabase.auth.signOut();
     if (session) signOut({ callbackUrl: "/" });
     else router.push("/login");
   };

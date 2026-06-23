@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Users,
@@ -74,8 +75,14 @@ interface Project {
   clientId: string;
   status: string;
   progress: number;
+  createdAt: string;
   client?: { companyName: string };
-  uploadedFiles?: { fileName: string; recordCount: number }[];
+  uploadedFiles?: {
+    fileName: string;
+    recordCount: number;
+    storageUrl?: string;
+    fileType?: string;
+  }[];
 }
 
 interface Agent {
@@ -588,6 +595,40 @@ export default function AdminDashboard() {
     if (file) handleFileSelect(file);
   };
 
+  const parseCsvRecords = (file: File): Promise<Record<string, string>[]> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = String(e.target?.result ?? "");
+          const lines = text
+            .split(/\r\n|\n|\r/)
+            .filter((line) => line.trim().length > 0);
+          if (lines.length === 0) {
+            reject(new Error("The file appears to be empty."));
+            return;
+          }
+          const headers = parseCsvLine(lines[0]).map((h) =>
+            h.toLowerCase().trim(),
+          );
+          const records = lines.slice(1).map((line) => {
+            const values = parseCsvLine(line);
+            const record: Record<string, string> = {};
+            headers.forEach((h, i) => {
+              record[h] = values[i] || "";
+            });
+            return record;
+          });
+          resolve(records);
+        } catch {
+          reject(new Error("Failed to parse CSV file."));
+        }
+      };
+      reader.onerror = () => reject(new Error("Failed to read file from disk."));
+      reader.readAsText(file);
+    });
+  };
+
   const handleCsvUpload = async () => {
     if (!uploadedFile) {
       setUploadMessage("Please select a CSV or XLSX file first.");
@@ -612,18 +653,63 @@ export default function AdminDashboard() {
     }, 300);
 
     try {
-      const formData = new FormData();
-      formData.append("file", uploadedFile);
-      formData.append("campaignName", uploadCampaignName.trim());
-      if (uploadClientId) formData.append("clientId", uploadClientId);
-      if (isXlsxFile(uploadedFile)) {
-        formData.append("estimatedRecordCount", estimatedLeadCount);
+      let records: Record<string, string>[] = [];
+      let storageUrl = "";
+
+      // Upload file to Supabase Storage
+      const supabase = createClient();
+      const fileExt = uploadedFile.name.split(".").pop();
+      const filePath = `campaigns/${Date.now()}_${uploadedFile.name.toLowerCase().replace(/\s+/g, "_")}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("uploads")
+        .upload(filePath, uploadedFile, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+      if (uploadError) {
+        clearInterval(progressInterval);
+        setUploadState("error");
+        setUploadMessage(`Storage upload failed: ${uploadError.message}`);
+        return;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from("uploads")
+        .getPublicUrl(filePath);
+      storageUrl = urlData?.publicUrl || "";
+
+      // Parse CSV records
+      if (isCsvFile(uploadedFile)) {
+        const parsed = await parseCsvRecords(uploadedFile);
+        records = parsed.map((row) => {
+          const mapped: Record<string, string> = {};
+          REQUIRED_IMPORT_FIELDS.forEach((field) => {
+            const matchedKey = Object.keys(row).find((k) =>
+              field.pattern.test(k),
+            );
+            mapped[field.key] = matchedKey ? row[matchedKey] : "";
+          });
+          return mapped;
+        });
       }
 
       const res = await fetch("/api/crm/projects/upload-csv", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          campaignName: uploadCampaignName.trim(),
+          clientId: uploadClientId || undefined,
+          records,
+          recordCount: records.length || Number(estimatedLeadCount),
+          fileName: uploadedFile.name,
+          fileType: isXlsxFile(uploadedFile) ? "XLSX" : "CSV",
+          storageUrl,
+        }),
       });
 
       clearInterval(progressInterval);
@@ -632,7 +718,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         const data = await res.json();
         const importedCount =
-          data.recordCount ?? parsedRowCount ?? estimatedLeadCount;
+          data.recordCount ?? records.length ?? estimatedLeadCount;
         setUploadState("success");
         setUploadMessage(
           `Successfully uploaded "${uploadedFile.name}" with ${importedCount} leads. Pending admin approval.`,
@@ -1617,11 +1703,11 @@ export default function AdminDashboard() {
                 <div className="flex items-center gap-2">
                   <Upload size={18} className="text-gold" />
                   <h2 className="text-lg font-bold text-white uppercase tracking-wide">
-                    Bulk Import Prospects
+                    Upload &amp; Import Prospects
                   </h2>
                 </div>
                 <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-white/40">
-                  Leads Parser Gateway
+                  CSV / XLSX Importer
                 </span>
               </div>
 
@@ -1629,24 +1715,31 @@ export default function AdminDashboard() {
                 Upload a standard{" "}
                 <code className="text-gold font-mono">.csv</code> or{" "}
                 <code className="text-gold font-mono">.xlsx</code> prospect
-                sheet. Validates name, email, phone, company, and remarks before
-                importing.
+                sheet. The file is stored in cloud storage and parsed into leads.
               </p>
 
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <div className="space-y-4">
-                  <div>
-                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                      List Identifier Name{" "}
-                      <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={uploadCampaignName}
-                      onChange={(e) => setUploadCampaignName(e.target.value)}
-                      placeholder="e.g. Q2 Outreach Campaign"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
-                    />
+                  <div className="flex items-end gap-3">
+                    <div className="flex-1">
+                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                        Campaign Name <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={uploadCampaignName}
+                        onChange={(e) => setUploadCampaignName(e.target.value)}
+                        placeholder="e.g. Q2 Outreach Campaign"
+                        className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                      />
+                    </div>
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="shrink-0 flex items-center gap-2 rounded-xl border border-gold/30 bg-gold/10 hover:bg-gold/20 text-gold px-4 py-2.5 text-xs font-bold transition"
+                    >
+                      <Upload size={14} />
+                      <span>{uploadedFile ? "Change File" : "Select File"}</span>
+                    </button>
                   </div>
 
                   <div>
@@ -1674,7 +1767,7 @@ export default function AdminDashboard() {
                     onClick={() =>
                       !uploadedFile && fileInputRef.current?.click()
                     }
-                    className={`relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all cursor-pointer py-10 px-6
+                    className={`relative flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed transition-all cursor-pointer py-8 px-6
                       ${uploadState === "dragging" ? "border-gold bg-gold/5 scale-[1.01]" : ""}
                       ${uploadState === "success" ? "border-emerald-500/50 bg-emerald-500/5 cursor-default" : ""}
                       ${uploadState === "error" ? "border-red-500/50 bg-red-500/5 cursor-default" : ""}
@@ -1694,7 +1787,7 @@ export default function AdminDashboard() {
                       <>
                         <Loader2 size={32} className="text-gold animate-spin" />
                         <p className="text-xs font-bold text-white">
-                          Uploading your file...
+                          Uploading to cloud storage...
                         </p>
                         <div className="w-full max-w-xs h-1.5 rounded-full bg-white/10 overflow-hidden">
                           <div
@@ -1775,7 +1868,7 @@ export default function AdminDashboard() {
                             Choose CSV Spreadsheet
                           </p>
                           <p className="text-xs text-white/40 mt-1">
-                            Drag &amp; drop or select files (max 20MB)
+                            Drag &amp; drop or click to select (max 20MB)
                           </p>
                         </div>
                         <span className="text-[9px] font-bold uppercase tracking-widest text-white/20 border border-white/10 rounded-full px-3 py-1">
@@ -1817,10 +1910,10 @@ export default function AdminDashboard() {
                     uploadState !== "success" && (
                       <button
                         onClick={handleCsvUpload}
-                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition"
+                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3.5 text-sm font-bold transition shadow-lg shadow-gold/10"
                       >
-                        <Upload size={14} />
-                        <span>Submit Leads</span>
+                        <Upload size={16} />
+                        <span>Upload &amp; Import Now</span>
                       </button>
                     )}
 
@@ -1836,29 +1929,28 @@ export default function AdminDashboard() {
 
                 <div className="rounded-xl border border-white/10 bg-white/[0.015] p-4 space-y-3">
                   <span className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">
-                    CSV Parsing Preview (Top 5 Rows)
+                    Parsing Preview (Top 5 Rows)
                   </span>
 
                   {!uploadedFile ? (
-                    <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
-                      No files loaded. Select a CSV file to view parsing.
+                    <div className="flex h-[240px] items-center justify-center text-center text-xs text-white/30 px-6">
+                      No file selected yet.
                     </div>
                   ) : isParsingFile ? (
-                    <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-white/40">
+                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-white/40">
                       <Loader2 size={20} className="animate-spin" />
                       <span className="text-xs">Parsing spreadsheet…</span>
                     </div>
                   ) : parseError ? (
-                    <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-red-400">
+                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-center px-6 text-red-400">
                       <XCircle size={20} />
                       <span className="text-xs">{parseError}</span>
                     </div>
                   ) : isXlsxFile(uploadedFile) ? (
-                    <div className="flex h-[260px] flex-col items-center justify-center gap-2 text-center px-6 text-white/40">
+                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-center px-6 text-white/40">
                       <FileSpreadsheet size={20} className="text-white/30" />
                       <span className="text-xs">
-                        XLSX preview isn&apos;t rendered in-browser. Rows will
-                        be validated after upload.
+                        XLSX preview not available in-browser.
                       </span>
                     </div>
                   ) : parsedHeaders.length > 0 ? (
@@ -1936,101 +2028,138 @@ export default function AdminDashboard() {
                       )}
                     </div>
                   ) : (
-                    <div className="flex h-[260px] items-center justify-center text-center text-xs text-white/30 px-6">
-                      No files loaded.
+                    <div className="flex h-[240px] items-center justify-center text-center text-xs text-white/30 px-6">
+                      No file selected yet.
                     </div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* CAMPAIGN APPROVAL */}
+            {/* UPLOADED CAMPAIGNS LIST */}
             <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-4">
-              <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                <ShieldCheck size={18} className="text-gold" />
-                <h2 className="text-lg font-bold text-white">
-                  Campaign Database Approval
-                </h2>
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-2">
+                  <Database size={18} className="text-gold" />
+                  <h2 className="text-lg font-bold text-white">
+                    Uploaded Campaigns
+                  </h2>
+                </div>
+                <span className="text-[10px] text-white/40 font-mono">
+                  {projects.length} total
+                </span>
               </div>
 
-              <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-                <table className="w-full text-left border-collapse text-xs text-white/80">
-                  <thead>
-                    <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
-                      <th className="px-4 py-3">Client Company</th>
-                      <th className="px-4 py-3">Campaign File</th>
-                      <th className="px-4 py-3">Leads Count</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5 font-medium">
-                    {projects.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan={5}
-                          className="px-4 py-6 text-center text-white/30"
-                        >
-                          No databases in queue.
-                        </td>
-                      </tr>
-                    ) : (
-                      projects.map((p) => (
-                        <tr key={p.id}>
-                          <td className="px-4 py-3.5 font-bold text-white">
-                            {p.client?.companyName || "Septic Specialists"}
-                          </td>
-                          <td className="px-4 py-3.5 font-mono text-[11px] text-white/70">
-                            {p.uploadedFiles?.[0]?.fileName || "leads.csv"}
-                          </td>
-                          <td className="px-4 py-3.5 font-mono">
-                            {p.uploadedFiles?.[0]?.recordCount || 500}
-                          </td>
-                          <td className="px-4 py-3.5">
-                            <span
-                              className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${p.status === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" : p.status === "PENDING_APPROVAL" ? "bg-blue-500/20 text-blue-400" : "bg-red-500/20 text-red-400"}`}
-                            >
-                              {p.status.replace("_", " ")}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3.5 text-right space-x-2">
+              {projects.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <Database size={36} className="text-white/10 mb-3" />
+                  <p className="text-sm text-white/30 font-medium">
+                    No campaigns uploaded yet
+                  </p>
+                  <p className="text-xs text-white/20 mt-1">
+                    Upload a CSV or XLSX file above to get started.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {projects.map((p) => {
+                    const file = p.uploadedFiles?.[0];
+                    return (
+                      <div
+                        key={p.id}
+                        className="group rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-white/10 transition-all p-4"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-3 min-w-0 flex-1">
+                            <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
+                              <FileSpreadsheet size={18} className="text-gold" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h3 className="text-sm font-bold text-white truncate">
+                                  {p.name}
+                                </h3>
+                                <span
+                                  className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${p.status === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" : p.status === "PENDING_APPROVAL" ? "bg-blue-500/20 text-blue-400" : p.status === "REJECTED" ? "bg-red-500/20 text-red-400" : "bg-amber-500/20 text-amber-400"}`}
+                                >
+                                  {p.status.replace("_", " ")}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-white/40">
+                                <span className="font-mono">
+                                  {file?.fileName || "No file"}
+                                </span>
+                                <span>•</span>
+                                <span>
+                                  {file?.recordCount || 0} leads
+                                </span>
+                                {file?.storageUrl && (
+                                  <>
+                                    <span>•</span>
+                                    <a
+                                      href={file.storageUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-gold hover:text-white transition underline"
+                                    >
+                                      View file
+                                    </a>
+                                  </>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 mt-1.5 text-[9px] text-white/30">
+                                <span>Client: {p.client?.companyName || "General"}</span>
+                                <span>•</span>
+                                <span>
+                                  {new Date(p.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0">
                             {p.status === "PENDING_APPROVAL" && (
                               <>
                                 <button
-                                  onClick={() =>
-                                    handleCampaignApproval(p.id, true)
-                                  }
-                                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-white transition"
+                                  onClick={() => handleCampaignApproval(p.id, true)}
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600/20 hover:bg-emerald-500/40 border border-emerald-500/30 text-emerald-400 transition"
                                   title="Approve"
                                 >
                                   <Check size={12} />
                                 </button>
                                 <button
-                                  onClick={() =>
-                                    handleCampaignApproval(p.id, false)
-                                  }
-                                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white transition"
+                                  onClick={() => handleCampaignApproval(p.id, false)}
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-red-600/20 hover:bg-red-500/40 border border-red-500/30 text-red-400 transition"
                                   title="Reject"
                                 >
                                   <X size={12} />
                                 </button>
                               </>
                             )}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                            {p.status === "APPROVED" && (
+                              <span className="text-[9px] font-bold text-emerald-400/60 uppercase tracking-wider">
+                                Approved
+                              </span>
+                            )}
+                            {p.status === "REJECTED" && (
+                              <span className="text-[9px] font-bold text-red-400/60 uppercase tracking-wider">
+                                Rejected
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* WORKLOAD SPLITS */}
             <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
               <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                <Database size={18} className="text-gold" />
+                <BarChart2 size={18} className="text-gold" />
                 <h2 className="text-lg font-bold text-white">
-                  Leads workload split engine
+                  Distribute Leads to Agents
                 </h2>
               </div>
 
@@ -2059,7 +2188,7 @@ export default function AdminDashboard() {
 
                   <div>
                     <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
-                      Distribution Split Method
+                      Split Method
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
@@ -2083,7 +2212,7 @@ export default function AdminDashboard() {
                 {!useAutoSplit && selectedProjectId && (
                   <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-3.5">
                     <span className="block text-[10px] font-bold text-gold uppercase tracking-wider">
-                      Allocate Splits Per Agent
+                      Allocate Leads Per Agent
                     </span>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {agents.map((agent) => (
@@ -2096,7 +2225,7 @@ export default function AdminDashboard() {
                           </span>
                           <input
                             type="number"
-                            placeholder="Leads count"
+                            placeholder="Leads"
                             value={manualSplits[agent.id] || ""}
                             onChange={(e) =>
                               setManualSplits((prev) => ({
@@ -2117,6 +2246,7 @@ export default function AdminDashboard() {
                   disabled={!selectedProjectId}
                   className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold text-background hover:brightness-105 py-3 text-xs font-bold transition disabled:opacity-50"
                 >
+                  <BarChart2 size={14} />
                   <span>Trigger Workload Allocation</span>
                 </button>
               </form>

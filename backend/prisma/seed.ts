@@ -176,6 +176,60 @@ async function main() {
     }
   });
 
+  // Digihoodstudio users (Supabase-managed passwords)
+  const dhPasswordHash = 'supabase-managed';
+
+  const dhClientRec = await prisma.client.upsert({
+    where: { id: 'client-digihood' },
+    update: {},
+    create: {
+      id: 'client-digihood',
+      companyName: 'DigiHood Studio',
+      contactName: 'DigiHood Admin',
+      contactEmail: 'admin@digihoodstudio.com',
+      contactPhone: '',
+      plan: 'GROWTH',
+    }
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'superadmin@digihoodstudio.com' },
+    update: { roleId: superadminRole.id },
+    create: {
+      id: 'user-superadmin-dh',
+      email: 'superadmin@digihoodstudio.com',
+      name: 'Super Admin',
+      passwordHash: dhPasswordHash,
+      roleId: superadminRole.id
+    }
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'admin@digihoodstudio.com' },
+    update: { roleId: adminRole.id, clientId: dhClientRec.id },
+    create: {
+      id: 'user-admin-dh',
+      email: 'admin@digihoodstudio.com',
+      name: 'Admin',
+      passwordHash: dhPasswordHash,
+      roleId: adminRole.id,
+      clientId: dhClientRec.id
+    }
+  });
+
+  await prisma.user.upsert({
+    where: { email: 'client@digihoodstudio.com' },
+    update: { roleId: clientRole.id, clientId: dhClientRec.id },
+    create: {
+      id: 'user-client-dh',
+      email: 'client@digihoodstudio.com',
+      name: 'Client User',
+      passwordHash: dhPasswordHash,
+      roleId: clientRole.id,
+      clientId: dhClientRec.id
+    }
+  });
+
   console.log('Users seeded.');
 
   // 5. Create Projects

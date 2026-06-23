@@ -393,6 +393,75 @@ router.post('/projects/:id/distribute', requireAuth, async (req: AuthRequest, re
   }
 });
 
+// Upload CSV (parsed records from admin dashboard)
+router.post('/projects/upload-csv', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const { campaignName, clientId, records, recordCount, fileName, fileType, storageUrl } = req.body;
+
+    if (!campaignName) {
+      return res.status(400).json({ error: 'campaignName is required' });
+    }
+
+    const targetClientId = clientId || 'client-default';
+
+    // 1. Create Project
+    const project = await prisma.project.create({
+      data: {
+        name: campaignName,
+        clientId: targetClientId,
+        status: 'PENDING_APPROVAL',
+        progress: 0
+      }
+    });
+
+    // 2. Create UploadedFile record
+    const uploadedFile = await prisma.uploadedFile.create({
+      data: {
+        fileName: fileName || campaignName + '.csv',
+        fileType: fileType || 'CSV',
+        recordCount: Number(recordCount) || records?.length || 0,
+        status: 'PENDING_APPROVAL',
+        clientId: targetClientId,
+        projectId: project.id,
+        storageUrl: storageUrl || ''
+      }
+    });
+
+    // 3. Create Leads from parsed records
+    if (records && records.length > 0) {
+      for (const r of records) {
+        await prisma.lead.create({
+          data: {
+            name: r.name || 'Unknown Prospect',
+            company: r.company || 'Unknown Company',
+            phone: r.phone || '',
+            email: r.email || '',
+            notes: r.remarks || r.notes || '',
+            status: 'NEW',
+            projectId: project.id,
+            clientId: targetClientId
+          }
+        });
+      }
+    }
+
+    // Log activity and send notifications
+    await pushActivity(req.user!.id, 'Database uploaded', `Campaign "${campaignName}" (${records?.length || recordCount} records) uploaded successfully.`);
+
+    const superadmin = await prisma.user.findFirst({ where: { role: { name: 'SUPERADMIN' } } });
+    if (superadmin) {
+      await pushNotification(superadmin.id, 'New Database Uploaded', `Campaign "${campaignName}" (${records?.length || recordCount} records) pending approval.`);
+    }
+
+    await pushNotification(req.user!.id, 'Database Uploaded', `Your file "${fileName || campaignName}" has been queued for Super Admin approval.`);
+
+    res.json({ project, uploadedFile, recordCount: records?.length || Number(recordCount) });
+  } catch (error: any) {
+    console.error('Upload CSV error:', error);
+    res.status(500).json({ error: error.message || 'Failed to upload CSV' });
+  }
+});
+
 // Workload metrics visualizer for Super Admin
 router.get('/workload', requireAuth, async (req, res) => {
   try {
