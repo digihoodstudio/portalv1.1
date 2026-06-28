@@ -113,13 +113,7 @@ export default function HeroSection() {
 
         {/* ── Left: Hero copy ── */}
         <div className="space-y-8" style={{ transform: 'translateZ(20px)' }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.24em] text-gold">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
-            </span>
-            Enterprise AI Automation
-          </div>
+
           <motion.h1
             initial={mounted ? { opacity: 0, y: 20 } : false}
             animate={{ opacity: 1, y: 0 }}
