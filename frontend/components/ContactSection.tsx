@@ -93,15 +93,15 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="scroll-mt-28 mt-24 rounded-[32px] border border-white/10 bg-glass shadow-glow overflow-hidden"
+      className="scroll-mt-28 mt-24 rounded-[24px] border border-white/[0.06] bg-[#080D26] overflow-hidden"
     >
       {/* Header */}
       <div className="border-b border-white/10 p-6 md:p-10">
         <p className="text-sm uppercase tracking-[0.3em] text-gold">
           Contact Sales
         </p>
-        <h2 className="mt-2 text-2xl font-semibold text-white md:text-3xl">
-          Let’s scale your operations.
+        <h2 className="mt-2 text-xl font-semibold text-white md:text-3xl">
+          Let's scale your operations.
         </h2>
         <p className="mt-1.5 text-sm text-foreground/70">
           Get in touch with our AI automation architects to design a custom

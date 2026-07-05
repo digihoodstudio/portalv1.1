@@ -3,21 +3,21 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react"; // Removed Bot
 import { createClient } from "@/lib/supabase/client";
 
-// --- New Logo Component ---
+// --- Logo Component ---
 function DigihoodLogo() {
   return (
-    <div className="flex flex-col items-center justify-center leading-none">
-      <span className="text-2xl font-bold tracking-wide text-white">
-        DIGIHOOD
-      </span>
-      <span className="text-xs font-bold tracking-[0.2em] text-gold uppercase mt-0.5">
-        STUDIO
-      </span>
-    </div>
+    <Image
+      src="/digilogo.png"
+      alt="Digihood Studio"
+      width={64}
+      height={64}
+      className="rounded-full object-cover"
+    />
   );
 }
 
@@ -170,7 +170,7 @@ function LoginContent() {
         className="w-full max-w-[440px] rounded-[24px] border border-white/10 bg-background/80 p-8 shadow-glow text-white backdrop-blur-md"
       >
         {/* Logo Section */}
-        <div className="mx-auto flex h-16 w-full items-center justify-center rounded-2xl bg-gold/10 border border-gold/20 p-4 shadow-md mb-4">
+        <div className="mx-auto flex w-full items-center justify-center mb-4">
           <DigihoodLogo />
         </div>
 

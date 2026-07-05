@@ -134,7 +134,7 @@ export default function AssistantPanel() {
   const isConnecting = callStatus === "connecting";
 
   return (
-    <section id="assistant" className="scroll-mt-28 rounded-[32px] border border-white/10 bg-glass-deep shadow-glow-lg overflow-hidden">
+    <section id="assistant" className="scroll-mt-28 rounded-[24px] border border-white/[0.06] bg-[#080D26] overflow-hidden">
       <div className="flex flex-col gap-2 border-b border-white/10 p-6 md:p-8">
         <p className="text-sm uppercase tracking-[0.3em] text-gold">AI Assistant</p>
         <h2 className="text-2xl font-semibold text-white md:text-3xl">Talk to our AI growth specialist.</h2>
@@ -142,7 +142,7 @@ export default function AssistantPanel() {
 
       <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
         {/* ── Left: Chatbot ── */}
-        <div className="flex flex-col bg-[#06101f]/30 min-h-[520px]">
+        <div className="flex flex-col bg-[#06101f]/30 min-h-[400px] md:min-h-[520px]">
           <div className="flex items-center justify-between px-6 pt-4 pb-2">
             <div className="flex items-center gap-2">
               <MessageCircle size={15} className="text-gold" />
@@ -210,7 +210,7 @@ export default function AssistantPanel() {
         </div>
 
         {/* ── Right: Voice Assistant ── */}
-        <div className="flex flex-col items-center justify-center p-8 md:p-10 bg-[#030816]/40 min-h-[520px]">
+        <div className="flex flex-col items-center justify-center p-6 md:p-10 bg-[#030816]/40 min-h-[320px] md:min-h-[520px]">
           <div className="flex flex-col items-center text-center max-w-xs">
             <div className="flex items-center gap-2 mb-1">
               <Headphones size={15} className="text-gold" />
