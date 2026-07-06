@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { prisma } from '@/lib/db';
+import { createClient } from '@supabase/supabase-js';
 import { signToken } from '@/lib/auth';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,12 +15,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: { role: true, client: true },
-    });
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*, role:roles(*)')
+      .eq('email', email)
+      .single();
 
-    if (!user) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    if (error || !user) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     if (user.suspended) return NextResponse.json({ error: 'Your account has been suspended. Contact support.' }, { status: 403 });
 
     const isValid = await bcrypt.compare(password, user.passwordHash);
@@ -30,9 +36,9 @@ export async function POST(req: NextRequest) {
         email: user.email,
         name: user.name,
         role: user.role?.name,
-        phone: user.phone || (user as any).client?.contactPhone || '',
-        business: (user as any).client?.companyName || '',
-        adminId: (user as any).adminId || '',
+        phone: user.phone || '',
+        business: '',
+        adminId: user.adminId || '',
         clientId: user.clientId || '',
       },
     });
