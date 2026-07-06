@@ -26,10 +26,10 @@ export async function POST(req: NextRequest) {
     let clientId: string | undefined = undefined;
     if (['CLIENT', 'ADMIN', 'USER'].includes(roleName)) {
       const { data: client } = await supabase.from('clients').insert({
-        companyName: businessName || 'My Business',
-        contactName: name || 'Client User',
-        contactEmail: email,
-        contactPhone: phoneNumber || '',
+        company_name: businessName || 'My Business',
+        contact_name: name || 'Client User',
+        contact_email: email,
+        contact_phone: phoneNumber || '',
         plan: 'GROWTH',
         status: 'ACTIVE',
       }).select().single();
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { data: user } = await supabase.from('users').insert({
-      email, name, passwordHash, roleId: role.id, clientId,
+      email, name, password_hash: passwordHash, role_id: role.id, client_id: clientId,
     }).select().single();
 
     return NextResponse.json({
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         phone: phoneNumber || '',
         business: businessName || '',
         agentId: '',
-        clientId: user!.clientId || '',
+        clientId: user!.client_id || '',
       },
     });
   } catch (err: any) {
@@ -71,8 +71,8 @@ export async function GET(req: NextRequest) {
 
     if (!dbUser) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    const { data: client } = dbUser.clientId
-      ? await supabase.from('clients').select('*').eq('id', dbUser.clientId).single()
+    const { data: client } = dbUser.client_id
+      ? await supabase.from('clients').select('*').eq('id', dbUser.client_id).single()
       : { data: null };
 
     return NextResponse.json({
@@ -81,10 +81,10 @@ export async function GET(req: NextRequest) {
         email: dbUser.email,
         name: dbUser.name,
         role: dbUser.role?.name,
-        phone: dbUser.phone || client?.contactPhone || '',
-        business: client?.companyName || '',
-        adminId: dbUser.adminId || '',
-        clientId: dbUser.clientId || '',
+        phone: dbUser.phone || client?.contact_phone || '',
+        business: client?.company_name || '',
+        adminId: dbUser.admin_id || '',
+        clientId: dbUser.client_id || '',
       },
     });
   } catch (err: any) {

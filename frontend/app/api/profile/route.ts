@@ -21,8 +21,8 @@ export async function GET(req: NextRequest) {
 
     if (!dbUser) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    const { data: client } = dbUser.clientId
-      ? await supabase.from('clients').select('*').eq('id', dbUser.clientId).single()
+    const { data: client } = dbUser.client_id
+      ? await supabase.from('clients').select('*').eq('id', dbUser.client_id).single()
       : { data: null };
 
     return NextResponse.json({
@@ -31,10 +31,10 @@ export async function GET(req: NextRequest) {
         email: dbUser.email,
         name: dbUser.name,
         role: dbUser.role?.name,
-        phone: dbUser.phone || client?.contactPhone || '',
-        business: client?.companyName || '',
-        adminId: dbUser.adminId || '',
-        clientId: dbUser.clientId || '',
+        phone: dbUser.phone || client?.contact_phone || '',
+        business: client?.company_name || '',
+        adminId: dbUser.admin_id || '',
+        clientId: dbUser.client_id || '',
       },
     });
   } catch (err: any) {
@@ -66,7 +66,7 @@ export async function PATCH(req: NextRequest) {
     if (name !== undefined) updateData.name = name;
     if (email !== undefined) updateData.email = email;
     if (phone !== undefined) updateData.phone = phone;
-    if (password) updateData.passwordHash = await bcrypt.hash(password, 12);
+    if (password) updateData.password_hash = await bcrypt.hash(password, 12);
 
     const { data: updatedUser } = await supabase
       .from('users')
@@ -75,14 +75,14 @@ export async function PATCH(req: NextRequest) {
       .select('*, role:roles(*)')
       .single();
 
-    if (updatedUser?.clientId && business !== undefined) {
-      await supabase.from('clients').update({ companyName: business }).eq('id', updatedUser.clientId);
+    if (updatedUser?.client_id && business !== undefined) {
+      await supabase.from('clients').update({ company_name: business }).eq('id', updatedUser.client_id);
     }
 
     const token = signToken({ id: updatedUser!.id, email: updatedUser!.email, role: updatedUser!.role?.name ?? 'USER' });
 
-    const { data: client } = updatedUser!.clientId
-      ? await supabase.from('clients').select('*').eq('id', updatedUser!.clientId).single()
+    const { data: client } = updatedUser!.client_id
+      ? await supabase.from('clients').select('*').eq('id', updatedUser!.client_id).single()
       : { data: null };
 
     return NextResponse.json({
@@ -92,10 +92,10 @@ export async function PATCH(req: NextRequest) {
         email: updatedUser!.email,
         name: updatedUser!.name,
         role: updatedUser!.role?.name,
-        phone: updatedUser!.phone || client?.contactPhone || phone || '',
-        business: client?.companyName || business || '',
-        adminId: updatedUser!.adminId || '',
-        clientId: updatedUser!.clientId || '',
+        phone: updatedUser!.phone || client?.contact_phone || phone || '',
+        business: client?.company_name || business || '',
+        adminId: updatedUser!.admin_id || '',
+        clientId: updatedUser!.client_id || '',
       },
     });
   } catch (err: any) {

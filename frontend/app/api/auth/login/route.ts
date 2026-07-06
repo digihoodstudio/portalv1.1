@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     if (error || !user) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     if (user.suspended) return NextResponse.json({ error: 'Your account has been suspended. Contact support.' }, { status: 403 });
 
-    const isValid = await bcrypt.compare(password, user.passwordHash);
+    const isValid = await bcrypt.compare(password, user.password_hash);
     if (!isValid) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
 
     const token = signToken({ id: user.id, email: user.email, role: user.role?.name ?? 'USER' });
@@ -38,8 +38,8 @@ export async function POST(req: NextRequest) {
         role: user.role?.name,
         phone: user.phone || '',
         business: '',
-        adminId: user.adminId || '',
-        clientId: user.clientId || '',
+        adminId: user.admin_id || '',
+        clientId: user.client_id || '',
       },
     });
   } catch (err: any) {
