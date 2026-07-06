@@ -1,9 +1,7 @@
 "use client";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 export default function ServicesPage() {
-  const router = useRouter();
-  useEffect(() => { router.replace("/#services"); }, [router]);
+  useEffect(() => { window.location.href = "/#services"; }, []);
   return null;
 }
