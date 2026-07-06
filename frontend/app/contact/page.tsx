@@ -50,6 +50,7 @@ export default function ContactPage() {
           business,
           message,
           subject: "New Contact Form Submission from PortalV1",
+          cc: "info@digihoodstudio.com",
         }),
       });
 
