@@ -4,8 +4,6 @@ import { Check } from "lucide-react";
 const tiers = [
   {
     title: "Starter",
-    price: "$2,997",
-    period: "/mo",
     description:
       "AI receptionist with appointment booking, scripts, and reports.",
     service: "AI Receptionist & Appointment Setter",
@@ -20,8 +18,6 @@ const tiers = [
   },
   {
     title: "Growth",
-    price: "$4,997",
-    period: "/mo",
     description:
       "Adds follow-up automation, CRM integration, and strategy calls.",
     service: "Missed Call Recovery",
@@ -36,8 +32,6 @@ const tiers = [
   },
   {
     title: "Dominance",
-    price: "$8,997",
-    period: "/mo",
     description:
       "Unlimited contacts, full funnel automation, and brand-trained AI.",
     service: "Dead Lead Reactivation",
@@ -56,11 +50,11 @@ export default function PricingSection() {
   return (
     <section
       id="pricing"
-      className="scroll-mt-28 rounded-[20px] border border-white/[0.06] bg-[#080D26] p-6 md:p-12"
+      className="scroll-mt-28 rounded-[20px] border border-white/[0.06] bg-surface p-6 md:p-12"
     >
       <div className="mb-10 text-center">
         <p className="text-sm uppercase tracking-[0.3em] text-gold">Pricing</p>
-        <h2 className="mt-3 text-2xl font-semibold text-white md:text-4xl">
+        <h2 className="mt-3 text-2xl font-semibold text-heading md:text-4xl">
           Plans for aggressive enterprise growth.
         </h2>
         <p className="mt-4 mx-auto max-w-xl text-foreground/80">
@@ -76,7 +70,7 @@ export default function PricingSection() {
             className={`relative flex h-full flex-col rounded-[20px] border transition ${
               tier.highlight
                 ? "border-gold/30 bg-gradient-to-b from-gold/[0.06] to-transparent"
-                : "border-white/[0.06] bg-[#080D26]"
+                : "border-white/[0.06] bg-surface"
             }`}
           >
             {tier.highlight && (
@@ -90,17 +84,9 @@ export default function PricingSection() {
                 <p className="text-xs uppercase tracking-[0.15em] text-gold">
                   {tier.service}
                 </p>
-                <h3 className="mt-2 text-xl font-semibold text-white">
+                <h3 className="mt-2 text-xl font-semibold text-heading">
                   {tier.title}
                 </h3>
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-white">
-                    {tier.price}
-                  </span>
-                  <span className="text-sm text-foreground/60">
-                    {tier.period}
-                  </span>
-                </div>
                 <p className="mt-2 text-sm text-foreground/70 leading-relaxed">
                   {tier.description}
                 </p>

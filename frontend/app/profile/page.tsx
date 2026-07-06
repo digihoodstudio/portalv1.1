@@ -150,16 +150,16 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <main className="mx-auto mt-32 max-w-xl px-6 pb-24 text-center text-white">
+      <main className="mx-auto mt-32 max-w-xl px-6 pb-24 text-center text-heading">
         <div className="rounded-[32px] border border-white/10 bg-glass p-10 shadow-glow">
-          <p className="animate-pulse text-sm text-white/60">Fetching secure profile configuration...</p>
+          <p className="animate-pulse text-sm text-heading/60">Fetching secure profile configuration...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="relative mx-auto mt-32 max-w-5xl px-6 pb-24 md:px-12 font-sans text-white">
+    <main className="relative mx-auto mt-32 max-w-5xl px-6 pb-24 md:px-12 font-sans text-heading">
       {/* Decorative glow */}
       <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
         <div className="h-[300px] w-[500px] rounded-full bg-purple-500/10 blur-[120px]" />
@@ -176,17 +176,17 @@ export default function ProfilePage() {
         >
           <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/30">
             <User className="h-12 w-12" />
-            <span className="absolute bottom-1 right-1 h-3 w-3 rounded-full bg-green-400 border-2 border-[#050b1d]" />
+            <span className="absolute bottom-1 right-1 h-3 w-3 rounded-full bg-green-400 border-2 border-white/10" />
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-white">{name || 'Systems User'}</h2>
-            <p className="text-xs text-white/50">{email}</p>
+            <h2 className="text-lg font-bold text-heading">{name || 'Systems User'}</h2>
+            <p className="text-xs text-heading/50">{email}</p>
           </div>
 
           <div className="w-full border-t border-white/10 pt-6 space-y-4">
-            <div className="flex items-center justify-between text-xs text-white/70">
-              <span className="flex items-center gap-2 text-white/40">
+            <div className="flex items-center justify-between text-xs text-heading/70">
+              <span className="flex items-center gap-2 text-heading/40">
                 <Shield size={14} /> Role
               </span>
               <span className="rounded-full bg-purple-500/10 border border-purple-500/20 px-3 py-1 font-semibold text-purple-300">
@@ -195,16 +195,16 @@ export default function ProfilePage() {
             </div>
 
             {business && (
-              <div className="flex items-center justify-between text-xs text-white/70">
-                <span className="flex items-center gap-2 text-white/40">
+              <div className="flex items-center justify-between text-xs text-heading/70">
+                <span className="flex items-center gap-2 text-heading/40">
                   <Briefcase size={14} /> Business
                 </span>
-                <span className="font-semibold text-white/80">{business}</span>
+                <span className="font-semibold text-heading/80">{business}</span>
               </div>
             )}
             
-            <div className="flex items-center justify-between text-xs text-white/70">
-              <span className="flex items-center gap-2 text-white/40">
+            <div className="flex items-center justify-between text-xs text-heading/70">
+              <span className="flex items-center gap-2 text-heading/40">
                 <CheckCircle size={14} /> Status
               </span>
               <span className="rounded-full bg-green-950/20 border border-green-500/25 px-3 py-1 font-semibold text-green-400">
@@ -222,8 +222,8 @@ export default function ProfilePage() {
           className="rounded-3xl border border-white/10 bg-glass p-6 md:p-8 shadow-glow"
         >
           <div>
-            <h1 className="text-xl font-bold text-white md:text-2xl">Profile Settings</h1>
-            <p className="text-xs text-white/50 mt-1">Configure your personal information, contact credentials, and secure password.</p>
+            <h1 className="text-xl font-bold text-heading md:text-2xl">Profile Settings</h1>
+            <p className="text-xs text-heading/50 mt-1">Configure your personal information, contact credentials, and secure password.</p>
           </div>
 
           {/* Feedback Messages */}
@@ -259,9 +259,9 @@ export default function ProfilePage() {
               <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest">Account Details</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block mb-1.5">Full Name</label>
+                  <label className="text-[10px] font-bold text-heading/50 tracking-wider uppercase block mb-1.5">Full Name</label>
                   <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-purple-500/50 transition">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                       <User size={14} />
                     </span>
                     <input
@@ -270,15 +270,15 @@ export default function ProfilePage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Enter your name"
-                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block mb-1.5">Email Address</label>
+                  <label className="text-[10px] font-bold text-heading/50 tracking-wider uppercase block mb-1.5">Email Address</label>
                   <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-purple-500/50 transition">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                       <Mail size={14} />
                     </span>
                     <input
@@ -287,7 +287,7 @@ export default function ProfilePage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter email"
-                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                     />
                   </div>
                 </div>
@@ -299,9 +299,9 @@ export default function ProfilePage() {
               <h3 className="text-xs font-bold text-purple-400 uppercase tracking-widest">Client & Business info</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block mb-1.5">Business / Company Name</label>
+                  <label className="text-[10px] font-bold text-heading/50 tracking-wider uppercase block mb-1.5">Business / Company Name</label>
                   <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-purple-500/50 transition">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                       <Building size={14} />
                     </span>
                     <input
@@ -309,15 +309,15 @@ export default function ProfilePage() {
                       value={business}
                       onChange={(e) => setBusiness(e.target.value)}
                       placeholder="Company Name"
-                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block mb-1.5">Phone Number</label>
+                  <label className="text-[10px] font-bold text-heading/50 tracking-wider uppercase block mb-1.5">Phone Number</label>
                   <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-purple-500/50 transition">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                       <Phone size={14} />
                     </span>
                     <input
@@ -325,7 +325,7 @@ export default function ProfilePage() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Phone Number"
-                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                     />
                   </div>
                 </div>
@@ -339,9 +339,9 @@ export default function ProfilePage() {
               </h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block mb-1.5">New Password</label>
+                  <label className="text-[10px] font-bold text-heading/50 tracking-wider uppercase block mb-1.5">New Password</label>
                   <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-purple-500/50 transition">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                       <Lock size={14} />
                     </span>
                     <input
@@ -349,15 +349,15 @@ export default function ProfilePage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-white/50 tracking-wider uppercase block mb-1.5">Confirm New Password</label>
+                  <label className="text-[10px] font-bold text-heading/50 tracking-wider uppercase block mb-1.5">Confirm New Password</label>
                   <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-purple-500/50 transition">
-                    <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                    <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                       <Lock size={14} />
                     </span>
                     <input
@@ -365,7 +365,7 @@ export default function ProfilePage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                      className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                     />
                   </div>
                 </div>
@@ -377,7 +377,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={updating}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-500 hover:bg-purple-600 px-6 py-3 text-xs font-bold text-white transition duration-200 shadow-md hover:scale-[1.01] disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-500 hover:bg-purple-600 px-6 py-3 text-xs font-bold text-heading transition duration-200 shadow-md hover:scale-[1.01] disabled:opacity-50"
               >
                 {updating ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : null}
                 <span>Save Profile Changes</span>

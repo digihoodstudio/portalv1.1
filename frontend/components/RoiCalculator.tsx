@@ -46,7 +46,7 @@ export default function RoiCalculator() {
   return (
     <section
       id="roi-calculator"
-      className="scroll-mt-28 rounded-[20px] border border-white/[0.06] bg-[#080D26] p-6 md:p-12"
+      className="scroll-mt-28 rounded-[20px] border border-white/[0.06] bg-surface p-6 md:p-12"
     >
       <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div className="space-y-8">
@@ -54,7 +54,7 @@ export default function RoiCalculator() {
             <p className="text-sm uppercase tracking-[0.3em] text-gold font-bold">
               ROI Calculator
             </p>
-            <h2 className="mt-2 text-xl font-semibold text-white md:text-4xl">
+            <h2 className="mt-2 text-xl font-semibold text-heading md:text-4xl">
               Calculate your lost opportunity cost.
             </h2>
             <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
@@ -76,7 +76,7 @@ export default function RoiCalculator() {
                   className={`rounded-2xl border px-3 py-3.5 text-xs font-semibold tracking-wide transition-all ${
                     selectedIndustry === key
                       ? 'border-gold bg-gold/10 text-gold'
-                      : 'border-white/[0.06] bg-white/[0.04] text-white/70 hover:border-white/20 hover:text-white'
+                      : 'border-white/[0.06] bg-white/[0.04] text-heading/70 hover:border-white/20 hover:text-heading'
                   }`}
                 >
                   {data.name}
@@ -103,7 +103,7 @@ export default function RoiCalculator() {
               onChange={(e) => setMissedCalls(Number(e.target.value))}
               className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-gold focus:outline-none"
             />
-            <div className="flex justify-between text-[10px] text-white/30">
+            <div className="flex justify-between text-[10px] text-heading/30">
               <span>10 calls</span>
               <span>150 calls</span>
               <span>300 calls</span>
@@ -121,14 +121,14 @@ export default function RoiCalculator() {
               <p className="text-xs uppercase tracking-[0.15em] text-gold">
                 Estimated Monthly Value
               </p>
-              <h3 className="text-3xl font-extrabold text-white mt-1">
+              <h3 className="text-3xl font-extrabold text-heading mt-1">
                 Recovered Revenue
               </h3>
             </div>
 
-            <div className="flex items-baseline gap-2 text-white">
+            <div className="flex items-baseline gap-2 text-heading">
               <span className="text-2xl md:text-3xl font-bold text-gold flex-shrink-0 self-center">
-                $
+                NPR
               </span>
               <motion.span
                 key={stats.recoveredRevenue}
@@ -138,22 +138,22 @@ export default function RoiCalculator() {
               >
                 {stats.recoveredRevenue.toLocaleString()}
               </motion.span>
-              <span className="text-xs text-white/40 ml-2 font-mono">
+              <span className="text-xs text-heading/40 ml-2 font-mono">
                 / month
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6 mt-2">
               <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4 text-center">
-                <p className="text-[10px] uppercase tracking-wider text-white/40">
+                <p className="text-[10px] uppercase tracking-wider text-heading/40">
                   Recovered Bookings
                 </p>
-                <p className="text-2xl font-bold text-white mt-1">
+                <p className="text-2xl font-bold text-heading mt-1">
                   {stats.recoveredCalls}
                 </p>
               </div>
               <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4 text-center">
-                <p className="text-[10px] uppercase tracking-wider text-white/40">
+                <p className="text-[10px] uppercase tracking-wider text-heading/40">
                   Plan ROI Multiple
                 </p>
                 <p className="text-2xl font-bold text-gold mt-1">
@@ -167,7 +167,7 @@ export default function RoiCalculator() {
               <span>
                 Based on a{" "}
                 {Math.round(industryParams[selectedIndustry].closeRate * 100)}%
-                closing conversion and $
+                closing conversion and NPR
                 {industryParams[selectedIndustry].jobValue.toLocaleString()} average ticket.
               </span>
             </div>

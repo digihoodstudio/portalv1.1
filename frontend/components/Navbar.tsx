@@ -5,8 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -32,6 +33,10 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => { setMounted(true); }, []);
 
   // ── Glow tracking ──
   const headerRef = useRef<HTMLElement>(null);
@@ -262,6 +267,13 @@ export default function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="rounded-full border border-white/10 bg-white/5 p-2.5 text-foreground transition hover:bg-white/10 hover:scale-[1.03]"
+                  aria-label="Toggle theme"
+                >
+                  {mounted && theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+                </button>
                 <Link
                   href="/login"
                   className="rounded-full border border-gold/20 bg-gold/5 px-5 py-2.5 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/10 hover:shadow-[0_0_20px_rgba(207,199,186,0.2)] hover:scale-[1.03]"
@@ -324,7 +336,7 @@ export default function Navbar() {
                           />
                         )}
                         <div>
-                          <p className="text-sm font-medium text-white">
+                          <p className="text-sm font-medium text-heading">
                             {session.user.name}
                           </p>
                           <p className="text-xs text-foreground/50">

@@ -5,14 +5,32 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
-  --color-background: #02061D;
-  --color-foreground: #BDB6AC;
-  --color-gold: #CFC7BA;
-  --color-gold-dim: #8E7D69;
-  --color-surface: #080D26;
-  --color-surface-elevated: #0C1230;
+  color-scheme: light;
+  --color-background: 243 240 235;
+  --color-foreground: 28 28 46;
+  --color-heading: 10 12 24;
+  --color-gold: 184 149 106;
+  --color-gold-dim: 138 123 102;
+  --color-surface: 255 255 255;
+  --color-surface-elevated: 237 233 227;
+  --glass-rgb: 255 255 255;
+  --gold-rgb: 184 149 106;
+  --gradient-bg: radial-gradient(circle at top, rgba(184,149,106,0.10), transparent 40%), linear-gradient(180deg, #F3F0EB 0%, #EDE9E3 100%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-background: 10 12 24;
+  --color-foreground: 197 191 182;
+  --color-heading: 255 255 255;
+  --color-gold: 209 201 188;
+  --color-gold-dim: 154 139 122;
+  --color-surface: 17 20 45;
+  --color-surface-elevated: 24 27 56;
+  --glass-rgb: 255 255 255;
+  --gold-rgb: 207 199 186;
+  --gradient-bg: radial-gradient(circle at top, rgba(154,139,122,0.16), transparent 40%), linear-gradient(180deg, #0A0C18 0%, #0E1126 100%);
 }
 
 h1, h2, h3, h4, h5, h6, .font-display {
@@ -30,19 +48,24 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
 }
 
 /* ── Scrollbar ── */
+.dark ::-webkit-scrollbar { width: 6px; height: 6px; }
+.dark ::-webkit-scrollbar-track { background: transparent; }
+.dark ::-webkit-scrollbar-thumb { background: rgba(207,199,186,0.15); border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: rgba(207,199,186,0.3); }
+
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(207,199,186,0.15); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(207,199,186,0.3); }
+::-webkit-scrollbar-thumb { background: rgba(28,28,46,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(28,28,46,0.25); }
 
 ::selection {
-  background: rgba(207, 199, 186, 0.25);
-  color: #fff;
+  background: rgb(var(--color-gold));
+  color: rgb(var(--color-background));
 }
 
 button, input, textarea, select {
@@ -51,49 +74,65 @@ button, input, textarea, select {
 
 /* ── Utility classes ── */
 .bg-glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(var(--glass-rgb) / 0.05);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
 }
 
+.dark .bg-glass {
+  background: rgba(var(--glass-rgb) / 0.05);
+}
+
 .bg-glass-deep {
-  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  background: linear-gradient(135deg, rgba(var(--glass-rgb) / 0.08) 0%, rgba(var(--glass-rgb) / 0.02) 100%);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
 }
 
 .bg-glass-strong {
-  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+  background: linear-gradient(135deg, rgba(var(--glass-rgb) / 0.12) 0%, rgba(var(--glass-rgb) / 0.04) 100%);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
 }
 
 .text-gold {
-  color: var(--color-gold);
+  color: rgb(var(--color-gold));
 }
 
 .border-gold {
-  border-color: var(--color-gold-dim);
+  border-color: rgb(var(--color-gold-dim));
 }
 
 .shadow-glow {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255,255,255,0.5) inset;
+}
+
+.dark .shadow-glow {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255,255,255,0.04) inset;
 }
 
 .shadow-glow-lg {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255,255,255,0.5) inset;
+}
+
+.dark .shadow-glow-lg {
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255,255,255,0.06) inset;
 }
 
 .shadow-glow-sm {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255,255,255,0.5) inset;
+}
+
+.dark .shadow-glow-sm {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255,255,255,0.04) inset;
 }
 
 .border-glass {
-  border-color: rgba(207, 199, 186, 0.12);
+  border-color: rgba(var(--gold-rgb) / 0.12);
 }
 
 .border-glass-light {
-  border-color: rgba(207, 199, 186, 0.08);
+  border-color: rgba(var(--gold-rgb) / 0.08);
 }
 
 /* ── 3D perspective utility ── */
@@ -112,7 +151,7 @@ button, input, textarea, select {
 
 /* ── Focus ring reset ── */
 *:focus-visible:not(input):not(textarea):not(select) {
-  outline: 2px solid rgba(207,199,186,0.5);
+  outline: 2px solid rgb(var(--color-gold));
   outline-offset: 2px;
 }
 

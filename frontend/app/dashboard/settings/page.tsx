@@ -32,31 +32,31 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-semibold text-white mb-2 flex items-center gap-3">
+      <h1 className="text-3xl font-semibold text-heading mb-2 flex items-center gap-3">
         <Settings className="text-gold" /> Settings
       </h1>
       <p className="text-foreground/60 mb-8">Manage your account preferences.</p>
 
       <div className="space-y-6">
         <div className="rounded-2xl border border-white/10 bg-glass p-6">
-          <h2 className="flex items-center gap-2 text-lg font-semibold text-white mb-4">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-heading mb-4">
             <User size={16} className="text-gold" /> Profile
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-white/50 block mb-1.5">Full Name</label>
+              <label className="text-xs font-semibold text-heading/50 block mb-1.5">Full Name</label>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-[#0c1433]/80 px-4 py-2.5 text-sm text-white outline-none focus:border-gold/50"
+                className="w-full rounded-xl border border-white/10 bg-surface px-4 py-2.5 text-sm text-heading outline-none focus:border-gold/50"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-white/50 block mb-1.5">Email</label>
+              <label className="text-xs font-semibold text-heading/50 block mb-1.5">Email</label>
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-[#0c1433]/80 px-4 py-2.5 text-sm text-white outline-none focus:border-gold/50"
+                className="w-full rounded-xl border border-white/10 bg-surface px-4 py-2.5 text-sm text-heading outline-none focus:border-gold/50"
               />
             </div>
             <button onClick={handleSave} className="rounded-xl bg-gold px-6 py-2.5 text-background font-bold text-sm hover:brightness-110">
@@ -66,7 +66,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-glass p-6">
-          <h2 className="flex items-center gap-2 text-lg font-semibold text-white mb-4">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-heading mb-4">
             <Shield size={16} className="text-gold" /> Session
           </h2>
           <button onClick={handleLogout} className="flex items-center gap-2 rounded-xl bg-red-500/10 text-red-300 px-4 py-2.5 text-sm font-semibold hover:bg-red-500/20 transition">

@@ -12,8 +12,8 @@ function DigihoodLogo() {
     <Image
       src="/digilogo.png"
       alt="Digihood Studio"
-      width={64}
-      height={64}
+      width={48}
+      height={48}
       className="rounded-full object-cover"
     />
   );
@@ -76,7 +76,7 @@ function LoginContent() {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center px-4 pb-16 pt-28 md:px-6 font-sans">
+    <main className="relative flex min-h-screen items-center justify-center px-4 pt-24 pb-6 md:px-6 font-sans">
       <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
         <div className="h-[400px] w-[600px] rounded-full bg-gold/10 blur-[120px]" />
       </div>
@@ -85,15 +85,15 @@ function LoginContent() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-full max-w-[440px] rounded-[24px] border border-white/10 bg-background/80 p-8 shadow-glow text-white backdrop-blur-md"
+        className="w-full max-w-[400px] rounded-[24px] border border-white/10 bg-background/80 p-6 shadow-glow text-heading backdrop-blur-md"
       >
-        <div className="mx-auto flex w-full items-center justify-center mb-4">
+        <div className="mx-auto flex w-full items-center justify-center mb-3">
           <DigihoodLogo />
         </div>
 
         <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight text-white">Welcome Back</h1>
-          <p className="mt-1 text-xs text-white/50">Sign in to your portal</p>
+          <h1 className="text-xl font-bold tracking-tight text-heading">Welcome Back</h1>
+          <p className="mt-0.5 text-xs text-heading/50">Sign in to your portal</p>
         </div>
 
         <AnimatePresence mode="wait">
@@ -122,13 +122,13 @@ function LoginContent() {
           )}
         </AnimatePresence>
 
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-4 space-y-3">
           <div>
-            <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
+            <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
               Email Address
             </label>
             <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-              <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+              <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                 <Mail size={14} />
               </span>
               <input
@@ -137,17 +137,17 @@ function LoginContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
+            <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
               Password
             </label>
             <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-              <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+              <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                 <Lock size={14} />
               </span>
               <input
@@ -156,7 +156,7 @@ function LoginContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
               />
             </div>
           </div>
@@ -164,9 +164,9 @@ function LoginContent() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl
-                       bg-gold hover:brightness-110 py-3.5 text-xs font-bold
-                       text-[#030816] transition duration-200 shadow-md shadow-gold/10
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl
+                       bg-gold hover:brightness-110 py-3 text-xs font-bold
+                       text-background transition duration-200 shadow-md shadow-gold/10
                        hover:scale-[1.01] disabled:opacity-50"
           >
             <span>{loading ? "Signing in..." : "Sign In"}</span>
@@ -174,16 +174,16 @@ function LoginContent() {
           </button>
         </form>
 
-        <div className="mt-6">
+        <div className="mt-4">
           <div className="relative flex items-center gap-3">
             <div className="flex-1 border-t border-white/10" />
-            <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">or continue with</span>
+            <span className="text-[9px] font-bold uppercase tracking-widest text-heading/30">or continue with</span>
             <div className="flex-1 border-t border-white/10" />
           </div>
 
           <button
             onClick={() => signIn("google")}
-            className="mt-4 flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/5 py-3 text-xs font-bold text-white hover:bg-white/10 transition"
+            className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-bold text-heading hover:bg-white/10 transition"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -195,10 +195,10 @@ function LoginContent() {
           </button>
         </div>
 
-        <div className="mt-5 border-t border-white/5 pt-5 text-center">
-          <p className="text-xs text-white/50">
+        <div className="mt-4 border-t border-white/5 pt-4 text-center">
+          <p className="text-xs text-heading/50">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="font-bold text-gold hover:text-white transition-all">
+            <Link href="/register" className="font-bold text-gold hover:text-heading transition-all">
               Sign Up / Register
             </Link>
           </p>
@@ -212,8 +212,8 @@ function LoginContent() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <main className="relative flex min-h-screen items-center justify-center px-4 pb-16 pt-28 md:px-6 font-sans text-white">
-        <div className="text-center"><p className="animate-pulse text-xs text-white/50">Initializing login forms...</p></div>
+      <main className="relative flex min-h-screen items-center justify-center px-4 py-4 md:px-6 font-sans text-heading">
+        <div className="text-center"><p className="animate-pulse text-xs text-heading/50">Initializing login forms...</p></div>
       </main>
     }>
       <LoginContent />

@@ -88,7 +88,7 @@ export default function WatchDemoPage() {
       if (lower.includes('emergency') || lower.includes('clog') || lower.includes('back') || lower.includes('broken')) {
         reply = "Oh no, custer backing-up drainage is a priority emergency. I can reserve our 1:30 PM dispatch slot tomorrow. Should I lock that in for you?";
       } else if (lower.includes('price') || lower.includes('cost') || lower.includes('how much')) {
-        reply = "Our standard septic pumping starts at $1,497 under our yearly contracts, and inspections start at $195. Should we schedule an inspector to provide an estimate?";
+        reply = "Our service packages include full septic pumping and inspection. Should we schedule an inspector to provide an estimate?";
       } else if (lower.includes('laundry') || lower.includes('linen') || lower.includes('commercial')) {
         reply = "For commercial routes and commercial laundry accounts, let's get you set up with a route audit check. Would you like a booking call?";
       }
@@ -197,10 +197,10 @@ export default function WatchDemoPage() {
             <span className="h-2 w-2 rounded-full bg-gold animate-pulse" />
             <p className="text-xs uppercase tracking-[0.3em] text-gold font-bold">Interactive Sandbox</p>
           </div>
-          <h1 className="mt-3 text-3xl font-bold text-white md:text-4xl bg-gradient-to-r from-white via-white to-gold bg-clip-text text-transparent">
+          <h1 className="mt-3 text-3xl font-bold text-heading md:text-4xl bg-gradient-to-r from-white via-white to-gold bg-clip-text text-transparent">
             See the AI Growth System in action
           </h1>
-          <p className="mt-3 max-w-2xl text-xs text-white/55 leading-relaxed">
+          <p className="mt-3 max-w-2xl text-xs text-heading/55 leading-relaxed">
             Click through our interactive simulator sandboxes to preview the AI receptionist, automated SMS missed call flows, and lead reactivation sequences live.
           </p>
         </div>
@@ -219,7 +219,7 @@ export default function WatchDemoPage() {
               className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold border transition ${
                 activeTab === tab.id
                   ? 'bg-gold border-gold text-background'
-                  : 'bg-white/5 border-white/5 text-white/70 hover:bg-white/10'
+                  : 'bg-white/5 border-white/5 text-heading/70 hover:bg-white/10'
               }`}
             >
               {tab.icon} {tab.label}
@@ -228,24 +228,24 @@ export default function WatchDemoPage() {
         </div>
 
         {/* SIMULATOR SCREEN CONTAINER */}
-        <div className="rounded-[24px] border border-white/10 bg-[#060c22]/60 p-4 md:p-6 min-h-[420px] flex flex-col justify-between">
+        <div className="rounded-[24px] border border-white/10 bg-surface p-4 md:p-6 min-h-[420px] flex flex-col justify-between">
           
           {/* TAB 1: AI VOICE CSR SIMULATION */}
           {activeTab === 'voice' && (
             <div className="grid gap-6 md:grid-cols-[280px_1fr] h-full items-center">
               {/* Left Side: Mock Phone Device */}
               <div className="flex flex-col items-center justify-center">
-                <div className="w-[220px] h-[380px] rounded-[36px] border-[6px] border-white/10 bg-[#04081a] relative flex flex-col justify-between p-4 overflow-hidden shadow-2xl">
+                <div className="w-[220px] h-[380px] rounded-[36px] border-[6px] border-white/10 bg-background relative flex flex-col justify-between p-4 overflow-hidden shadow-2xl">
                   {/* Top Notch */}
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-white/10 rounded-full" />
                   
                   {/* Screen Content */}
-                  <div className="flex-1 flex flex-col justify-between py-6 text-center text-white">
+                  <div className="flex-1 flex flex-col justify-between py-6 text-center text-heading">
                     {voiceCallStatus === 'idle' && (
                       <div className="my-auto space-y-4">
                         <Smartphone size={36} className="mx-auto text-gold animate-bounce" />
                         <p className="text-xs font-bold">AI Autodialer CSR</p>
-                        <p className="text-[10px] text-white/40">Ready to simulate an incoming missed call response flow.</p>
+                        <p className="text-[10px] text-heading/40">Ready to simulate an incoming missed call response flow.</p>
                       </div>
                     )}
 
@@ -256,7 +256,7 @@ export default function WatchDemoPage() {
                         </div>
                         <div>
                           <p className="text-xs font-bold uppercase tracking-wider text-gold">Ringing...</p>
-                          <p className="text-[10px] text-white/50 mt-1">Septic Specialists AI</p>
+                          <p className="text-[10px] text-heading/50 mt-1">Septic Specialists AI</p>
                         </div>
                       </div>
                     )}
@@ -268,7 +268,7 @@ export default function WatchDemoPage() {
                         </div>
                         <div>
                           <p className="text-xs font-bold text-emerald-400">Live Call Connected</p>
-                          <p className="text-[9px] text-white/30 font-mono mt-1">0:{(voiceStep * 2).toString().padStart(2, '0')}</p>
+                          <p className="text-[9px] text-heading/30 font-mono mt-1">0:{(voiceStep * 2).toString().padStart(2, '0')}</p>
                         </div>
                       </div>
                     )}
@@ -279,7 +279,7 @@ export default function WatchDemoPage() {
                           <CheckCircle size={16} />
                         </div>
                         <p className="text-xs font-bold text-blue-400">Booking Saved</p>
-                        <p className="text-[9px] text-white/40">Dispatch slot reserved in ServiceTitan CRM database.</p>
+                        <p className="text-[9px] text-heading/40">Dispatch slot reserved in ServiceTitan CRM database.</p>
                       </div>
                     )}
 
@@ -296,7 +296,7 @@ export default function WatchDemoPage() {
                       {voiceCallStatus === 'ringing' && (
                         <button
                           onClick={acceptVoiceCall}
-                          className="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full font-bold text-xs shadow-md animate-bounce"
+                          className="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-heading rounded-full font-bold text-xs shadow-md animate-bounce"
                         >
                           Accept Call
                         </button>
@@ -315,14 +315,14 @@ export default function WatchDemoPage() {
               </div>
 
               {/* Right Side: Interactive Live Transcript */}
-              <div className="flex-1 flex flex-col justify-between h-full bg-[#04081c]/50 border border-white/5 rounded-2xl p-4 min-h-[300px]">
+              <div className="flex-1 flex flex-col justify-between h-full bg-background border border-white/5 rounded-2xl p-4 min-h-[300px]">
                 <div className="border-b border-white/5 pb-2 mb-3">
-                  <p className="text-[10px] uppercase font-bold text-white/40 tracking-wider">Live Transcription Feed</p>
+                  <p className="text-[10px] uppercase font-bold text-heading/40 tracking-wider">Live Transcription Feed</p>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto space-y-3 max-h-[260px] pr-2">
                   {voiceTranscript.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-center text-white/30 text-xs italic">
+                    <div className="h-full flex items-center justify-center text-center text-heading/30 text-xs italic">
                       Click &quot;Simulate Missed Call&quot; and accept the ring on the phone widget to start conversation logs.
                     </div>
                   ) : (
@@ -342,8 +342,8 @@ export default function WatchDemoPage() {
                         <div key={index} className={`flex ${isAI ? 'justify-start' : 'justify-end'}`}>
                           <div className={`max-w-[85%] rounded-xl p-3 text-xs ${
                             isAI 
-                              ? 'bg-gold/10 border border-gold/15 text-white rounded-tl-none' 
-                              : 'bg-white/5 border border-white/5 text-white/95 rounded-tr-none'
+                              ? 'bg-gold/10 border border-gold/15 text-heading rounded-tl-none' 
+                              : 'bg-white/5 border border-white/5 text-heading/95 rounded-tr-none'
                           }`}>
                             <span className={`text-[8px] font-bold uppercase tracking-wider block mb-1 ${
                               isAI ? 'text-gold' : 'text-purple-400'
@@ -366,17 +366,17 @@ export default function WatchDemoPage() {
             <div className="grid gap-6 md:grid-cols-[280px_1fr] h-full items-center">
               {/* Left Side: Mock SMS Screen */}
               <div className="flex flex-col items-center justify-center">
-                <div className="w-[220px] h-[380px] rounded-[36px] border-[6px] border-white/10 bg-[#04081a] relative flex flex-col justify-between p-3 overflow-hidden shadow-2xl">
+                <div className="w-[220px] h-[380px] rounded-[36px] border-[6px] border-white/10 bg-background relative flex flex-col justify-between p-3 overflow-hidden shadow-2xl">
                   {/* Notch */}
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-white/10 rounded-full" />
                   
                   {/* SMS UI */}
-                  <div className="flex-1 flex flex-col justify-between py-6 text-white text-xs">
+                  <div className="flex-1 flex flex-col justify-between py-6 text-heading text-xs">
                     {smsStatus === 'idle' ? (
                       <div className="my-auto space-y-4 text-center px-4">
                         <MessageSquare size={36} className="mx-auto text-gold animate-pulse" />
                         <p className="text-xs font-bold">SMS Recovery Sandbox</p>
-                        <p className="text-[10px] text-white/40">Test how the system automatically re-engages missed callers.</p>
+                        <p className="text-[10px] text-heading/40">Test how the system automatically re-engages missed callers.</p>
                         <button
                           onClick={startSmsSimulation}
                           className="w-full py-2 bg-gold hover:brightness-105 text-background rounded-full font-bold text-[10px] shadow-md mt-2"
@@ -395,8 +395,8 @@ export default function WatchDemoPage() {
                                 key={idx}
                                 className={`flex flex-col rounded-xl px-2.5 py-2 border max-w-[85%] text-[10px] ${
                                   isAI 
-                                    ? 'bg-gold/5 border-gold/10 text-white self-start' 
-                                    : 'bg-white/5 border-white/5 text-white/95 self-end ml-auto'
+                                    ? 'bg-gold/5 border-gold/10 text-heading self-start' 
+                                    : 'bg-white/5 border-white/5 text-heading/95 self-end ml-auto'
                                 }`}
                               >
                                 <span className="text-[8px] font-bold tracking-wide uppercase text-gold mb-0.5">
@@ -420,7 +420,7 @@ export default function WatchDemoPage() {
                             value={smsInput}
                             onChange={(e) => setSmsInput(e.target.value)}
                             placeholder="Type a response..."
-                            className="flex-1 bg-[#050b1d] border border-white/10 rounded-lg px-2 py-1 text-[10px] text-white focus:border-gold outline-none"
+                            className="flex-1 bg-surface border border-white/10 rounded-lg px-2 py-1 text-[10px] text-heading focus:border-gold outline-none"
                           />
                           <button
                             type="submit"
@@ -436,19 +436,19 @@ export default function WatchDemoPage() {
               </div>
 
               {/* Right Side: Informative instructions */}
-              <div className="flex-1 bg-[#08102f]/50 border border-white/5 rounded-2xl p-5 space-y-4">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <div className="flex-1 bg-surface border border-white/5 rounded-2xl p-5 space-y-4">
+                <h3 className="text-sm font-bold text-heading flex items-center gap-2">
                   <Sparkles className="text-gold h-4 w-4" /> Live SMS Sandbox Testing
                 </h3>
-                <p className="text-xs text-white/70 leading-relaxed">
+                <p className="text-xs text-heading/70 leading-relaxed">
                   When a call goes unanswered, our autodialer drops offline and instantly transfers the communication channel to an SMS outreach thread. 
                 </p>
-                <div className="bg-[#04081c]/50 rounded-xl p-3 border border-white/5 text-xs text-white/60 space-y-1.5">
+                <div className="bg-background rounded-xl p-3 border border-white/5 text-xs text-heading/60 space-y-1.5">
                   <p className="font-bold text-gold text-[10px] uppercase">Suggested Sandbox Responses to Type:</p>
                   <ul className="list-disc pl-4 space-y-1 text-[10px]">
-                    <li>Type: <strong className="text-white">&quot;I need a tech for an emergency backing-up toilet&quot;</strong> to watch the AI prioritize booking slots.</li>
-                    <li>Type: <strong className="text-white">&quot;How much does it cost?&quot;</strong> to test pricing lookup scripts.</li>
-                    <li>Type: <strong className="text-white">&quot;Send me the booking link&quot;</strong> to watch links auto-populate.</li>
+                    <li>Type: <strong className="text-heading">&quot;I need a tech for an emergency backing-up toilet&quot;</strong> to watch the AI prioritize booking slots.</li>
+                    <li>Type: <strong className="text-heading">&quot;How much does it cost?&quot;</strong> to test pricing lookup scripts.</li>
+                    <li>Type: <strong className="text-heading">&quot;Send me the booking link&quot;</strong> to watch links auto-populate.</li>
                   </ul>
                 </div>
                 {smsStatus === 'active' && (
@@ -471,15 +471,15 @@ export default function WatchDemoPage() {
             <div className="space-y-4">
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <div>
-                  <h3 className="text-sm font-bold text-white">Database Outreach Blaster Simulator</h3>
-                  <p className="text-[10px] text-white/50">Upload a spreadsheet directory, select a template, and watch outreach activate.</p>
+                  <h3 className="text-sm font-bold text-heading">Database Outreach Blaster Simulator</h3>
+                  <p className="text-[10px] text-heading/50">Upload a spreadsheet directory, select a template, and watch outreach activate.</p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <select
                     value={campaignSelected}
                     onChange={(e) => setCampaignSelected(e.target.value)}
-                    className="bg-[#050b1d] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white outline-none"
+                    className="bg-surface border border-white/10 rounded-lg px-2.5 py-1 text-xs text-heading outline-none"
                   >
                     <option value="septic-stale">Septic Annual Service Renewals</option>
                     <option value="commercial-revival">Commercial Laundry Revival campaign</option>
@@ -497,8 +497,8 @@ export default function WatchDemoPage() {
 
               {/* Progress and status */}
               {reactivationStatus !== 'idle' && (
-                <div className="space-y-2 bg-[#04081c]/60 border border-white/5 rounded-xl p-3">
-                  <div className="flex justify-between items-center text-[10px] text-white/60">
+                <div className="space-y-2 bg-background border border-white/5 rounded-xl p-3">
+                  <div className="flex justify-between items-center text-[10px] text-heading/60">
                     <span>Campaign launch sequence: {reactivationProgress}% Complete</span>
                     <span className="font-semibold text-gold font-mono">{reactivationStatus.toUpperCase()}</span>
                   </div>
@@ -508,16 +508,16 @@ export default function WatchDemoPage() {
                   
                   {/* Metrics counter row */}
                   <div className="grid grid-cols-3 gap-3 text-center pt-1.5">
-                    <div className="bg-[#050c22] rounded-lg py-1 border border-white/5">
-                      <span className="text-[9px] text-white/40 block">Total Contacted</span>
-                      <strong className="text-xs text-white mt-0.5">{reactivationStats.contacted} / 4</strong>
+                    <div className="bg-surface rounded-lg py-1 border border-white/5">
+                      <span className="text-[9px] text-heading/40 block">Total Contacted</span>
+                      <strong className="text-xs text-heading mt-0.5">{reactivationStats.contacted} / 4</strong>
                     </div>
-                    <div className="bg-[#050c22] rounded-lg py-1 border border-white/5">
-                      <span className="text-[9px] text-white/40 block">Response replies</span>
-                      <strong className="text-xs text-white mt-0.5">{reactivationStats.replies}</strong>
+                    <div className="bg-surface rounded-lg py-1 border border-white/5">
+                      <span className="text-[9px] text-heading/40 block">Response replies</span>
+                      <strong className="text-xs text-heading mt-0.5">{reactivationStats.replies}</strong>
                     </div>
-                    <div className="bg-[#050c22] rounded-lg py-1 border border-white/5">
-                      <span className="text-[9px] text-white/40 block">Booked in CRM</span>
+                    <div className="bg-surface rounded-lg py-1 border border-white/5">
+                      <span className="text-[9px] text-heading/40 block">Booked in CRM</span>
                       <strong className="text-xs text-gold mt-0.5">{reactivationStats.bookings}</strong>
                     </div>
                   </div>
@@ -525,10 +525,10 @@ export default function WatchDemoPage() {
               )}
 
               {/* Database Table layout */}
-              <div className="overflow-x-auto rounded-xl border border-white/5 bg-[#04081c]/50">
+              <div className="overflow-x-auto rounded-xl border border-white/5 bg-background">
                 <table className="w-full text-left border-collapse text-[10px]">
                   <thead>
-                    <tr className="border-b border-white/10 bg-white/5 text-white/40 font-semibold uppercase tracking-wider">
+                    <tr className="border-b border-white/10 bg-white/5 text-heading/40 font-semibold uppercase tracking-wider">
                       <th className="p-2">Name</th>
                       <th className="p-2">Phone</th>
                       <th className="p-2">Outreach Template</th>
@@ -538,8 +538,8 @@ export default function WatchDemoPage() {
                   <tbody>
                     {leadsList.map((lead, idx) => (
                       <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition">
-                        <td className="p-2 font-bold text-white">{lead.name}</td>
-                        <td className="p-2 text-white/55 font-mono">{lead.phone}</td>
+                        <td className="p-2 font-bold text-heading">{lead.name}</td>
+                        <td className="p-2 text-heading/55 font-mono">{lead.phone}</td>
                         <td className="p-2 text-gold">{campaignSelected === 'septic-stale' ? 'Annual Pumping Renewal Text' : 'Commercial Linen Audit Outreach'}</td>
                         <td className="p-2 text-right">
                           <span className={`inline-block rounded px-2 py-0.5 font-bold ${
@@ -547,7 +547,7 @@ export default function WatchDemoPage() {
                               ? 'bg-green-950 text-green-400 border border-green-500/10'
                               : lead.status === 'Reactivating...' || lead.status.includes('Outbound')
                               ? 'bg-gold/10 text-gold animate-pulse'
-                              : 'bg-white/5 text-white/40'
+                              : 'bg-white/5 text-heading/40'
                           }`}>
                             {lead.status}
                           </span>
@@ -564,40 +564,40 @@ export default function WatchDemoPage() {
           {activeTab === 'analytics' && (
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-bold text-white">Simulated Live Dashboard Console</h3>
-                <p className="text-[10px] text-white/50">Hover widgets to audit active indicators or run simulated outcomes logs.</p>
+                <h3 className="text-sm font-bold text-heading">Simulated Live Dashboard Console</h3>
+                <p className="text-[10px] text-heading/50">Hover widgets to audit active indicators or run simulated outcomes logs.</p>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-3">
-                <div className="bg-[#04081c]/50 border border-white/5 rounded-xl p-4 text-center space-y-1 shadow-glow hover:border-gold/30 transition duration-300">
-                  <span className="text-[9px] uppercase tracking-wider text-white/40">Outbound Dials Fired</span>
-                  <span className="text-2xl font-extrabold block text-white">412 Calls</span>
+                <div className="bg-background border border-white/5 rounded-xl p-4 text-center space-y-1 shadow-glow hover:border-gold/30 transition duration-300">
+                  <span className="text-[9px] uppercase tracking-wider text-heading/40">Outbound Dials Fired</span>
+                  <span className="text-2xl font-extrabold block text-heading">412 Calls</span>
                   <span className="text-[9px] text-emerald-400 block">+14 during live hours</span>
                 </div>
 
-                <div className="bg-[#04081c]/50 border border-white/5 rounded-xl p-4 text-center space-y-1 hover:border-gold/30 transition duration-300">
-                  <span className="text-[9px] uppercase tracking-wider text-white/40">Overall Booking Conversion</span>
-                  <span className="text-2xl font-extrabold block text-white">88.4%</span>
-                  <span className="text-[9px] text-white/40 block">91.4% Missed Call Answer Rate</span>
+                <div className="bg-background border border-white/5 rounded-xl p-4 text-center space-y-1 hover:border-gold/30 transition duration-300">
+                  <span className="text-[9px] uppercase tracking-wider text-heading/40">Overall Booking Conversion</span>
+                  <span className="text-2xl font-extrabold block text-heading">88.4%</span>
+                  <span className="text-[9px] text-heading/40 block">91.4% Missed Call Answer Rate</span>
                 </div>
 
-                <div className="bg-[#04081c]/50 border border-white/5 rounded-xl p-4 text-center space-y-1 hover:border-gold/30 transition duration-300">
-                  <span className="text-[9px] uppercase tracking-wider text-white/40">Revenue Recovered</span>
-                  <span className="text-2xl font-extrabold block text-gold">$34,810</span>
-                  <span className="text-[9px] text-emerald-400 block">+$950 recovered from dead leads</span>
+                <div className="bg-background border border-white/5 rounded-xl p-4 text-center space-y-1 hover:border-gold/30 transition duration-300">
+                  <span className="text-[9px] uppercase tracking-wider text-heading/40">Revenue Recovered</span>
+                  <span className="text-2xl font-extrabold block text-gold">+34.8k</span>
+                  <span className="text-[9px] text-emerald-400 block">+950 recovered from dead leads</span>
                 </div>
               </div>
 
-              <div className="bg-[#04081c]/40 border border-white/5 rounded-xl p-3.5 flex flex-col gap-2">
+              <div className="bg-background border border-white/5 rounded-xl p-3.5 flex flex-col gap-2">
                 <div className="flex justify-between items-center border-b border-white/5 pb-2">
                   <div className="flex items-center gap-1.5">
                     <Volume2 className="text-gold h-4 w-4" />
-                    <span className="text-[10px] font-bold text-white">Call Quality Analytics Recorder Preview</span>
+                    <span className="text-[10px] font-bold text-heading">Call Quality Analytics Recorder Preview</span>
                   </div>
                   <span className="text-[9px] text-emerald-400 bg-emerald-950/20 px-2 py-0.5 rounded border border-emerald-500/10">Passed AI Check</span>
                 </div>
                 
-                <p className="text-[10px] text-white/70 italic leading-normal">
+                <p className="text-[10px] text-heading/70 italic leading-normal">
                   &quot;Great call control. AI receptionist successfully resolved backup emergencies and guided customer to direct CRM booking confirmation details in under 80 seconds.&quot;
                 </p>
               </div>
@@ -608,23 +608,23 @@ export default function WatchDemoPage() {
 
         {/* REAL PHONE OUTBOUND TEST CALL MODULE */}
         <div className="border-t border-white/5 pt-8">
-          <div className="rounded-[24px] border border-white/10 bg-[#07112e] p-6 grid gap-6 md:grid-cols-[1.2fr_0.8fr] items-center">
+          <div className="rounded-[24px] border border-white/10 bg-surface p-6 grid gap-6 md:grid-cols-[1.2fr_0.8fr] items-center">
             <div className="space-y-3">
-              <h3 className="text-md font-bold text-white flex items-center gap-2">
+              <h3 className="text-md font-bold text-heading flex items-center gap-2">
                 <PhoneCall className="text-gold h-5 w-5 animate-pulse" /> Try it on your real phone!
               </h3>
-              <p className="text-xs text-white/60 leading-relaxed">
+              <p className="text-xs text-heading/60 leading-relaxed">
                 Experience the actual voice AI receptionist call. Enter your number below, select a service niche, and click trigger. The system will initiate an outbound Twilio connection directly to your handset.
               </p>
             </div>
 
-            <form onSubmit={handleRealPhoneTest} className="space-y-3 bg-[#04081a]/60 border border-white/5 p-4 rounded-xl">
+            <form onSubmit={handleRealPhoneTest} className="space-y-3 bg-background/60 border border-white/5 p-4 rounded-xl">
               <div>
-                <label className="block text-[9px] text-white/40 uppercase mb-1 font-semibold">1. Select Service Niche Tone</label>
+                <label className="block text-[9px] text-heading/40 uppercase mb-1 font-semibold">1. Select Service Niche Tone</label>
                 <select
                   value={realPhoneIndustry}
                   onChange={(e) => setRealPhoneIndustry(e.target.value)}
-                  className="w-full bg-[#050b1d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white outline-none"
+                  className="w-full bg-surface border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-heading outline-none"
                 >
                   <option value="septic">Septic & Drain Callback Assistant</option>
                   <option value="commercial">Commercial Laundry Answering</option>
@@ -633,14 +633,14 @@ export default function WatchDemoPage() {
               </div>
 
               <div>
-                <label className="block text-[9px] text-white/40 uppercase mb-1 font-semibold">2. Enter Mobile Number</label>
+                <label className="block text-[9px] text-heading/40 uppercase mb-1 font-semibold">2. Enter Mobile Number</label>
                 <input
                   required
                   type="tel"
                   value={realPhoneInput}
                   onChange={(e) => setRealPhoneInput(e.target.value)}
                   placeholder="e.g. +15550188"
-                  className="w-full bg-[#050b1d] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-gold outline-none font-mono"
+                  className="w-full bg-surface border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-heading focus:border-gold outline-none font-mono"
                 />
               </div>
 

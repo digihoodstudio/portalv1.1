@@ -16,11 +16,11 @@ function matchTopic(last: string, keywords: string[]): boolean {
 const TOPICS: [string[], string][] = [
   [
     ["price", "cost", "pricing", "tier", "package", "plan", "much", "fee", "subscription", "charge", "bill", "monthly", "annual", "upgrade", "downgrade"],
-    `We offer three packages tailored to your needs:\n\n• **Starter** — 24/7 AI receptionist, custom scripts, weekly reports, email support.\n• **Growth** (Most Popular) — Everything in Starter, plus missed call recovery, SMS follow-ups, CRM integration, bi-weekly strategy calls.\n• **Dominance** — Everything in Growth, plus dead lead reactivation, unlimited contacts, brand-trained voice, dedicated success manager.\n\nAll plans are month-to-month with no long-term contracts. Most clients see full ROI within 30 days. Which sounds right for you?`,
+    `Great question! Digihood Studio offers AI automation solutions for service businesses. I'd love to learn more about your business to see which solution fits best. What industry are you in and what's your current call volume like?`,
   ],
   [
     ["guarantee", "roi", "result", "worth", "refund", "risk", "satisfaction"],
-    `Every client gets our **Revenue Growth Guarantee**:\n\n1. **48-Hour Live Setup** — Your AI agent takes calls within 2 days.\n2. **10-Second Call Recovery** — Missed callers get an instant text-back.\n3. **Full Analytics Dashboard** — Track every dollar recovered in real time.\n\nWe regularly help service businesses recover **$2,000–$8,000+** per month in lost revenue. Want a custom ROI estimate?`,
+    `Every client gets our **Revenue Growth Guarantee**:\n\n1. **48-Hour Live Setup** — Your AI agent takes calls within 2 days.\n2. **10-Second Call Recovery** — Missed callers get an instant text-back.\n3. **Full Analytics Dashboard** — Track every dollar recovered in real time.\n\nWe regularly help service businesses recover significant lost revenue every month. Want a custom ROI estimate?`,
   ],
   [
     ["book", "schedule", "demo", "consult", "appointment", "meeting", "strategy call", "discovery"],
@@ -32,7 +32,7 @@ const TOPICS: [string[], string][] = [
   ],
   [
     ["reactivat", "dead lead", "old lead", "cold", "dormant", "inactive", "re-engage", "revive", "past client"],
-    `Our **Dead Lead Reactivation** campaigns bring cold contacts back to life:\n\n• **AI-Written Sequences** — SMS and email that sound completely human.\n• **Turnkey Management** — We handle copy, scheduling, scoring, and CRM sync.\n• **Proven Results** — Typical campaigns recover **$5,000–$20,000+** in dormant pipeline.\n\nHow many inactive contacts do you currently have?`,
+    `Our **Dead Lead Reactivation** campaigns bring cold contacts back to life:\n\n• **AI-Written Sequences** — SMS and email that sound completely human.\n• **Turnkey Management** — We handle copy, scheduling, scoring, and CRM sync.\n• **Proven Results** — Turnkey campaigns that revive dormant pipeline.\n\nHow many inactive contacts do you currently have?`,
   ],
   [
     ["receptionist", "inbound", "answer", "phone", "ring", "after hours", "24/7", "virtual assistant", "front desk"],
@@ -103,7 +103,7 @@ function simulateAnswer(last: string, configs: any): string {
     ],
     [
       ["what", "who", "when", "where", "why", "how", "tell", "explain", "about"],
-      `Great question! Digihood Studio is an **AI automation platform** for service businesses. We provide:\n\n1. **24/7 AI Receptionist** — Answers calls, qualifies leads, books appointments.\n2. **Missed Call Recovery** — Instant text-back within 10 seconds.\n3. **Dead Lead Reactivation** — AI campaigns that re-engage cold contacts.\n\nOur clients typically see **$2,000–$8,000+** in recovered revenue per month. Want to dive deeper into any of these?`,
+      `Great question! Digihood Studio is an **AI automation platform** for service businesses. We provide:\n\n1. **24/7 AI Receptionist** — Answers calls, qualifies leads, books appointments.\n2. **Missed Call Recovery** — Instant text-back within 10 seconds.\n3. **Dead Lead Reactivation** — AI campaigns that re-engage cold contacts.\n\nWant to dive deeper into any of these?`,
     ],
     [
       ["security", "secure", "data", "privacy", "gdpr", "confidential", "safe", "encrypt"],

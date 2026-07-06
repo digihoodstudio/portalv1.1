@@ -39,7 +39,7 @@ export default function ImportPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-semibold text-white mb-2">Import Leads</h1>
+      <h1 className="text-3xl font-semibold text-heading mb-2">Import Leads</h1>
       <p className="text-foreground/60 mb-8">
         Upload a CSV file with name, phone, email columns.
       </p>
@@ -72,7 +72,7 @@ export default function ImportPage() {
               <thead>
                 <tr className="border-b border-white/10 text-left">
                   {Object.keys(preview[0] || {}).map((k) => (
-                    <th key={k} className="py-2 text-white/70">
+                    <th key={k} className="py-2 text-heading/70">
                       {k}
                     </th>
                   ))}
@@ -82,7 +82,7 @@ export default function ImportPage() {
                 {preview.map((row, i) => (
                   <tr key={i} className="border-b border-white/5">
                     {Object.values(row).map((v: any, j) => (
-                      <td key={j} className="py-2 text-white/80">
+                      <td key={j} className="py-2 text-heading/80">
                         {v}
                       </td>
                     ))}

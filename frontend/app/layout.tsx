@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import AuthProvider from "@/components/AuthProvider";
+import ThemeProvider from "@/components/ThemeProvider";
 import FloatingAssistant from "@/components/FloatingAssistant";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 
@@ -40,13 +41,15 @@ export default function RootLayout({
         className="bg-background text-foreground antialiased font-sans"
         suppressHydrationWarning
       >
-        <AuthProvider>
-          <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(143,122,103,.18),_transparent_40%),linear-gradient(180deg,_#02061D_0%,_#050B24_100%)]">
-            <Navbar />
-            {children}
-            <FloatingAssistant />
-          </div>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <div className="min-h-screen" style={{ background: 'var(--gradient-bg)' }}>
+              <Navbar />
+              {children}
+              <FloatingAssistant />
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

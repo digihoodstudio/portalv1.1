@@ -181,7 +181,7 @@ router.get('/calls', async (req, res) => {
           compliance: 95,
           sentiment: 'Positive',
           coachingNotes: 'Perfect compliance. Addressed pricing questions quickly using simulated knowledge base rules and secured CRM booking confirmation.',
-          transcript: '[AI]: Hello, thank you for calling. How can I assist you today?\n[Caller]: How much does it cost for a septic pump-out?\n[AI]: Our standard septic pumping service starts at $1,497/mo under our service packages, which includes full tank evacuation and inspection reports. Would you like to schedule an inspection booking slot?\n[Caller]: Yes, that sounds reasonable.'
+          transcript: '[AI]: Hello, thank you for calling. How can I assist you today?\n[Caller]: How much does it cost for a septic pump-out?\n[AI]: Our service packages include full tank evacuation and inspection reports. Would you like to schedule an inspection booking slot?\n[Caller]: Yes, that sounds reasonable.'
         }
       }
     ];

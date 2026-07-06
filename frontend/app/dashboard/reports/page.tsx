@@ -33,13 +33,13 @@ export default function ReportsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-white mb-2 flex items-center gap-3">
+      <h1 className="text-3xl font-semibold text-heading mb-2 flex items-center gap-3">
         <BarChart3 className="text-gold" /> Reports
       </h1>
       <p className="text-foreground/60 mb-6">Performance metrics at a glance.</p>
 
       {loading ? (
-        <p className="text-white/40 animate-pulse">Loading reports...</p>
+        <p className="text-heading/40 animate-pulse">Loading reports...</p>
       ) : (
         <>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -49,8 +49,8 @@ export default function ReportsPage() {
                   <card.icon size={20} className={card.color} />
                   <ArrowUpRight size={14} className="text-emerald-400" />
                 </div>
-                <p className="text-2xl font-bold text-white">{card.value}</p>
-                <p className="text-xs text-white/50 mt-1">{card.label}</p>
+                <p className="text-2xl font-bold text-heading">{card.value}</p>
+                <p className="text-xs text-heading/50 mt-1">{card.label}</p>
               </div>
             ))}
           </div>
@@ -58,7 +58,7 @@ export default function ReportsPage() {
           {metrics.publisherNote && (
             <div className="rounded-2xl border border-gold/20 bg-gold/5 p-5">
               <p className="text-xs font-semibold text-gold mb-2">PUBLISHER NOTE</p>
-              <p className="text-sm text-white/70">{metrics.publisherNote}</p>
+              <p className="text-sm text-heading/70">{metrics.publisherNote}</p>
             </div>
           )}
         </>

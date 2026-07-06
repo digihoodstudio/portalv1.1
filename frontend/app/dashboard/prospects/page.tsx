@@ -40,33 +40,33 @@ export default function ProspectsPage() {
       CONTACTED: 'bg-purple-500/20 text-purple-300',
       CLOSED: 'bg-green-500/20 text-green-300',
     };
-    return map[s] || 'bg-white/10 text-white/60';
+    return map[s] || 'bg-white/10 text-heading/60';
   };
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-white mb-2 flex items-center gap-3">
+      <h1 className="text-3xl font-semibold text-heading mb-2 flex items-center gap-3">
         <Users className="text-gold" /> Prospects
       </h1>
       <p className="text-foreground/60 mb-6">All leads across your campaigns.</p>
 
       <div className="relative mb-6">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-heading/30" size={16} />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search by name, email, or phone..."
-          className="w-full rounded-2xl border border-white/10 bg-[#0c1433]/80 pl-11 pr-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-gold/50"
+          className="w-full rounded-2xl border border-white/10 bg-surface pl-11 pr-4 py-3 text-sm text-heading placeholder-white/30 outline-none focus:border-gold/50"
         />
       </div>
 
       {loading ? (
-        <p className="text-white/40 animate-pulse">Loading prospects...</p>
+        <p className="text-heading/40 animate-pulse">Loading prospects...</p>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-white/10 bg-glass">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10 text-left text-white/50 uppercase tracking-wider text-[10px]">
+              <tr className="border-b border-white/10 text-left text-heading/50 uppercase tracking-wider text-[10px]">
                 <th className="py-3 px-4">Name</th>
                 <th className="py-3 px-4">Email</th>
                 <th className="py-3 px-4">Phone</th>
@@ -77,21 +77,21 @@ export default function ProspectsPage() {
             <tbody>
               {filtered.map((lead: any) => (
                 <tr key={lead.id} className="border-b border-white/5 hover:bg-white/5 transition">
-                  <td className="py-3 px-4 font-medium text-white">{lead.name}</td>
-                  <td className="py-3 px-4 text-white/70">{lead.email}</td>
-                  <td className="py-3 px-4 text-white/70">{lead.phone || '-'}</td>
+                  <td className="py-3 px-4 font-medium text-heading">{lead.name}</td>
+                  <td className="py-3 px-4 text-heading/70">{lead.email}</td>
+                  <td className="py-3 px-4 text-heading/70">{lead.phone || '-'}</td>
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold ${statusColor(lead.status)}`}>
                       {lead.status}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-white/50 text-[10px]">
+                  <td className="py-3 px-4 text-heading/50 text-[10px]">
                     {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : '-'}
                   </td>
                 </tr>
               ))}
               {filtered.length === 0 && (
-                <tr><td colSpan={5} className="py-8 text-center text-white/30">No prospects found.</td></tr>
+                <tr><td colSpan={5} className="py-8 text-center text-heading/30">No prospects found.</td></tr>
               )}
             </tbody>
           </table>

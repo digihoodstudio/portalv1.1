@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../prisma';
 import { requireAuth, AuthRequest } from '../middleware/auth';
+import { sendLeadNotification } from '../mail';
 
 const router = Router();
 
@@ -70,6 +71,8 @@ router.post('/', async (req: AuthRequest, res) => {
         console.error('Failed to auto-create appointment for booked demo lead:', err);
       }
     }
+
+    sendLeadNotification(lead);
 
     return res.json({ lead });
   } catch (error) {

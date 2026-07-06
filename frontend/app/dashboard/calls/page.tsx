@@ -31,7 +31,7 @@ export default function CallsPage() {
       ANSWERED: { icon: Phone, color: 'text-emerald-400' },
       NO_ANSWER: { icon: PhoneOutgoing, color: 'text-red-400' },
     };
-    return map[o] || { icon: Phone, color: 'text-white/50' };
+    return map[o] || { icon: Phone, color: 'text-heading/50' };
   };
 
   const coachingBar = (val: number) => (
@@ -42,13 +42,13 @@ export default function CallsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold text-white mb-2 flex items-center gap-3">
+      <h1 className="text-3xl font-semibold text-heading mb-2 flex items-center gap-3">
         <Phone className="text-gold" /> Call Logs
       </h1>
       <p className="text-foreground/60 mb-6">Review call history and AI coaching scores.</p>
 
       {loading ? (
-        <p className="text-white/40 animate-pulse">Loading calls...</p>
+        <p className="text-heading/40 animate-pulse">Loading calls...</p>
       ) : (
         <div className="grid gap-4">
           {calls.map((call: any) => {
@@ -61,9 +61,9 @@ export default function CallsPage() {
                       <Icon size={18} />
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-white">{call.leadName}</p>
-                      <p className="text-xs text-white/50 mt-0.5">{call.phone}</p>
-                      <div className="flex items-center gap-3 mt-2 text-xs text-white/50">
+                      <p className="font-semibold text-heading">{call.leadName}</p>
+                      <p className="text-xs text-heading/50 mt-0.5">{call.phone}</p>
+                      <div className="flex items-center gap-3 mt-2 text-xs text-heading/50">
                         <span className="flex items-center gap-1">
                           <Clock size={12} /> {call.durationSec}s
                         </span>
@@ -74,16 +74,16 @@ export default function CallsPage() {
                   {call.coaching && (
                     <div className="hidden md:flex items-center gap-4 text-xs">
                       <div className="text-center">
-                        <p className="text-white/50 mb-1">Greeting</p>
+                        <p className="text-heading/50 mb-1">Greeting</p>
                         {coachingBar(call.coaching.greeting)}
                       </div>
                       <div className="text-center">
-                        <p className="text-white/50 mb-1">Compliance</p>
+                        <p className="text-heading/50 mb-1">Compliance</p>
                         {coachingBar(call.coaching.compliance)}
                       </div>
                       <div className="max-w-[200px]">
-                        <p className="text-white/50 mb-1">Notes</p>
-                        <p className="text-white/60 truncate">{call.coaching.coachingNotes}</p>
+                        <p className="text-heading/50 mb-1">Notes</p>
+                        <p className="text-heading/60 truncate">{call.coaching.coachingNotes}</p>
                       </div>
                     </div>
                   )}
@@ -92,7 +92,7 @@ export default function CallsPage() {
             );
           })}
           {calls.length === 0 && (
-            <p className="text-white/30 text-center py-8">No call records yet.</p>
+            <p className="text-heading/30 text-center py-8">No call records yet.</p>
           )}
         </div>
       )}

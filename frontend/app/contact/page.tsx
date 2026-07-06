@@ -74,7 +74,7 @@ export default function ContactPage() {
           <p className="text-sm uppercase tracking-[0.3em] text-gold">
             Contact Sales
           </p>
-          <h1 className="mt-3 text-4xl font-semibold text-white">
+          <h1 className="mt-3 text-4xl font-semibold text-heading">
             Let’s scale your operations.
           </h1>
           <p className="mt-4 text-foreground/80 leading-relaxed">
@@ -86,15 +86,15 @@ export default function ContactPage() {
 
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           {/* Left Column: Form */}
-          <section className="rounded-3xl border border-white/10 bg-[#08102e]/60 p-6 md:p-8">
-            <h2 className="text-xl font-semibold text-white mb-6">
+          <section className="rounded-3xl border border-white/10 bg-surface p-6 md:p-8">
+            <h2 className="text-xl font-semibold text-heading mb-6">
               Request Consultation
             </h2>
 
             {status === "success" ? (
               <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
                 <CheckCircle2 className="h-12 w-12 text-green-400 animate-pulse" />
-                <h3 className="text-lg font-semibold text-white">
+                <h3 className="text-lg font-semibold text-heading">
                   Request Submitted Successfully
                 </h3>
                 <p className="text-sm text-foreground/70 max-w-sm">
@@ -122,68 +122,68 @@ export default function ContactPage() {
                   </div>
                 )}
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="block text-xs uppercase tracking-wider text-white/60">
-                    Full Name
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder=""
-                      autoComplete="new-name"
-                      className="mt-2 w-full rounded-2xl border border-white/10 bg-[#090f24] px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
-                    />
-                  </label>
-                  <label className="block text-xs uppercase tracking-wider text-white/60">
-                    Email Address
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder=""
-                      autoComplete="new-email"
-                      className="mt-2 w-full rounded-2xl border border-white/10 bg-[#090f24] px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
-                    />
-                  </label>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <label className="block text-xs uppercase tracking-wider text-white/60">
-                    Phone Number
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder=""
-                      autoComplete="new-phone"
-                      className="mt-2 w-full rounded-2xl border border-white/10 bg-[#090f24] px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
-                    />
-                  </label>
-                  <label className="block text-xs uppercase tracking-wider text-white/60">
-                    Business Name
-                    <input
-                      type="text"
-                      required
-                      value={business}
-                      onChange={(e) => setBusiness(e.target.value)}
-                      placeholder=""
-                      autoComplete="new-business"
-                      className="mt-2 w-full rounded-2xl border border-white/10 bg-[#090f24] px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="block text-xs uppercase tracking-wider text-heading/60">
+                      Full Name
+                      <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Enter your full name"
+                        autoComplete="new-name"
+                        className="mt-2 w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-sm text-heading placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+                      />
+                    </label>
+                    <label className="block text-xs uppercase tracking-wider text-heading/60">
+                      Email Address
+                      <input
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email address"
+                        autoComplete="new-email"
+                      className="mt-2 w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-sm text-heading placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
                     />
                   </label>
                 </div>
 
-                <label className="block text-xs uppercase tracking-wider text-white/60">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="block text-xs uppercase tracking-wider text-heading/60">
+                      Phone Number
+                      <input
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Enter your phone number"
+                        autoComplete="new-phone"
+                        className="mt-2 w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-sm text-heading placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+                      />
+                    </label>
+                    <label className="block text-xs uppercase tracking-wider text-heading/60">
+                      Business Name
+                      <input
+                        type="text"
+                        required
+                        value={business}
+                        onChange={(e) => setBusiness(e.target.value)}
+                        placeholder="Enter your business name"
+                        autoComplete="new-business"
+                      className="mt-2 w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-sm text-heading placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+                    />
+                  </label>
+                </div>
+
+                <label className="block text-xs uppercase tracking-wider text-heading/60">
                   Message / Automation Focus
                   <textarea
                     rows={4}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Tell us about your missed calls, intake volume, or appointment setter needs..."
-                    className="mt-2 w-full rounded-2xl border border-white/10 bg-[#090f24] px-4 py-3 text-sm text-white placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 resize-none"
+                    className="mt-2 w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-sm text-heading placeholder-white/20 outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 resize-none"
                   />
                 </label>
 
@@ -206,7 +206,7 @@ export default function ContactPage() {
 
           {/* Right Column: Direct Channels */}
           <section className="space-y-6">
-            <h2 className="text-xl font-semibold text-white mb-6">
+            <h2 className="text-xl font-semibold text-heading mb-6">
               Direct Channels
             </h2>
 
@@ -239,14 +239,14 @@ export default function ContactPage() {
                   {channel.icon}
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base font-semibold text-white">
+                      <h3 className="text-base font-semibold text-heading">
                         {channel.name}
                       </h3>
                       <span className="text-[10px] uppercase tracking-wider text-gold bg-gold/5 px-2 py-0.5 rounded-full border border-gold/10">
                         Active
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-white/95">
+                    <p className="text-sm font-semibold text-heading/95">
                       {channel.value}
                     </p>
                     <p className="text-xs text-foreground/75 leading-relaxed">

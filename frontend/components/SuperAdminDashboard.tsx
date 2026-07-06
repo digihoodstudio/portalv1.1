@@ -759,7 +759,7 @@ export default function SuperAdminDashboard() {
 
   if (loading && !health) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-white/50">
+      <div className="flex flex-col items-center justify-center py-20 text-heading/50">
         <p className="animate-pulse text-xs uppercase tracking-widest font-bold text-purple-400">Syncing SuperAdmin Console...</p>
       </div>
     );
@@ -787,7 +787,7 @@ export default function SuperAdminDashboard() {
               className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
                 activeTab === t.id 
                   ? 'bg-purple-500/15 border border-purple-500/30 text-purple-300 shadow-glow-sm' 
-                  : 'bg-white/5 border border-transparent text-white/60 hover:bg-white/10 hover:text-white'
+                  : 'bg-white/5 border border-transparent text-heading/60 hover:bg-white/10 hover:text-heading'
               }`}
             >
               <Icon size={13} />
@@ -804,15 +804,15 @@ export default function SuperAdminDashboard() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
             {/* Uptime */}
             <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-              <div className="flex items-center justify-between text-white/50 text-[10px] tracking-widest uppercase font-bold">
+              <div className="flex items-center justify-between text-heading/50 text-[10px] tracking-widest uppercase font-bold">
                 <span>System Uptime</span>
                 <Clock size={14} className="text-purple-400" />
               </div>
-              <p className="mt-3 text-2xl font-bold font-mono text-white">{formatUptime(health.uptime)}</p>
+              <p className="mt-3 text-2xl font-bold font-mono text-heading">{formatUptime(health.uptime)}</p>
             </div>
             {/* Active Connections */}
             <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-              <div className="flex items-center justify-between text-white/50 text-[10px] tracking-widest uppercase font-bold">
+              <div className="flex items-center justify-between text-heading/50 text-[10px] tracking-widest uppercase font-bold">
                 <span>API Connections</span>
                 <Activity size={14} className="text-purple-400" />
               </div>
@@ -820,7 +820,7 @@ export default function SuperAdminDashboard() {
             </div>
             {/* API Latency */}
             <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-              <div className="flex items-center justify-between text-white/50 text-[10px] tracking-widest uppercase font-bold">
+              <div className="flex items-center justify-between text-heading/50 text-[10px] tracking-widest uppercase font-bold">
                 <span>API Latency</span>
                 <Activity size={14} className="text-purple-400" />
               </div>
@@ -828,11 +828,11 @@ export default function SuperAdminDashboard() {
             </div>
             {/* RAM heap Used */}
             <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-              <div className="flex items-center justify-between text-white/50 text-[10px] tracking-widest uppercase font-bold">
+              <div className="flex items-center justify-between text-heading/50 text-[10px] tracking-widest uppercase font-bold">
                 <span>RAM usage</span>
                 <HardDrive size={14} className="text-purple-400" />
               </div>
-              <p className="mt-3 text-2xl font-bold font-mono text-white">{health.memory?.heapUsed || 0} MB / {health.memory?.heapTotal} MB</p>
+              <p className="mt-3 text-2xl font-bold font-mono text-heading">{health.memory?.heapUsed || 0} MB / {health.memory?.heapTotal} MB</p>
             </div>
           </div>
 
@@ -841,7 +841,7 @@ export default function SuperAdminDashboard() {
             <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-4">
               <div className="flex items-center gap-2">
                 <Link size={16} className="text-purple-400" />
-                <h3 className="text-sm font-bold text-white font-sans">Active Integrations Check</h3>
+                <h3 className="text-sm font-bold text-heading font-sans">Active Integrations Check</h3>
               </div>
               <div className="space-y-3">
                 {[
@@ -851,8 +851,8 @@ export default function SuperAdminDashboard() {
                 ].map((i, idx) => (
                   <div key={idx} className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.01] p-3.5">
                     <div className="space-y-0.5">
-                      <span className="block text-xs font-bold text-white/80">{i.name}</span>
-                      <span className="block text-[10px] text-white/40">{i.type}</span>
+                      <span className="block text-xs font-bold text-heading/80">{i.name}</span>
+                      <span className="block text-[10px] text-heading/40">{i.type}</span>
                     </div>
                     <span className={`text-[8.5px] font-extrabold uppercase px-2.5 py-1 rounded-full ${
                       i.status === 'CONNECTED' || i.status === 'LIVE' 
@@ -870,9 +870,9 @@ export default function SuperAdminDashboard() {
             <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-4">
               <div className="flex items-center gap-2">
                 <Activity size={16} className="text-purple-400" />
-                <h3 className="text-sm font-bold text-white font-sans">Diagnostics Summary</h3>
+                <h3 className="text-sm font-bold text-heading font-sans">Diagnostics Summary</h3>
               </div>
-              <div className="space-y-3.5 text-xs text-white/70 leading-relaxed font-sans">
+              <div className="space-y-3.5 text-xs text-heading/70 leading-relaxed font-sans">
                 <p>All core sub-processes are operating correctly. Sockets connection is healthy and streaming lead updates instantly to visual panels.</p>
                 <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-2 font-mono text-2xs">
                   <div className="flex justify-between">
@@ -900,11 +900,11 @@ export default function SuperAdminDashboard() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2">
               <Users size={18} className="text-purple-400" />
-              <h2 className="text-lg font-bold text-white">System User Directory</h2>
+              <h2 className="text-lg font-bold text-heading">System User Directory</h2>
             </div>
             <button
               onClick={openAddUserModal}
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 text-xs font-bold transition"
+              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading px-5 py-2.5 text-xs font-bold transition"
             >
               <Plus size={14} />
               <span>Add System User</span>
@@ -912,9 +912,9 @@ export default function SuperAdminDashboard() {
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-            <table className="w-full text-left border-collapse text-xs text-white/80">
+            <table className="w-full text-left border-collapse text-xs text-heading/80">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                   <th className="px-4 py-3">User Details</th>
                   <th className="px-4 py-3">Role</th>
                   <th className="px-4 py-3">Account Security</th>
@@ -924,15 +924,15 @@ export default function SuperAdminDashboard() {
               <tbody className="divide-y divide-white/5 font-medium">
                 {users.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-6 text-center text-white/30">No platform users registered.</td>
+                    <td colSpan={4} className="px-4 py-6 text-center text-heading/30">No platform users registered.</td>
                   </tr>
                 ) : (
                   users.map((u) => (
                     <tr key={u.id} className="hover:bg-white/[0.01] transition-colors">
                       <td className="px-4 py-3.5">
                         <div className="space-y-0.5">
-                          <p className="font-bold text-white">{u.name || 'Specialist'}</p>
-                          <p className="text-2xs text-white/40">{u.email}</p>
+                          <p className="font-bold text-heading">{u.name || 'Specialist'}</p>
+                          <p className="text-2xs text-heading/40">{u.email}</p>
                         </div>
                       </td>
                       <td className="px-4 py-3.5">
@@ -955,7 +955,7 @@ export default function SuperAdminDashboard() {
                       <td className="px-4 py-3.5 text-right space-x-1.5">
                         <button
                           onClick={() => openEditUserModal(u)}
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-heading/60 hover:text-heading hover:bg-white/10 transition"
                           title="Edit"
                         >
                           <Edit2 size={11} />
@@ -983,33 +983,33 @@ export default function SuperAdminDashboard() {
           <motion.div 
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-md rounded-2xl border border-white/10 bg-[#060b1b] p-6 space-y-5 shadow-2xl text-left"
+            className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-6 space-y-5 shadow-2xl text-left"
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-heading flex items-center gap-2">
                 <UserCheck size={16} className="text-purple-400" />
                 <span>{isEditingUser ? 'Edit User Profile' : 'Add New System User'}</span>
               </h3>
-              <button onClick={() => setIsUserModalOpen(false)} className="text-white/40 hover:text-white">
+              <button onClick={() => setIsUserModalOpen(false)} className="text-heading/40 hover:text-heading">
                 <X size={16} />
               </button>
             </div>
 
             <form onSubmit={saveUser} className="space-y-4">
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">User Full Name</label>
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">User Full Name</label>
                 <input
                   required
                   type="text"
                   value={userForm.name}
                   onChange={(e) => setUserForm({ ...userForm, name: e.target.value })}
                   placeholder="e.g. John Connor"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
                   <Mail size={10} />
                   <span>User Email</span>
                 </label>
@@ -1019,12 +1019,12 @@ export default function SuperAdminDashboard() {
                   value={userForm.email}
                   onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
                   placeholder="e.g. email@domain.com"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
                   <Lock size={10} />
                   <span>Password {isEditingUser && '(leave blank to keep unchanged)'}</span>
                 </label>
@@ -1034,17 +1034,17 @@ export default function SuperAdminDashboard() {
                   value={userForm.password}
                   onChange={(e) => setUserForm({ ...userForm, password: e.target.value })}
                   placeholder="Set login password..."
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">System Role</label>
+                  <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">System Role</label>
                   <select
                     value={userForm.roleName}
                     onChange={(e) => setUserForm({ ...userForm, roleName: e.target.value })}
-                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-white outline-none focus:border-purple-400 transition"
+                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-heading outline-none focus:border-purple-400 transition"
                   >
                     <option value="SUPERADMIN">Super Admin</option>
                     <option value="ADMIN">Company Admin</option>
@@ -1054,11 +1054,11 @@ export default function SuperAdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Account Suspension</label>
+                  <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Account Suspension</label>
                   <select
                     value={userForm.suspended ? 'true' : 'false'}
                     onChange={(e) => setUserForm({ ...userForm, suspended: e.target.value === 'true' })}
-                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-white outline-none focus:border-purple-400 transition"
+                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-heading outline-none focus:border-purple-400 transition"
                   >
                     <option value="false">Active / Unrestricted</option>
                     <option value="true">Suspended / Locked</option>
@@ -1074,13 +1074,13 @@ export default function SuperAdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setIsUserModalOpen(false)}
-                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-white transition"
+                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-heading transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white py-2.5 text-xs font-bold transition"
+                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading py-2.5 text-xs font-bold transition"
                 >
                   Save Account
                 </button>
@@ -1096,17 +1096,17 @@ export default function SuperAdminDashboard() {
           <div className="flex items-center justify-between border-b border-white/5 pb-3">
             <div className="flex items-center gap-2">
               <ShieldCheck size={18} className="text-purple-400" />
-              <h2 className="text-lg font-bold text-white">Security & Audit Log Trails</h2>
+              <h2 className="text-lg font-bold text-heading">Security & Audit Log Trails</h2>
             </div>
-            <button onClick={fetchData} className="text-white/40 hover:text-white transition">
+            <button onClick={fetchData} className="text-heading/40 hover:text-heading transition">
               <RefreshCw size={14} />
             </button>
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-            <table className="w-full text-left border-collapse text-xs text-white/80">
+            <table className="w-full text-left border-collapse text-xs text-heading/80">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                   <th className="px-4 py-3">Timestamp</th>
                   <th className="px-4 py-3">Action</th>
                   <th className="px-4 py-3">Actor Email</th>
@@ -1114,10 +1114,10 @@ export default function SuperAdminDashboard() {
                   <th className="px-4 py-3">IP Address</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 font-mono text-[11px] text-white/70">
+              <tbody className="divide-y divide-white/5 font-mono text-[11px] text-heading/70">
                 {auditLogs.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-4 py-6 text-center text-white/30 font-sans">No audit events logged.</td>
+                    <td colSpan={5} className="px-4 py-6 text-center text-heading/30 font-sans">No audit events logged.</td>
                   </tr>
                 ) : (
                   auditLogs.map((log) => (
@@ -1125,8 +1125,8 @@ export default function SuperAdminDashboard() {
                       <td className="px-4 py-3">{new Date(log.createdAt).toLocaleString()}</td>
                       <td className="px-4 py-3 font-bold text-purple-300">{log.action}</td>
                       <td className="px-4 py-3">{log.actor}</td>
-                      <td className="px-4 py-3 font-sans text-white/80">{log.details}</td>
-                      <td className="px-4 py-3 text-white/40">{log.ipAddress}</td>
+                      <td className="px-4 py-3 font-sans text-heading/80">{log.details}</td>
+                      <td className="px-4 py-3 text-heading/40">{log.ipAddress}</td>
                     </tr>
                   ))
                 )}
@@ -1142,31 +1142,31 @@ export default function SuperAdminDashboard() {
           <div className="flex items-center justify-between border-b border-white/5 pb-3">
             <div className="flex items-center gap-2">
               <Clock size={18} className="text-purple-400" />
-              <h2 className="text-lg font-bold text-white font-sans">Live Chatbot Conversation Feeds</h2>
+              <h2 className="text-lg font-bold text-heading font-sans">Live Chatbot Conversation Feeds</h2>
             </div>
-            <button onClick={fetchData} className="text-white/40 hover:text-white transition">
+            <button onClick={fetchData} className="text-heading/40 hover:text-heading transition">
               <RefreshCw size={14} />
             </button>
           </div>
 
           <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
             {chatbotLogs.length === 0 ? (
-              <p className="text-xs text-white/40 text-center py-8">No chatbot message exchanges found.</p>
+              <p className="text-xs text-heading/40 text-center py-8">No chatbot message exchanges found.</p>
             ) : (
               chatbotLogs.map((chat) => (
                 <div key={chat.id} className="rounded-xl border border-white/5 bg-white/[0.01] p-4 space-y-3">
-                  <div className="flex items-center justify-between text-[10px] text-white/40 font-mono">
+                  <div className="flex items-center justify-between text-[10px] text-heading/40 font-mono">
                     <span>Lead Interaction ID: {chat.leadId || 'ANONYMOUS'}</span>
                     <span>{new Date(chat.createdAt).toLocaleString()}</span>
                   </div>
                   
                   <div className="space-y-2 text-xs">
                     <div className="rounded-lg bg-white/5 p-3.5 border border-white/5 text-gold font-sans leading-relaxed">
-                      <span className="block text-2xs uppercase tracking-wider font-bold text-white/40 mb-1">User Input:</span>
+                      <span className="block text-2xs uppercase tracking-wider font-bold text-heading/40 mb-1">User Input:</span>
                       <p>{chat.userMessage}</p>
                     </div>
                     <div className="rounded-lg bg-purple-950/20 p-3.5 border border-purple-500/15 text-purple-200 font-sans leading-relaxed">
-                      <span className="block text-2xs uppercase tracking-wider font-bold text-white/40 mb-1">AI Agent Response:</span>
+                      <span className="block text-2xs uppercase tracking-wider font-bold text-heading/40 mb-1">AI Agent Response:</span>
                       <p>{chat.botResponse}</p>
                     </div>
                   </div>
@@ -1182,19 +1182,19 @@ export default function SuperAdminDashboard() {
         <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
           <div className="flex items-center gap-2">
             <Settings size={18} className="text-purple-400" />
-            <h2 className="text-lg font-bold text-white">System Global Configuration Key-Value Editor</h2>
+            <h2 className="text-lg font-bold text-heading">System Global Configuration Key-Value Editor</h2>
           </div>
 
           <form onSubmit={saveGlobalConfigs} className="space-y-6 text-left">
             <div className="rounded-xl border border-white/5 bg-white/[0.01] p-5 space-y-4">
-              <p className="text-xs text-white/40 leading-relaxed font-sans mb-2">
+              <p className="text-xs text-heading/40 leading-relaxed font-sans mb-2">
                 Below are the active system configurations. Modify these keys to update default behaviors, limits, or configurations across all instances.
               </p>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {/* Dynamically render text inputs for configs */}
                 {Object.keys(globalConfigs).length === 0 ? (
-                  <p className="text-xs text-white/30">No active key-value properties found in system.</p>
+                  <p className="text-xs text-heading/30">No active key-value properties found in system.</p>
                 ) : (
                   Object.keys(globalConfigs).map((key) => {
                     // Check if value is object or array; skip if complex or stringify
@@ -1215,7 +1215,7 @@ export default function SuperAdminDashboard() {
                             }
                             setGlobalConfigs({ ...globalConfigs, [key]: parsedVal });
                           }}
-                          className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition font-mono"
+                          className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition font-mono"
                         />
                       </div>
                     );
@@ -1233,7 +1233,7 @@ export default function SuperAdminDashboard() {
 
             <button
               type="submit"
-              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 text-xs font-bold transition"
+              className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading px-6 py-3.5 text-xs font-bold transition"
             >
               <Save size={14} />
               <span>Update Global Configuration Parameters</span>
@@ -1255,12 +1255,12 @@ export default function SuperAdminDashboard() {
               const unassigned = totalProspects - assignedProspects;
               return [
                 { label: 'Total Lists', value: totalLists, color: 'text-purple-300', accent: 'border-purple-500/20 bg-purple-500/[0.05]' },
-                { label: 'Total Prospects', value: totalProspects, color: 'text-white', accent: 'border-white/10 bg-white/[0.02]' },
+                { label: 'Total Prospects', value: totalProspects, color: 'text-heading', accent: 'border-white/10 bg-white/[0.02]' },
                 { label: 'Assigned', value: assignedProspects, color: 'text-emerald-300', accent: 'border-emerald-500/20 bg-emerald-500/[0.05]' },
                 { label: 'Unassigned', value: unassigned, color: 'text-amber-300', accent: 'border-amber-500/20 bg-amber-500/[0.05]' }
               ].map(stat => (
                 <div key={stat.label} className={`rounded-2xl border ${stat.accent} p-4 space-y-1.5`}>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-white/40">{stat.label}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-heading/40">{stat.label}</p>
                   <p className={`text-2xl font-black font-mono ${stat.color}`}>{stat.value}</p>
                 </div>
               ));
@@ -1271,25 +1271,25 @@ export default function SuperAdminDashboard() {
           <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
             <div className="flex items-center gap-2 border-b border-white/5 pb-3">
               <Upload size={18} className="text-purple-400" />
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider">Bulk Import Prospects</h2>
+              <h2 className="text-sm font-bold text-heading uppercase tracking-wider">Bulk Import Prospects</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
               {/* Uploader Form */}
               <div className="md:col-span-5 space-y-4">
-                <p className="text-xs text-white/50 leading-relaxed">
+                <p className="text-xs text-heading/50 leading-relaxed">
                   Upload a standard `.csv` or `.xlsx` prospect contact sheet. The system validates decision maker name, email, phone, company, and remarks before importing.
                 </p>
 
                 <div className="space-y-3">
                   <div>
-                    <label className="text-[9.5px] font-extrabold text-white/40 tracking-wider uppercase block mb-1">List Identifier Name</label>
+                    <label className="text-[9.5px] font-extrabold text-heading/40 tracking-wider uppercase block mb-1">List Identifier Name</label>
                     <input
                       type="text"
                       value={listName}
                       onChange={(e) => setListName(e.target.value)}
                       placeholder="e.g. Q2 Outreach Campaign"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                     />
                   </div>
 
@@ -1300,9 +1300,9 @@ export default function SuperAdminDashboard() {
                       onChange={handleCSVFileChange}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
-                    <FileSpreadsheet size={28} className="mx-auto text-white/30 mb-2.5" />
-                    <span className="block text-xs font-bold text-white/80 mb-0.5">Choose CSV Spreadsheet</span>
-                    <span className="block text-[10px] text-white/40">Drag & drop or select files (max 20MB)</span>
+                    <FileSpreadsheet size={28} className="mx-auto text-heading/30 mb-2.5" />
+                    <span className="block text-xs font-bold text-heading/80 mb-0.5">Choose CSV Spreadsheet</span>
+                    <span className="block text-[10px] text-heading/40">Drag & drop or select files (max 20MB)</span>
                   </div>
                 </div>
 
@@ -1313,7 +1313,7 @@ export default function SuperAdminDashboard() {
                 {csvPreview.length > 0 && (
                   <button
                     onClick={confirmProspectsUpload}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white py-3 text-xs font-bold transition shadow-md shadow-purple-500/10 active:scale-[0.98]"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading py-3 text-xs font-bold transition shadow-md shadow-purple-500/10 active:scale-[0.98]"
                   >
                     <CheckCircle2 size={14} />
                     <span>Confirm and Save {csvPreview.length} Prospects</span>
@@ -1323,16 +1323,16 @@ export default function SuperAdminDashboard() {
 
               {/* Preview Box */}
               <div className="md:col-span-7 rounded-xl border border-white/5 bg-slate-950/20 p-4 space-y-3">
-                <span className="text-[10px] font-extrabold text-white/40 uppercase tracking-widest block">CSV Parsing Preview (Top 5 rows)</span>
+                <span className="text-[10px] font-extrabold text-heading/40 uppercase tracking-widest block">CSV Parsing Preview (Top 5 rows)</span>
                 {csvPreview.length === 0 ? (
-                  <div className="border border-white/5 rounded-xl bg-white/[0.01] p-10 text-center text-xs text-white/30">
+                  <div className="border border-white/5 rounded-xl bg-white/[0.01] p-10 text-center text-xs text-heading/30">
                     No files loaded. Select a CSV file to view parsing.
                   </div>
                 ) : (
                   <div className="overflow-x-auto border border-white/5 rounded-xl">
-                    <table className="w-full border-collapse text-left text-[11px] text-white/70">
+                    <table className="w-full border-collapse text-left text-[11px] text-heading/70">
                       <thead>
-                        <tr className="bg-white/5 text-[9px] uppercase font-bold text-white/40 tracking-wider border-b border-white/10">
+                        <tr className="bg-white/5 text-[9px] uppercase font-bold text-heading/40 tracking-wider border-b border-white/10">
                           <th className="px-3 py-2">Name</th>
                           <th className="px-3 py-2">Company</th>
                           <th className="px-3 py-2">Phone</th>
@@ -1343,7 +1343,7 @@ export default function SuperAdminDashboard() {
                       <tbody className="divide-y divide-white/5 font-mono">
                         {csvPreview.slice(0, 5).map((row, idx) => (
                           <tr key={idx} className="hover:bg-white/[0.01]">
-                            <td className="px-3 py-2 font-bold text-white font-sans">{row.name}</td>
+                            <td className="px-3 py-2 font-bold text-heading font-sans">{row.name}</td>
                             <td className="px-3 py-2">{row.company}</td>
                             <td className="px-3 py-2">{row.phone}</td>
                             <td className="px-3 py-2">{row.email}</td>
@@ -1363,7 +1363,7 @@ export default function SuperAdminDashboard() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/5 pb-3">
               <div className="flex items-center gap-2">
                 <FolderOpen size={18} className="text-purple-400" />
-                <h2 className="text-sm font-bold text-white uppercase tracking-wider">Prospect Campaign Lists</h2>
+                <h2 className="text-sm font-bold text-heading uppercase tracking-wider">Prospect Campaign Lists</h2>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
@@ -1371,7 +1371,7 @@ export default function SuperAdminDashboard() {
                 <select
                   value={prospectFilter}
                   onChange={(e) => setProspectFilter(e.target.value as any)}
-                  className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition cursor-pointer"
+                  className="rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition cursor-pointer"
                 >
                   <option value="all">All Lists</option>
                   <option value="assigned">Assigned Only</option>
@@ -1380,22 +1380,22 @@ export default function SuperAdminDashboard() {
 
                 {/* Search filter */}
                 <div className="relative rounded-xl bg-white/5 border border-white/10 flex items-center px-3.5">
-                  <Search size={13} className="text-white/40 mr-2 shrink-0" />
+                  <Search size={13} className="text-heading/40 mr-2 shrink-0" />
                   <input
                     type="text"
                     placeholder="Search lists..."
                     value={prospectSearch}
                     onChange={(e) => setProspectSearch(e.target.value)}
-                    className="bg-transparent py-2.5 text-xs text-white outline-none w-36 placeholder-white/30"
+                    className="bg-transparent py-2.5 text-xs text-heading outline-none w-36 placeholder-white/30"
                   />
                 </div>
               </div>
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-              <table className="w-full text-left border-collapse text-xs text-white/80">
+              <table className="w-full text-left border-collapse text-xs text-heading/80">
                 <thead>
-                  <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                  <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                     <th className="px-4 py-3">Campaign Name</th>
                     <th className="px-4 py-3">Upload Date</th>
                     <th className="px-4 py-3 text-center">Prospect Count</th>
@@ -1407,7 +1407,7 @@ export default function SuperAdminDashboard() {
                 <tbody className="divide-y divide-white/5 font-medium">
                   {prospectSummary.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="px-4 py-6 text-center text-white/30">No prospect lists registered on platform.</td>
+                      <td colSpan={6} className="px-4 py-6 text-center text-heading/30">No prospect lists registered on platform.</td>
                     </tr>
                   ) : (
                     prospectSummary
@@ -1421,9 +1421,9 @@ export default function SuperAdminDashboard() {
                       .map((p) => (
                         <tr key={p.id} className={`hover:bg-white/[0.01] transition-colors ${selectedProjectId === p.id ? 'bg-purple-950/10 border-l-2 border-purple-500' : ''}`}>
                           <td className="px-4 py-3.5">
-                            <span className="font-bold text-white block">{p.name}</span>
+                            <span className="font-bold text-heading block">{p.name}</span>
                           </td>
-                          <td className="px-4 py-3.5 text-white/40">
+                          <td className="px-4 py-3.5 text-heading/40">
                             {new Date(p.createdAt).toLocaleDateString()}
                           </td>
                           <td className="px-4 py-3.5 text-center font-mono font-bold text-purple-300">
@@ -1443,7 +1443,7 @@ export default function SuperAdminDashboard() {
                                 {p.assignedTo.name}
                               </span>
                             ) : (
-                              <span className="text-white/30 text-[10px] uppercase font-bold italic">Unassigned</span>
+                              <span className="text-heading/30 text-[10px] uppercase font-bold italic">Unassigned</span>
                             )}
                           </td>
                           <td className="px-4 py-3.5 text-right space-x-1.5">
@@ -1451,7 +1451,7 @@ export default function SuperAdminDashboard() {
                               onClick={() => {
                                 selectProjectForLeads(p.id);
                               }}
-                              className="inline-flex items-center gap-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white/70 hover:text-white px-2.5 py-1.5 text-[10.5px] font-bold transition"
+                              className="inline-flex items-center gap-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-heading/70 hover:text-heading px-2.5 py-1.5 text-[10.5px] font-bold transition"
                             >
                               <span>Manage leads</span>
                               <ChevronRight size={11} />
@@ -1461,7 +1461,7 @@ export default function SuperAdminDashboard() {
                                 selectProjectForLeads(p.id);
                                 triggerAssign('list', p.id);
                               }}
-                              className="inline-flex items-center gap-1 rounded bg-purple-600 hover:bg-purple-500 text-white px-2.5 py-1.5 text-[10.5px] font-bold transition shadow-sm"
+                              className="inline-flex items-center gap-1 rounded bg-purple-600 hover:bg-purple-500 text-heading px-2.5 py-1.5 text-[10.5px] font-bold transition shadow-sm"
                             >
                               <span>Assign List</span>
                             </button>
@@ -1486,8 +1486,8 @@ export default function SuperAdminDashboard() {
               <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5 animate-in fade-in slide-in-from-bottom-2 duration-300">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/5 pb-3">
                   <div className="space-y-1">
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider">Prospects inside list</h3>
-                    <p className="text-[10px] text-white/40">
+                    <h3 className="text-sm font-bold text-heading uppercase tracking-wider">Prospects inside list</h3>
+                    <p className="text-[10px] text-heading/40">
                       {selectedLeadIds.length > 0
                         ? <span className="text-purple-300 font-bold">{selectedLeadIds.length} selected</span>
                         : 'Select individual prospects to manually allocate them to staff.'}
@@ -1496,20 +1496,20 @@ export default function SuperAdminDashboard() {
 
                   <div className="flex items-center gap-2 flex-wrap">
                     <div className="relative rounded-xl bg-white/5 border border-white/10 flex items-center px-3.5">
-                      <Search size={13} className="text-white/40 mr-2" />
+                      <Search size={13} className="text-heading/40 mr-2" />
                       <input
                         type="text"
                         placeholder="Search prospects..."
                         value={leadSearch}
                         onChange={(e) => setLeadSearch(e.target.value)}
-                        className="bg-transparent py-2 text-xs text-white outline-none w-36 placeholder-white/30"
+                        className="bg-transparent py-2 text-xs text-heading outline-none w-36 placeholder-white/30"
                       />
                     </div>
 
                     {selectedLeadIds.length > 0 && (
                       <button
                         onClick={() => triggerAssign('leads', selectedLeadIds)}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 text-xs font-bold transition shadow-md shadow-purple-500/15"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading px-4 py-2 text-xs font-bold transition shadow-md shadow-purple-500/15"
                       >
                         <UserPlus size={12} />
                         <span>Assign Selected ({selectedLeadIds.length})</span>
@@ -1519,7 +1519,7 @@ export default function SuperAdminDashboard() {
                     {selectedLeadIds.length > 0 && (
                       <button
                         onClick={() => setSelectedLeadIds([])}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/60 hover:text-white px-3 py-2 text-xs font-bold transition"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-heading/60 hover:text-heading px-3 py-2 text-xs font-bold transition"
                       >
                         <X size={12} />
                         <span>Clear</span>
@@ -1529,9 +1529,9 @@ export default function SuperAdminDashboard() {
                 </div>
 
                 <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-                  <table className="w-full text-left border-collapse text-xs text-white/80">
+                  <table className="w-full text-left border-collapse text-xs text-heading/80">
                     <thead>
-                      <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                      <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                         <th className="px-4 py-3 text-center w-10">
                           <input
                             type="checkbox"
@@ -1564,11 +1564,11 @@ export default function SuperAdminDashboard() {
                     <tbody className="divide-y divide-white/5 font-medium">
                       {projectLeads.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="px-4 py-6 text-center text-white/30">No prospects available.</td>
+                          <td colSpan={6} className="px-4 py-6 text-center text-heading/30">No prospects available.</td>
                         </tr>
                       ) : filteredLeads.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="px-4 py-6 text-center text-white/30">No prospects match your search.</td>
+                          <td colSpan={6} className="px-4 py-6 text-center text-heading/30">No prospects match your search.</td>
                         </tr>
                       ) : (
                         filteredLeads.map((l) => {
@@ -1596,14 +1596,14 @@ export default function SuperAdminDashboard() {
                               </td>
                               <td className="px-4 py-3.5">
                                 <div className="space-y-0.5">
-                                  <span className="font-bold text-white block">{l.name}</span>
-                                  <span className="text-2xs text-white/40 block">{l.company}</span>
+                                  <span className="font-bold text-heading block">{l.name}</span>
+                                  <span className="text-2xs text-heading/40 block">{l.company}</span>
                                 </div>
                               </td>
                               <td className="px-4 py-3.5 font-mono">
                                 <div className="space-y-0.5">
-                                  <span className="block text-white/70 font-semibold">{l.phone || 'No Phone'}</span>
-                                  <span className="block text-[10px] text-white/40">{l.email || 'No Email'}</span>
+                                  <span className="block text-heading/70 font-semibold">{l.phone || 'No Phone'}</span>
+                                  <span className="block text-[10px] text-heading/40">{l.email || 'No Email'}</span>
                                 </div>
                               </td>
                               <td className="px-4 py-3.5">
@@ -1613,7 +1613,7 @@ export default function SuperAdminDashboard() {
                                   l.status.includes('Scheduled') || l.status === 'FOLLOW_UP' ? 'bg-blue-500/10 border-blue-500/15 text-blue-400' :
                                   l.status.includes('Poorly') ? 'bg-yellow-500/10 border-yellow-500/15 text-yellow-400' :
                                   l.status.includes('Failed') || l.status === 'LOST' ? 'bg-red-500/10 border-red-500/15 text-red-400' :
-                                  'bg-white/5 border-white/5 text-white/60'
+                                  'bg-white/5 border-white/5 text-heading/60'
                                 }`}>
                                   {l.status.replace('_', ' ')}
                                 </span>
@@ -1622,7 +1622,7 @@ export default function SuperAdminDashboard() {
                                 {assignedEmp ? (
                                   <span className="text-emerald-400 font-bold text-[10.5px]">{assignedEmp.name}</span>
                                 ) : (
-                                  <span className="text-white/30 text-[10px] italic">Unassigned</span>
+                                  <span className="text-heading/30 text-[10px] italic">Unassigned</span>
                                 )}
                               </td>
                               <td className="px-4 py-3.5 text-right">
@@ -1631,7 +1631,7 @@ export default function SuperAdminDashboard() {
                                     setSelectedLeadIds([l.id]);
                                     triggerAssign('leads', [l.id]);
                                   }}
-                                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-heading/60 hover:text-heading hover:bg-white/10 transition"
                                   title="Assign Lead"
                                 >
                                   <UserPlus size={11} />
@@ -1658,11 +1658,11 @@ export default function SuperAdminDashboard() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <Users size={18} className="text-purple-400" />
-                <h2 className="text-lg font-bold text-white">System Employee Directory</h2>
+                <h2 className="text-lg font-bold text-heading">System Employee Directory</h2>
               </div>
               <button
                 onClick={openAddEmployeeModal}
-                className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
+                className="inline-flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading px-5 py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
               >
                 <Plus size={14} />
                 <span>Add Employee Profile</span>
@@ -1671,7 +1671,7 @@ export default function SuperAdminDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {employees.length === 0 ? (
-                <div className="col-span-full border border-white/5 rounded-2xl bg-white/[0.01] p-12 text-center text-xs text-white/30">
+                <div className="col-span-full border border-white/5 rounded-2xl bg-white/[0.01] p-12 text-center text-xs text-heading/30">
                   No employee profiles registered on platform.
                 </div>
               ) : (
@@ -1683,13 +1683,13 @@ export default function SuperAdminDashboard() {
                           {emp.name ? emp.name.charAt(0) : 'E'}
                         </div>
                         <div className="space-y-0.5">
-                          <h3 className="font-bold text-white leading-tight">{emp.name}</h3>
+                          <h3 className="font-bold text-heading leading-tight">{emp.name}</h3>
                           <div className="flex flex-wrap items-center gap-1.5">
                             <span className="rounded bg-purple-950/40 border border-purple-500/30 px-2 py-0.5 font-mono text-[9px] font-bold text-purple-300">
                               {emp.role?.name || 'AGENT'}
                             </span>
                             {emp.designation && (
-                              <span className="rounded bg-white/5 border border-white/10 px-2 py-0.5 text-[9px] font-semibold text-white/70">
+                              <span className="rounded bg-white/5 border border-white/10 px-2 py-0.5 text-[9px] font-semibold text-heading/70">
                                 {emp.designation.name}
                               </span>
                             )}
@@ -1704,7 +1704,7 @@ export default function SuperAdminDashboard() {
                                   ● Active Today
                                 </span>
                               ) : (
-                                <span className="rounded bg-white/5 border border-white/5 px-2 py-0.5 text-[9px] font-bold text-white/25">
+                                <span className="rounded bg-white/5 border border-white/5 px-2 py-0.5 text-[9px] font-bold text-heading/25">
                                   Inactive
                                 </span>
                               );
@@ -1727,7 +1727,7 @@ export default function SuperAdminDashboard() {
 
                         <button
                           onClick={() => openEditEmployeeModal(emp)}
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-heading/60 hover:text-heading hover:bg-white/10 transition"
                           title="Edit Profile"
                         >
                           <Edit2 size={11} />
@@ -1743,18 +1743,18 @@ export default function SuperAdminDashboard() {
                     </div>
 
                     {/* Employee stats block */}
-                    <div className="grid grid-cols-2 gap-2 text-[10px] text-white/50 bg-slate-950/40 rounded-xl p-3 border border-white/5 font-sans">
+                    <div className="grid grid-cols-2 gap-2 text-[10px] text-heading/50 bg-slate-950/40 rounded-xl p-3 border border-white/5 font-sans">
                       <div className="space-y-0.5">
-                        <span className="block text-[8px] font-bold uppercase tracking-wider text-white/30">Assigned Prospects</span>
-                        <span className="block font-bold text-white font-mono text-xs">{emp.prospectCount || 0} prospects</span>
+                        <span className="block text-[8px] font-bold uppercase tracking-wider text-heading/30">Assigned Prospects</span>
+                        <span className="block font-bold text-heading font-mono text-xs">{emp.prospectCount || 0} prospects</span>
                       </div>
                       <div className="space-y-0.5">
-                        <span className="block text-[8px] font-bold uppercase tracking-wider text-white/30">Dialer Call Target</span>
-                        <span className="block font-bold text-white font-mono text-xs">{emp.dailyPlanner?.callsMade || 0} / {emp.dailyPlanner?.callTarget || 0} calls</span>
+                        <span className="block text-[8px] font-bold uppercase tracking-wider text-heading/30">Dialer Call Target</span>
+                        <span className="block font-bold text-heading font-mono text-xs">{emp.dailyPlanner?.callsMade || 0} / {emp.dailyPlanner?.callTarget || 0} calls</span>
                       </div>
                       <div className="space-y-0.5 col-span-2 border-t border-white/5 pt-2 mt-1.5">
-                        <span className="block text-[8px] font-bold uppercase tracking-wider text-white/30">Latest Daily Update Log</span>
-                        <span className="block text-white/70 italic line-clamp-1">
+                        <span className="block text-[8px] font-bold uppercase tracking-wider text-heading/30">Latest Daily Update Log</span>
+                        <span className="block text-heading/70 italic line-clamp-1">
                           {emp.recentUpdates && emp.recentUpdates.length > 0 
                             ? `"${emp.recentUpdates[0].summary}"` 
                             : 'No updates logged today.'}
@@ -1771,8 +1771,8 @@ export default function SuperAdminDashboard() {
           <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/5 pb-4">
               <div className="space-y-1">
-                <h2 className="text-sm font-bold text-white uppercase tracking-wider">Manage Roles & Designations</h2>
-                <p className="text-[10.5px] text-white/40">Create Custom organizational designations (e.g. Sales Agent, Team Lead, Senior Agent) and assign dial permissions.</p>
+                <h2 className="text-sm font-bold text-heading uppercase tracking-wider">Manage Roles & Designations</h2>
+                <p className="text-[10.5px] text-heading/40">Create Custom organizational designations (e.g. Sales Agent, Team Lead, Senior Agent) and assign dial permissions.</p>
               </div>
 
               <button
@@ -1786,24 +1786,24 @@ export default function SuperAdminDashboard() {
 
             <div className="grid grid-cols-1 gap-4">
               {designations.length === 0 ? (
-                <p className="text-xs text-white/30 italic text-center py-4">No designations configured.</p>
+                <p className="text-xs text-heading/30 italic text-center py-4">No designations configured.</p>
               ) : (
                 designations.map((des) => (
                   <div key={des.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-white/5 bg-white/[0.01] rounded-xl p-4">
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white text-xs">{des.name}</span>
+                        <span className="font-bold text-heading text-xs">{des.name}</span>
                         <span className="rounded bg-white/5 px-2 py-0.5 text-[8.5px] font-mono text-purple-300 font-bold border border-white/10">
                           Permissions: {des.permissions}
                         </span>
                       </div>
-                      <p className="text-[11px] text-white/40 leading-relaxed font-sans">{des.description || 'No description provided.'}</p>
+                      <p className="text-[11px] text-heading/40 leading-relaxed font-sans">{des.description || 'No description provided.'}</p>
                     </div>
 
                     <div className="flex items-center gap-1.5 sm:self-start lg:self-center">
                       <button
                         onClick={() => openEditDesignationModal(des)}
-                        className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
+                        className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-heading/60 hover:text-heading hover:bg-white/10 transition"
                         title="Edit Designation"
                       >
                         <Edit2 size={11} />
@@ -1830,14 +1830,14 @@ export default function SuperAdminDashboard() {
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#060b1b] p-6 space-y-5 shadow-2xl text-left"
+            className="w-full max-w-sm rounded-2xl border border-white/10 bg-surface p-6 space-y-5 shadow-2xl text-left"
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-heading flex items-center gap-2">
                 <UserCheck size={16} className="text-purple-400" />
                 <span>Allocate Prospects</span>
               </h3>
-              <button onClick={() => setAssignModalOpen(false)} className="text-white/40 hover:text-white">
+              <button onClick={() => setAssignModalOpen(false)} className="text-heading/40 hover:text-heading">
                 <X size={16} />
               </button>
             </div>
@@ -1846,13 +1846,13 @@ export default function SuperAdminDashboard() {
 
               {/* What's being assigned */}
               <div className="rounded-xl border border-white/5 bg-white/[0.02] px-4 py-3 text-xs">
-                <span className="text-[9px] font-bold uppercase tracking-widest text-white/40 block mb-1">Assigning</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest text-heading/40 block mb-1">Assigning</span>
                 {assignTargetType === 'list' ? (
-                  <span className="text-white font-semibold">
+                  <span className="text-heading font-semibold">
                     Entire list: <span className="text-purple-300">{prospectSummary.find(p => p.id === selectedProjectId)?.name || 'Selected list'}</span>
                   </span>
                 ) : (
-                  <span className="text-white font-semibold">
+                  <span className="text-heading font-semibold">
                     <span className="text-purple-300">{selectedLeadIds.length}</span> selected prospect{selectedLeadIds.length !== 1 ? 's' : ''}
                   </span>
                 )}
@@ -1880,20 +1880,20 @@ export default function SuperAdminDashboard() {
                 </div>
               ) : (
                 <div className="rounded-xl border border-white/5 bg-white/[0.01] px-4 py-2.5">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-white/30 block">Currently assigned to</span>
-                  <span className="text-white/30 text-[10.5px] italic">Unassigned</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-heading/30 block">Currently assigned to</span>
+                  <span className="text-heading/30 text-[10.5px] italic">Unassigned</span>
                 </div>
               )}
 
               {/* Employee selector */}
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                   {currentAssignmentInfo ? 'Reassign to' : 'Assign to'}
                 </label>
                 <select
                   value={selectedEmployeeForAssign}
                   onChange={(e) => setSelectedEmployeeForAssign(e.target.value)}
-                  className="w-full rounded-xl bg-background border border-white/10 px-3.5 py-3 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-background border border-white/10 px-3.5 py-3 text-xs text-heading outline-none focus:border-purple-400 transition"
                 >
                   <option value="">Choose an employee...</option>
                   {employees.map(e => (
@@ -1910,7 +1910,7 @@ export default function SuperAdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setAssignModalOpen(false)}
-                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-white transition"
+                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-heading transition"
                 >
                   Cancel
                 </button>
@@ -1918,7 +1918,7 @@ export default function SuperAdminDashboard() {
                   type="button"
                   onClick={confirmAssignment}
                   disabled={!selectedEmployeeForAssign}
-                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:cursor-not-allowed text-white py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
+                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:cursor-not-allowed text-heading py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
                 >
                   {currentAssignmentInfo ? 'Reassign' : 'Confirm Assign'}
                 </button>
@@ -1931,32 +1931,32 @@ export default function SuperAdminDashboard() {
       {/* ── EMPLOYEE FORM MODAL ── */}
       {employeeModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#060b1b] p-6 space-y-5 shadow-2xl text-left">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-6 space-y-5 shadow-2xl text-left">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-heading flex items-center gap-2">
                 <UserCheck size={16} className="text-purple-400" />
                 <span>{isEditingEmployee ? 'Modify Employee Profile' : 'Add Employee Profile'}</span>
               </h3>
-              <button onClick={() => setEmployeeModalOpen(false)} className="text-white/40 hover:text-white">
+              <button onClick={() => setEmployeeModalOpen(false)} className="text-heading/40 hover:text-heading">
                 <X size={16} />
               </button>
             </div>
 
             <form onSubmit={saveEmployee} className="space-y-4">
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Full Name</label>
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Full Name</label>
                 <input
                   required
                   type="text"
                   value={employeeForm.name}
                   onChange={(e) => setEmployeeForm({ ...employeeForm, name: e.target.value })}
                   placeholder="e.g. Jane Agent"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
                   <Mail size={10} />
                   <span>Email Address</span>
                 </label>
@@ -1966,23 +1966,23 @@ export default function SuperAdminDashboard() {
                   value={employeeForm.email}
                   onChange={(e) => setEmployeeForm({ ...employeeForm, email: e.target.value })}
                   placeholder="e.g. email@domain.com"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Phone Number</label>
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Phone Number</label>
                 <input
                   type="text"
                   value={employeeForm.phone}
                   onChange={(e) => setEmployeeForm({ ...employeeForm, phone: e.target.value })}
                   placeholder="e.g. 555-0199"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1 flex items-center gap-1">
                   <Lock size={10} />
                   <span>Password {isEditingEmployee && '(leave blank to keep unchanged)'}</span>
                 </label>
@@ -1992,17 +1992,17 @@ export default function SuperAdminDashboard() {
                   value={employeeForm.password}
                   onChange={(e) => setEmployeeForm({ ...employeeForm, password: e.target.value })}
                   placeholder="Set login password..."
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Company Role</label>
+                  <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Company Role</label>
                   <select
                     value={employeeForm.roleName}
                     onChange={(e) => setEmployeeForm({ ...employeeForm, roleName: e.target.value })}
-                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                   >
                     <option value="AGENT">Outbound Agent</option>
                     <option value="TEAMLEADER">Team Leader</option>
@@ -2012,11 +2012,11 @@ export default function SuperAdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Designation</label>
+                  <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Designation</label>
                   <select
                     value={employeeForm.designationId}
                     onChange={(e) => setEmployeeForm({ ...employeeForm, designationId: e.target.value })}
-                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                    className="w-full rounded-xl bg-background border border-white/10 px-2 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                   >
                     <option value="" disabled>Select Designation...</option>
                     {designations.map(d => (
@@ -2034,13 +2034,13 @@ export default function SuperAdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setEmployeeModalOpen(false)}
-                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-white transition"
+                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-heading transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
+                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
                 >
                   Save Profile
                 </button>
@@ -2053,50 +2053,50 @@ export default function SuperAdminDashboard() {
       {/* ── DESIGNATION FORM MODAL ── */}
       {designationModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#060b1b] p-6 space-y-5 shadow-2xl text-left">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-6 space-y-5 shadow-2xl text-left">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <h3 className="text-sm font-bold text-heading flex items-center gap-2">
                 <Shield size={16} className="text-purple-400" />
                 <span>{isEditingDesignation ? 'Modify Designation' : 'Create Custom Designation'}</span>
               </h3>
-              <button onClick={() => setDesignationModalOpen(false)} className="text-white/40 hover:text-white">
+              <button onClick={() => setDesignationModalOpen(false)} className="text-heading/40 hover:text-heading">
                 <X size={16} />
               </button>
             </div>
 
             <form onSubmit={saveDesignation} className="space-y-4">
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Designation Name</label>
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Designation Name</label>
                 <input
                   required
                   type="text"
                   value={designationForm.name}
                   onChange={(e) => setDesignationForm({ ...designationForm, name: e.target.value })}
                   placeholder="e.g. Sales Agent"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Description</label>
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Description</label>
                 <textarea
                   rows={2}
                   value={designationForm.description}
                   onChange={(e) => setDesignationForm({ ...designationForm, description: e.target.value })}
                   placeholder="Brief description of responsibilities..."
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition resize-none"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition resize-none"
                 />
               </div>
 
               <div>
-                <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">Permissions Scope</label>
+                <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">Permissions Scope</label>
                 <input
                   required
                   type="text"
                   value={designationForm.permissions}
                   onChange={(e) => setDesignationForm({ ...designationForm, permissions: e.target.value })}
                   placeholder="e.g. VIEW_OWN,CALL_LEADS"
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-white outline-none focus:border-purple-400 transition font-mono"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-3.5 py-2.5 text-xs text-heading outline-none focus:border-purple-400 transition font-mono"
                 />
               </div>
 
@@ -2108,13 +2108,13 @@ export default function SuperAdminDashboard() {
                 <button
                   type="button"
                   onClick={() => setDesignationModalOpen(false)}
-                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-white transition"
+                  className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-heading transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
+                  className="w-1/2 rounded-xl bg-purple-600 hover:bg-purple-500 text-heading py-2.5 text-xs font-bold transition shadow-md shadow-purple-500/10"
                 >
                   Save Designation
                 </button>

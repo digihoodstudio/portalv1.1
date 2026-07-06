@@ -93,14 +93,14 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="scroll-mt-28 mt-24 rounded-[24px] border border-white/[0.06] bg-[#080D26] overflow-hidden"
+      className="scroll-mt-28 mt-24 rounded-[24px] border border-white/[0.06] bg-surface overflow-hidden"
     >
       {/* Header */}
       <div className="border-b border-white/10 p-6 md:p-10">
         <p className="text-sm uppercase tracking-[0.3em] text-gold">
           Contact Sales
         </p>
-        <h2 className="mt-2 text-xl font-semibold text-white md:text-3xl">
+        <h2 className="mt-2 text-xl font-semibold text-heading md:text-3xl">
           Let's scale your operations.
         </h2>
         <p className="mt-1.5 text-sm text-foreground/70">
@@ -112,7 +112,7 @@ export default function ContactSection() {
       <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr] border-t border-white/0">
         {/* Left Column: Form */}
         <div className="p-6 md:p-10 border-r border-white/10">
-          <h3 className="text-lg font-semibold text-white mb-6">
+          <h3 className="text-lg font-semibold text-heading mb-6">
             Request Consultation
           </h3>
 
@@ -127,7 +127,7 @@ export default function ContactSection() {
                 <div className="rounded-full bg-green-500/10 p-4">
                   <CheckCircle2 className="h-10 w-10 text-green-400 animate-bounce" />
                 </div>
-                <h4 className="text-lg font-semibold text-white font-medium">
+                <h4 className="text-lg font-semibold text-heading font-medium">
                   Request Submitted Successfully
                 </h4>
                 <p className="text-sm text-foreground/70 max-w-sm">
@@ -159,7 +159,7 @@ export default function ContactSection() {
                     <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
                       Full Name
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-[#090f24] border border-white/10 focus-within:border-gold/50 transition">
+                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
                       <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
                         <User size={16} />
                       </span>
@@ -168,9 +168,9 @@ export default function ContactSection() {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder=""
+                        placeholder="Enter your full name"
                         autoComplete="new-name"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-white/20"
+                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
                       />
                     </div>
                   </div>
@@ -179,7 +179,7 @@ export default function ContactSection() {
                     <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
                       Email Address
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-[#090f24] border border-white/10 focus-within:border-gold/50 transition">
+                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
                       <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
                         <Mail size={16} />
                       </span>
@@ -188,9 +188,9 @@ export default function ContactSection() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder=""
+                        placeholder="Enter your email address"
                         autoComplete="new-email"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-white/20"
+                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
                       />
                     </div>
                   </div>
@@ -201,7 +201,7 @@ export default function ContactSection() {
                     <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
                       Phone Number
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-[#090f24] border border-white/10 focus-within:border-gold/50 transition">
+                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
                       <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
                         <Phone size={16} />
                       </span>
@@ -210,9 +210,9 @@ export default function ContactSection() {
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        placeholder=""
+                        placeholder="Enter your phone number"
                         autoComplete="new-phone"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-white/20"
+                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
                       />
                     </div>
                   </div>
@@ -221,7 +221,7 @@ export default function ContactSection() {
                     <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
                       Business Name
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-[#090f24] border border-white/10 focus-within:border-gold/50 transition">
+                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
                       <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
                         <Briefcase size={16} />
                       </span>
@@ -230,9 +230,9 @@ export default function ContactSection() {
                         type="text"
                         value={business}
                         onChange={(e) => setBusiness(e.target.value)}
-                        placeholder=""
+                        placeholder="Enter your business name"
                         autoComplete="new-business"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-white outline-none placeholder:text-white/20"
+                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
                       />
                     </div>
                   </div>
@@ -242,13 +242,13 @@ export default function ContactSection() {
                   <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
                     Message / Focus
                   </label>
-                  <div className="relative mt-1.5 rounded-2xl bg-[#090f24] border border-white/10 focus-within:border-gold/50 transition">
+                  <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
                     <textarea
                       rows={3}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Tell us about your automation needs..."
-                      className="w-full rounded-2xl bg-transparent p-4 text-sm text-white outline-none placeholder:text-white/20 resize-none"
+                      className="w-full rounded-2xl bg-transparent p-4 text-sm text-heading outline-none placeholder:text-heading/20 resize-none"
                     />
                   </div>
                 </div>
@@ -267,8 +267,8 @@ export default function ContactSection() {
         </div>
 
         {/* Right Column: Direct Channels */}
-        <div className="p-6 md:p-10 bg-[#06101f]/30 flex flex-col justify-center">
-          <h3 className="text-lg font-semibold text-white mb-6">
+        <div className="p-6 md:p-10 bg-background flex flex-col justify-center">
+          <h3 className="text-lg font-semibold text-heading mb-6">
             Direct Channels
           </h3>
 
@@ -279,21 +279,21 @@ export default function ContactSection() {
                 href={channel.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-4 rounded-2xl border border-white/5 bg-[#040a1e]/60 p-4 transition-all duration-300 hover:border-gold/20 hover:bg-[#040a1e]/80"
+                className="flex items-start gap-4 rounded-2xl border border-white/5 bg-surface p-4 transition-all duration-300 hover:border-gold/20 hover:bg-surface"
               >
                 <div className={`rounded-xl border p-2.5 ${channel.color}`}>
                   {channel.icon}
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-semibold text-white">
+                    <h4 className="text-sm font-semibold text-heading">
                       {channel.name}
                     </h4>
                     <span className="text-[9px] uppercase tracking-wider text-gold bg-gold/5 px-2 py-0.5 rounded-full border border-gold/10">
                       Active
                     </span>
                   </div>
-                  <p className="text-xs font-semibold text-white/95">
+                  <p className="text-xs font-semibold text-heading/95">
                     {channel.value}
                   </p>
                   <p className="text-xxs text-foreground/60 leading-normal">

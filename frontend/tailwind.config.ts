@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,9 +11,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#02061D',
-        foreground: '#BDB6AC',
-        gold: '#CFC7BA',
+        background: 'rgb(var(--color-background) / <alpha-value>)',
+        foreground: 'rgb(var(--color-foreground) / <alpha-value>)',
+        heading: 'rgb(var(--color-heading) / <alpha-value>)',
+        gold: 'rgb(var(--color-gold) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface) / <alpha-value>)',
+        'surface-elevated': 'rgb(var(--color-surface-elevated) / <alpha-value>)',
+        'gold-dim': 'rgb(var(--color-gold-dim) / <alpha-value>)',
       },
       boxShadow: {
         glow: '0 25px 80px rgba(143,122,103,0.2)',

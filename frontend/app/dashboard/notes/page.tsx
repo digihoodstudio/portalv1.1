@@ -35,7 +35,7 @@ export default function NotesPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-semibold text-white mb-2 flex items-center gap-3">
+      <h1 className="text-3xl font-semibold text-heading mb-2 flex items-center gap-3">
         <StickyNote className="text-gold" /> My Notes
       </h1>
       <p className="text-foreground/60 mb-8">
@@ -48,7 +48,7 @@ export default function NotesPage() {
           onChange={(e) => setText(e.target.value)}
           placeholder="Write a quick note..."
           rows={3}
-          className="flex-1 rounded-2xl border border-white/10 bg-[#0c1433]/80 px-4 py-3 text-white placeholder-white/30 outline-none focus:border-gold/50"
+          className="flex-1 rounded-2xl border border-white/10 bg-surface px-4 py-3 text-heading placeholder-white/30 outline-none focus:border-gold/50"
         />
         <button
           onClick={addNote}
@@ -64,10 +64,10 @@ export default function NotesPage() {
             key={note.id}
             className="rounded-2xl border border-white/10 bg-glass p-4"
           >
-            <p className="text-white/90 whitespace-pre-wrap text-sm">
+            <p className="text-heading/90 whitespace-pre-wrap text-sm">
               {note.text}
             </p>
-            <div className="mt-3 flex items-center justify-between text-xs text-white/40">
+            <div className="mt-3 flex items-center justify-between text-xs text-heading/40">
               <span>{new Date(note.createdAt).toLocaleString()}</span>
               <button
                 onClick={() => deleteNote(note.id)}
@@ -79,7 +79,7 @@ export default function NotesPage() {
           </div>
         ))}
         {notes.length === 0 && (
-          <p className="text-white/40 text-sm">
+          <p className="text-heading/40 text-sm">
             No notes yet. Add your first one above.
           </p>
         )}

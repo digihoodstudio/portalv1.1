@@ -11,9 +11,9 @@ export default function UserRedirectPage() {
   }, [router]);
 
   return (
-    <main className="mx-auto mt-32 max-w-xl px-6 pb-24 text-center text-white">
+    <main className="mx-auto mt-32 max-w-xl px-6 pb-24 text-center text-heading">
       <div className="rounded-[32px] border border-white/10 bg-glass p-10 shadow-glow">
-        <p className="animate-pulse text-sm text-white/60">Redirecting to unified systems command console...</p>
+        <p className="animate-pulse text-sm text-heading/60">Redirecting to unified systems command console...</p>
       </div>
     </main>
   );

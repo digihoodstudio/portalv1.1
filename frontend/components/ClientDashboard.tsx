@@ -322,7 +322,7 @@ export default function ClientDashboard() {
   const fillD = `${pathD} L 500,100 L 0,100 Z`;
 
   return (
-    <div className="space-y-8 font-sans antialiased text-white/95">
+    <div className="space-y-8 font-sans antialiased text-heading/95">
       {/* ── METRICS OVERVIEW CARDS ── */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         {/* Total Records Card */}
@@ -332,7 +332,7 @@ export default function ClientDashboard() {
         >
           <div className="absolute right-0 bottom-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all duration-300" />
           <div className="flex items-center justify-between">
-            <span className="text-2xs font-extrabold text-white/40 uppercase tracking-[0.2em]">
+            <span className="text-2xs font-extrabold text-heading/40 uppercase tracking-[0.2em]">
               Total Uploads
             </span>
             <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
@@ -340,10 +340,10 @@ export default function ClientDashboard() {
             </div>
           </div>
           <div className="mt-4 space-y-1">
-            <div className="text-3xl font-black font-mono tracking-tight text-white group-hover:text-blue-400 transition">
+            <div className="text-3xl font-black font-mono tracking-tight text-heading group-hover:text-blue-400 transition">
               {(totalUploaded || 1500).toLocaleString()}
             </div>
-            <div className="text-[10px] text-white/40 font-extrabold uppercase tracking-wider">
+            <div className="text-[10px] text-heading/40 font-extrabold uppercase tracking-wider">
               records ingested
             </div>
           </div>
@@ -356,7 +356,7 @@ export default function ClientDashboard() {
         >
           <div className="absolute right-0 bottom-0 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all duration-300" />
           <div className="flex items-center justify-between">
-            <span className="text-2xs font-extrabold text-white/40 uppercase tracking-[0.2em]">
+            <span className="text-2xs font-extrabold text-heading/40 uppercase tracking-[0.2em]">
               Active Projects
             </span>
             <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-gold">
@@ -364,10 +364,10 @@ export default function ClientDashboard() {
             </div>
           </div>
           <div className="mt-4 space-y-1">
-            <div className="text-3xl font-black font-mono tracking-tight text-white group-hover:text-gold transition">
+            <div className="text-3xl font-black font-mono tracking-tight text-heading group-hover:text-gold transition">
               {activeProjects}
             </div>
-            <div className="text-[10px] text-white/40 font-extrabold uppercase tracking-wider">
+            <div className="text-[10px] text-heading/40 font-extrabold uppercase tracking-wider">
               campaigns live
             </div>
           </div>
@@ -380,7 +380,7 @@ export default function ClientDashboard() {
         >
           <div className="absolute right-0 bottom-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all duration-300" />
           <div className="flex items-center justify-between">
-            <span className="text-2xs font-extrabold text-white/40 uppercase tracking-[0.2em]">
+            <span className="text-2xs font-extrabold text-heading/40 uppercase tracking-[0.2em]">
               Completed Runs
             </span>
             <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
@@ -388,10 +388,10 @@ export default function ClientDashboard() {
             </div>
           </div>
           <div className="mt-4 space-y-1">
-            <div className="text-3xl font-black font-mono tracking-tight text-white group-hover:text-emerald-400 transition">
+            <div className="text-3xl font-black font-mono tracking-tight text-heading group-hover:text-emerald-400 transition">
               {completedProjects || 1}
             </div>
-            <div className="text-[10px] text-white/40 font-extrabold uppercase tracking-wider">
+            <div className="text-[10px] text-heading/40 font-extrabold uppercase tracking-wider">
               projects archived
             </div>
           </div>
@@ -409,7 +409,7 @@ export default function ClientDashboard() {
                 <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/15">
                   <Upload size={16} />
                 </div>
-                <h2 className="text-base font-bold text-white tracking-tight">
+                <h2 className="text-base font-bold text-heading tracking-tight">
                   Upload Database
                 </h2>
               </div>
@@ -423,30 +423,30 @@ export default function ClientDashboard() {
               className="grid grid-cols-1 gap-4 md:grid-cols-12 items-end"
             >
               <div className="md:col-span-6">
-                <label className="text-[10px] font-extrabold text-white/40 tracking-wider uppercase block mb-1.5">
+                <label className="text-[10px] font-extrabold text-heading/40 tracking-wider uppercase block mb-1.5">
                   File Name / Path Reference
                 </label>
                 <div className="relative">
-                  <FileText className="absolute left-3.5 top-3.5 h-4 w-4 text-white/20" />
+                  <FileText className="absolute left-3.5 top-3.5 h-4 w-4 text-heading/20" />
                   <input
                     required
                     type="text"
                     value={fileName}
                     onChange={(e) => setFileName(e.target.value)}
                     placeholder="e.g. spring_leads_2026.csv"
-                    className="w-full h-11 rounded-xl bg-slate-950/80 border border-white/10 pl-10 pr-4 text-xs text-white placeholder-white/30 outline-hidden focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all duration-300"
+                    className="w-full h-11 rounded-xl bg-slate-950/80 border border-white/10 pl-10 pr-4 text-xs text-heading placeholder-white/30 outline-hidden focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all duration-300"
                   />
                 </div>
               </div>
 
               <div className="md:col-span-3 relative" ref={dropdownRef}>
-                <label className="text-[10px] font-extrabold text-white/40 tracking-wider uppercase block mb-1.5">
+                <label className="text-[10px] font-extrabold text-heading/40 tracking-wider uppercase block mb-1.5">
                   Load Estimate
                 </label>
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="w-full h-11 flex items-center justify-between rounded-xl bg-slate-950 border border-white/10 px-4 text-xs text-white focus:border-blue-500 transition-all duration-300"
+                  className="w-full h-11 flex items-center justify-between rounded-xl bg-slate-950 border border-white/10 px-4 text-xs text-heading focus:border-blue-500 transition-all duration-300"
                 >
                   <span>
                     {recordCount === 10000
@@ -455,7 +455,7 @@ export default function ClientDashboard() {
                   </span>
                   <ChevronDown
                     size={14}
-                    className={`transform transition-transform duration-200 text-white/60 ${isDropdownOpen ? "rotate-180" : ""}`}
+                    className={`transform transition-transform duration-200 text-heading/60 ${isDropdownOpen ? "rotate-180" : ""}`}
                   />
                 </button>
 
@@ -472,7 +472,7 @@ export default function ClientDashboard() {
                         className={`w-full text-left rounded-lg px-3 py-2 text-xs transition duration-150 ${
                           recordCount === val
                             ? "bg-blue-600/20 text-blue-400 font-bold border border-blue-500/20"
-                            : "text-white/70 hover:bg-white/5 hover:text-white"
+                            : "text-heading/70 hover:bg-white/5 hover:text-heading"
                         }`}
                       >
                         {val === 10000
@@ -491,7 +491,7 @@ export default function ClientDashboard() {
                 <button
                   type="submit"
                   disabled={isUploading || !fileName}
-                  className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-xs font-bold text-white transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-blue-500/10"
+                  className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-xs font-bold text-heading transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-blue-500/10"
                 >
                   {isUploading ? (
                     <RefreshCw size={14} className="animate-spin" />
@@ -523,13 +523,13 @@ export default function ClientDashboard() {
                 <div className="p-1.5 rounded-lg bg-amber-500/10 text-gold border border-amber-500/15">
                   <Activity size={16} />
                 </div>
-                <h2 className="text-base font-bold text-white tracking-tight">
+                <h2 className="text-base font-bold text-heading tracking-tight">
                   Campaign Tracker
                 </h2>
               </div>
               <button
                 onClick={fetchData}
-                className="p-1.5 rounded-lg border border-white/5 bg-white/5 text-white/50 hover:text-white hover:bg-white/10 transition-all"
+                className="p-1.5 rounded-lg border border-white/5 bg-white/5 text-heading/50 hover:text-heading hover:bg-white/10 transition-all"
                 title="Force Refresh Data"
               >
                 <RefreshCw size={13} />
@@ -540,10 +540,10 @@ export default function ClientDashboard() {
             <div className="bg-slate-950/60 p-4 rounded-xl border border-white/5 relative">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h4 className="text-xs font-bold text-white">
+                  <h4 className="text-xs font-bold text-heading">
                     Call Connection Health
                   </h4>
-                  <p className="text-[10px] text-white/40">
+                  <p className="text-[10px] text-heading/40">
                     Real-time dial answer rate across standard timezones.
                   </p>
                 </div>
@@ -634,7 +634,7 @@ export default function ClientDashboard() {
                 </svg>
 
                 {chartHover && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#0F172A] border border-white/10 text-white text-[9px] px-2.5 py-1 rounded-lg shadow-xl font-bold font-mono">
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-surface border border-white/10 text-heading text-[9px] px-2.5 py-1 rounded-lg shadow-xl font-bold font-mono">
                     {chartHover}
                   </div>
                 )}
@@ -644,10 +644,10 @@ export default function ClientDashboard() {
             <div className="space-y-4">
               {projects.length === 0 ? (
                 <div className="text-center py-12 border border-dashed border-white/10 rounded-xl bg-slate-900/20">
-                  <p className="text-xs text-white/40">
+                  <p className="text-xs text-heading/40">
                     No active campaigns allocated to this portal account.
                   </p>
-                  <p className="text-[10px] text-white/30 mt-1">
+                  <p className="text-[10px] text-heading/30 mt-1">
                     Please submit a leads database above to spawn an outreach
                     project.
                   </p>
@@ -660,10 +660,10 @@ export default function ClientDashboard() {
                   >
                     <div className="flex flex-col gap-2.5 md:flex-row md:items-center md:justify-between">
                       <div>
-                        <h4 className="text-xs font-bold text-white tracking-wide">
+                        <h4 className="text-xs font-bold text-heading tracking-wide">
                           {proj.name}
                         </h4>
-                        <p className="text-[10px] text-white/40 mt-1 font-mono">
+                        <p className="text-[10px] text-heading/40 mt-1 font-mono">
                           ID Reference: {proj.id} • Target Vol:{" "}
                           {proj.uploadedFiles?.[0]?.recordCount || 500} records
                         </p>
@@ -685,9 +685,9 @@ export default function ClientDashboard() {
 
                     {/* Progress Bar */}
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between text-[10px] text-white/40 font-bold uppercase tracking-wider">
+                      <div className="flex items-center justify-between text-[10px] text-heading/40 font-bold uppercase tracking-wider">
                         <span>Campaign Outreach Rate</span>
-                        <span className="font-mono text-white/70">
+                        <span className="font-mono text-heading/70">
                           {proj.progress}%
                         </span>
                       </div>
@@ -701,17 +701,17 @@ export default function ClientDashboard() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 border-t border-white/5 pt-4 text-[10px] text-white/50">
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4 border-t border-white/5 pt-4 text-[10px] text-heading/50">
                       <div>
-                        <span className="block text-white/30 text-[9px] uppercase font-bold tracking-wider">
+                        <span className="block text-heading/30 text-[9px] uppercase font-bold tracking-wider">
                           Allocated Agent
                         </span>
-                        <span className="text-white/80 font-semibold">
+                        <span className="text-heading/80 font-semibold">
                           {proj.agent?.name || "Awaiting Node Allocation"}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-white/30 text-[9px] uppercase font-bold tracking-wider">
+                        <span className="block text-heading/30 text-[9px] uppercase font-bold tracking-wider">
                           Start Stamp
                         </span>
                         <span className="font-mono">
@@ -721,7 +721,7 @@ export default function ClientDashboard() {
                         </span>
                       </div>
                       <div>
-                        <span className="block text-white/30 text-[9px] uppercase font-bold tracking-wider">
+                        <span className="block text-heading/30 text-[9px] uppercase font-bold tracking-wider">
                           Est Completion
                         </span>
                         <span className="font-mono">
@@ -731,7 +731,7 @@ export default function ClientDashboard() {
                         </span>
                       </div>
                       <div>
-                        <span className="block text-white/30 text-[9px] uppercase font-bold tracking-wider">
+                        <span className="block text-heading/30 text-[9px] uppercase font-bold tracking-wider">
                           Completion Date
                         </span>
                         <span className="font-mono">
@@ -757,7 +757,7 @@ export default function ClientDashboard() {
             <div className="flex items-center justify-between border-b border-white/5 pb-3">
               <div className="flex items-center gap-2">
                 <Bell size={16} className="text-blue-400" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-white">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-heading">
                   System Alerts Inbox
                 </h2>
               </div>
@@ -770,7 +770,7 @@ export default function ClientDashboard() {
 
             <div className="space-y-2.5 max-h-[200px] overflow-y-auto pr-1">
               {notifications.length === 0 ? (
-                <p className="text-2xs text-white/30 text-center py-6">
+                <p className="text-2xs text-heading/30 text-center py-6">
                   Inbox is empty.
                 </p>
               ) : (
@@ -784,7 +784,7 @@ export default function ClientDashboard() {
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="text-xs font-bold text-white leading-normal">
+                      <h4 className="text-xs font-bold text-heading leading-normal">
                         {notif.title}
                       </h4>
                       {!notif.read && (
@@ -796,10 +796,10 @@ export default function ClientDashboard() {
                         </button>
                       )}
                     </div>
-                    <p className="text-[10px] text-white/55 leading-relaxed">
+                    <p className="text-[10px] text-heading/55 leading-relaxed">
                       {notif.message}
                     </p>
-                    <span className="block text-[8px] text-white/30 font-bold font-mono">
+                    <span className="block text-[8px] text-heading/30 font-bold font-mono">
                       {new Date(notif.createdAt).toLocaleTimeString()}
                     </span>
                   </div>
@@ -813,14 +813,14 @@ export default function ClientDashboard() {
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
             <div className="flex items-center gap-2 border-b border-white/5 pb-3.5">
               <PhoneCall size={16} className="text-purple-400" />
-              <h2 className="text-xs font-bold uppercase tracking-wider text-white">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-heading">
                 Interactive Voice Simulator
               </h2>
             </div>
 
             <form onSubmit={handleVoiceTest} className="space-y-4">
               <div>
-                <label className="text-[9px] font-extrabold text-white/40 tracking-wider uppercase block mb-1.5">
+                <label className="text-[9px] font-extrabold text-heading/40 tracking-wider uppercase block mb-1.5">
                   Target Phone Number
                 </label>
                 <input
@@ -829,12 +829,12 @@ export default function ClientDashboard() {
                   value={testPhone}
                   onChange={(e) => setTestPhone(e.target.value)}
                   placeholder="e.g. +1 (555) 0199"
-                  className="w-full rounded-xl bg-slate-950/90 border border-white/10 px-4 py-3 text-xs text-white placeholder-white/30 outline-hidden focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.1)] transition-all duration-300"
+                  className="w-full rounded-xl bg-slate-950/90 border border-white/10 px-4 py-3 text-xs text-heading placeholder-white/30 outline-hidden focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.1)] transition-all duration-300"
                 />
               </div>
 
               <div>
-                <label className="text-[9px] font-extrabold text-white/40 tracking-wider uppercase block mb-1.5">
+                <label className="text-[9px] font-extrabold text-heading/40 tracking-wider uppercase block mb-1.5">
                   Interactive Call Scenario
                 </label>
                 <textarea
@@ -843,19 +843,19 @@ export default function ClientDashboard() {
                   value={testScenario}
                   onChange={(e) => setTestScenario(e.target.value)}
                   placeholder="Objection handler scenario description..."
-                  className="w-full rounded-xl bg-slate-950/90 border border-white/10 px-4 py-3 text-xs text-white placeholder-white/30 outline-hidden focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.1)] transition-all duration-300 resize-none h-20"
+                  className="w-full rounded-xl bg-slate-950/90 border border-white/10 px-4 py-3 text-xs text-heading placeholder-white/30 outline-hidden focus:border-purple-400 focus:shadow-[0_0_12px_rgba(168,85,247,0.1)] transition-all duration-300 resize-none h-20"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3 items-end">
                 <div className="space-y-1.5 relative" ref={voiceDropdownRef}>
-                  <label className="text-[9px] font-extrabold text-white/40 tracking-wider uppercase block">
+                  <label className="text-[9px] font-extrabold text-heading/40 tracking-wider uppercase block">
                     Voice Profile
                   </label>
                   <button
                     type="button"
                     onClick={() => setIsVoiceDropdownOpen(!isVoiceDropdownOpen)}
-                    className="w-full h-11 flex items-center justify-between rounded-xl bg-slate-950 border border-white/10 px-3.5 text-xs text-white focus:border-purple-400 transition-all duration-300"
+                    className="w-full h-11 flex items-center justify-between rounded-xl bg-slate-950 border border-white/10 px-3.5 text-xs text-heading focus:border-purple-400 transition-all duration-300"
                   >
                     <span>
                       {testVoice === "Female Professional"
@@ -868,7 +868,7 @@ export default function ClientDashboard() {
                     </span>
                     <ChevronDown
                       size={14}
-                      className={`transform transition-transform duration-200 text-white/60 ${isVoiceDropdownOpen ? "rotate-180" : ""}`}
+                      className={`transform transition-transform duration-200 text-heading/60 ${isVoiceDropdownOpen ? "rotate-180" : ""}`}
                     />
                   </button>
 
@@ -890,7 +890,7 @@ export default function ClientDashboard() {
                           className={`w-full text-left rounded-lg px-3 py-2 text-xs transition duration-150 ${
                             testVoice === item.val
                               ? "bg-purple-600/20 text-purple-400 font-bold border border-purple-500/20"
-                              : "text-white/70 hover:bg-white/5 hover:text-white"
+                              : "text-heading/70 hover:bg-white/5 hover:text-heading"
                           }`}
                         >
                           {item.label}
@@ -907,7 +907,7 @@ export default function ClientDashboard() {
                   <button
                     type="submit"
                     disabled={testLoading || !testPhone}
-                    className="w-full h-11 flex items-center justify-center gap-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 active:scale-[0.98] text-xs font-bold text-white transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-purple-500/10"
+                    className="w-full h-11 flex items-center justify-center gap-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 active:scale-[0.98] text-xs font-bold text-heading transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-purple-500/10"
                   >
                     <Volume2 size={13} className="animate-pulse" />
                     <span>Dial Test</span>
@@ -918,7 +918,7 @@ export default function ClientDashboard() {
 
             {/* Test Results Console */}
             {testLoading && (
-              <div className="flex items-center justify-center gap-2 py-6 text-xs text-white/40 font-semibold animate-pulse">
+              <div className="flex items-center justify-center gap-2 py-6 text-xs text-heading/40 font-semibold animate-pulse">
                 <RefreshCw size={14} className="animate-spin text-purple-400" />
                 <span>Establishing simulated outbound trunk...</span>
               </div>
@@ -932,7 +932,7 @@ export default function ClientDashboard() {
                   </span>
                   <button
                     onClick={downloadTranscript}
-                    className="text-[9px] text-white/40 hover:text-white flex items-center gap-1 transition-all"
+                    className="text-[9px] text-heading/40 hover:text-heading flex items-center gap-1 transition-all"
                   >
                     <Download size={10} />
                     <span>Download TXT</span>
@@ -952,13 +952,13 @@ export default function ClientDashboard() {
                       >
                         [{t.role.toUpperCase()}]:
                       </span>{" "}
-                      <span className="text-white/80">{t.message}</span>
+                      <span className="text-heading/80">{t.message}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Call Analytics */}
-                <div className="grid grid-cols-2 gap-2 border-t border-white/5 pt-2 text-[9px] text-white/40 font-bold">
+                <div className="grid grid-cols-2 gap-2 border-t border-white/5 pt-2 text-[9px] text-heading/40 font-bold">
                   <div>
                     <span>Sentiment Score: </span>
                     <span className="text-emerald-400">
@@ -967,7 +967,7 @@ export default function ClientDashboard() {
                   </div>
                   <div>
                     <span>Call Duration: </span>
-                    <span className="text-white/85 font-mono">
+                    <span className="text-heading/85 font-mono">
                       {testResult.analytics.durationSec}s
                     </span>
                   </div>
@@ -981,14 +981,14 @@ export default function ClientDashboard() {
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
             <div className="flex items-center gap-2 border-b border-white/5 pb-3.5">
               <Clock size={16} className="text-blue-400" />
-              <h2 className="text-xs font-bold uppercase tracking-wider text-white">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-heading">
                 Operational Logs
               </h2>
             </div>
 
             <div className="h-[250px] overflow-y-auto pr-2 space-y-0.5 custom-scrollbar">
               {activities.length === 0 ? (
-                <p className="text-2xs text-white/30 text-center py-6">
+                <p className="text-2xs text-heading/30 text-center py-6">
                   Logs are quiet.
                 </p>
               ) : (
@@ -1003,10 +1003,10 @@ export default function ClientDashboard() {
                       <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500 border border-slate-950"></span>
                     </span>
 
-                    <h5 className="text-xs font-bold text-white/90">
+                    <h5 className="text-xs font-bold text-heading/90">
                       {act.action}
                     </h5>
-                    <p className="text-[10px] text-white/50 mt-1 leading-relaxed">
+                    <p className="text-[10px] text-heading/50 mt-1 leading-relaxed">
                       {act.details}
                     </p>
 

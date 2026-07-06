@@ -66,7 +66,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       <aside
-        className={`${collapsed ? "w-20" : "w-64"} flex-shrink-0 border-r border-white/10 bg-[#06101f]/80 backdrop-blur-xl transition-all duration-300 flex flex-col sticky top-0 h-screen`}
+        className={`${collapsed ? "w-20" : "w-64"} flex-shrink-0 border-r border-white/10 dark:bg-[#06101f]/80 bg-surface-elevated backdrop-blur-xl transition-all duration-300 flex flex-col sticky top-0 h-screen`}
       >
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-5">
           <Link href="/" className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function DashboardLayout({
           </Link>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="rounded-lg p-2 text-white/60 hover:bg-white/5 hover:text-white"
+            className="rounded-lg p-2 text-heading/60 hover:bg-white/5 hover:text-heading"
           >
             {collapsed ? <Menu size={18} /> : <X size={18} />}
           </button>
@@ -103,7 +103,7 @@ export default function DashboardLayout({
                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
                   active
                     ? "bg-gold/10 text-gold border border-gold/20"
-                    : "text-white/70 hover:bg-white/5 hover:text-white"
+                    : "text-heading/70 hover:bg-white/5 hover:text-heading"
                 }`}
                 title={collapsed ? label : undefined}
               >
@@ -121,10 +121,10 @@ export default function DashboardLayout({
                 {userName[0]?.toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-semibold text-white truncate">
+                <p className="text-xs font-semibold text-heading truncate">
                   {userName}
                 </p>
-                <p className="text-[10px] text-white/50 truncate">{userRole}</p>
+                <p className="text-[10px] text-heading/50 truncate">{userRole}</p>
               </div>
             </div>
           )}

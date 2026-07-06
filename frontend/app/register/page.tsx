@@ -88,7 +88,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center px-4 pb-16 pt-28 md:px-6 font-sans">
+    <main className="relative flex min-h-screen items-center justify-center px-4 py-4 md:px-6 font-sans">
       {/* Decorative background blur */}
       <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
         <div className="h-[400px] w-[600px] rounded-full bg-gold/10 blur-[120px]" />
@@ -99,14 +99,14 @@ export default function RegisterPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="rounded-[24px] border border-white/10 bg-background/80 p-8 shadow-glow text-white backdrop-blur-md"
+          className="rounded-[24px] border border-white/10 bg-background/80 p-6 shadow-glow text-heading backdrop-blur-md"
         >
           {/* Header */}
           <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-xl font-bold tracking-tight text-heading">
               Create Account
             </h1>
-            <p className="mt-1 text-xs text-white/50">
+            <p className="mt-1 text-xs text-heading/50">
               Join Digihood Studio today
             </p>
           </div>
@@ -137,13 +137,13 @@ export default function RegisterPage() {
           </AnimatePresence>
 
           {/* Form Content */}
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
             <div>
-              <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
+              <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
                 Full Name
               </label>
               <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-                <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
+                <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
                   <User size={14} />
                 </span>
                 <input
@@ -151,85 +151,85 @@ export default function RegisterPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your full name"
-                  className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                placeholder="Enter your full name"
+                className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
+              Phone Number
+            </label>
+            <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
+              <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
+                <Phone size={14} />
+              </span>
+              <input
+                required
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Enter your phone number"
+                className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
+              Email Address
+            </label>
+            <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
+              <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
+                <Mail size={14} />
+              </span>
+              <input
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
+                Password
+              </label>
+              <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
+                <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
+                  <Lock size={14} />
+                </span>
+                <input
+                  required
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
-                Phone Number
+              <label className="text-[10px] font-bold text-heading/50 tracking-widest uppercase block mb-2">
+                Confirm
               </label>
               <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-                <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
-                  <Phone size={14} />
+                <span className="absolute inset-y-0 left-4 flex items-center text-heading/40">
+                  <Lock size={14} />
                 </span>
                 <input
                   required
-                  type="tel"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="Enter your phone number"
-                  className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
-                Email Address
-              </label>
-              <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-                <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
-                  <Mail size={14} />
-                </span>
-                <input
-                  required
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
-                  Password
-                </label>
-                <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-                  <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
-                    <Lock size={14} />
-                  </span>
-                  <input
-                    required
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[10px] font-bold text-white/50 tracking-widest uppercase block mb-2">
-                  Confirm
-                </label>
-                <div className="relative rounded-xl bg-white/5 border border-white/10 focus-within:border-gold/50 transition">
-                  <span className="absolute inset-y-0 left-4 flex items-center text-white/40">
-                    <Lock size={14} />
-                  </span>
-                  <input
-                    required
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full bg-transparent py-3 pl-11 pr-4 text-xs text-white placeholder-white/30 outline-none"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-transparent py-2.5 pl-11 pr-4 text-xs text-heading placeholder-white/30 outline-none"
                   />
                 </div>
               </div>
@@ -238,7 +238,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold hover:brightness-110 py-3.5 text-xs font-bold text-[#030816] transition duration-200 shadow-md shadow-gold/10 hover:scale-[1.01] disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gold hover:brightness-110 py-3 text-xs font-bold text-background transition duration-200 shadow-md shadow-gold/10 hover:scale-[1.01] disabled:opacity-50"
             >
               <Sparkles size={14} />
               <span>Complete Signup</span>
@@ -246,12 +246,12 @@ export default function RegisterPage() {
           </form>
 
           {/* Footer Link */}
-          <div className="mt-6 border-t border-white/5 pt-5 text-center">
-            <p className="text-xs text-white/50">
+          <div className="mt-4 border-t border-white/5 pt-4 text-center">
+            <p className="text-xs text-heading/50">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-bold text-gold hover:text-white transition-all"
+                className="font-bold text-gold hover:text-heading transition-all"
               >
                 Sign In
               </Link>

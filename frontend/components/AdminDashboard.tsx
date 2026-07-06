@@ -802,7 +802,7 @@ export default function AdminDashboard() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
               activeTab === id
                 ? "bg-gold/15 border border-gold/30 text-gold shadow-glow-sm"
-                : "text-white/60 hover:bg-white/5 hover:text-white border border-transparent"
+                : "text-heading/60 hover:bg-white/5 hover:text-heading border border-transparent"
             }`}
           >
             <Icon size={14} />
@@ -819,17 +819,17 @@ export default function AdminDashboard() {
             {/* Today Card */}
             <div className="lg:col-span-4 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-heading/40 uppercase tracking-widest">
                   Today
                 </span>
-                <button className="inline-flex items-center gap-1 text-[10px] font-bold text-white/50 hover:text-white border border-white/10 rounded-full px-2.5 py-1 bg-white/5">
+                <button className="inline-flex items-center gap-1 text-[10px] font-bold text-heading/50 hover:text-heading border border-white/10 rounded-full px-2.5 py-1 bg-white/5">
                   <span>Last 5 days</span>
                   <ChevronDown size={10} />
                 </button>
               </div>
 
               <div>
-                <h2 className="text-4xl font-black text-white tracking-tight">
+                <h2 className="text-4xl font-black text-heading tracking-tight">
                   NPR{((totalLeads * 250) / 100).toFixed(0).toLocaleString()}
                 </h2>
                 <div className="flex items-center gap-1.5 mt-1">
@@ -837,7 +837,7 @@ export default function AdminDashboard() {
                   <span className="text-[11px] font-bold text-emerald-400">
                     +2.14%
                   </span>
-                  <span className="text-[11px] text-white/40">
+                  <span className="text-[11px] text-heading/40">
                     vs last week
                   </span>
                 </div>
@@ -853,7 +853,7 @@ export default function AdminDashboard() {
                       className="w-full rounded-t-md bg-gradient-to-t from-gold/80 to-gold/30 hover:from-gold hover:to-gold/50 transition-all cursor-pointer"
                       style={{ height: `${h}%` }}
                     />
-                    <span className="text-[8px] font-mono text-white/30">
+                    <span className="text-[8px] font-mono text-heading/30">
                       {i + 1}/5
                     </span>
                   </div>
@@ -864,7 +864,7 @@ export default function AdminDashboard() {
             {/* Timeline Project */}
             <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-white">
+                <h3 className="text-sm font-bold text-heading">
                   Timeline Project
                 </h3>
                 <button className="inline-flex items-center gap-1 text-[10px] font-bold text-gold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 hover:bg-gold/10">
@@ -891,7 +891,7 @@ export default function AdminDashboard() {
                             style={{ height: `${heights[i] * 0.6}%` }}
                           />
                         </div>
-                        <span className="text-[9px] font-mono text-white/30">
+                        <span className="text-[9px] font-mono text-heading/30">
                           {label}
                         </span>
                       </div>
@@ -954,7 +954,7 @@ export default function AdminDashboard() {
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xs font-mono text-white/60">
+                    <span className="text-xs font-mono text-heading/60">
                       Live
                     </span>
                   </div>
@@ -962,15 +962,15 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-3 gap-2 w-full mt-3 text-center">
                   <div>
                     <p className="text-xs font-bold text-gold">40%</p>
-                    <p className="text-[8px] text-white/30 uppercase">Hot</p>
+                    <p className="text-[8px] text-heading/30 uppercase">Hot</p>
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gold/70">33%</p>
-                    <p className="text-[8px] text-white/30 uppercase">Warm</p>
+                    <p className="text-[8px] text-heading/30 uppercase">Warm</p>
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gold/40">28%</p>
-                    <p className="text-[8px] text-white/30 uppercase">Cold</p>
+                    <p className="text-[8px] text-heading/30 uppercase">Cold</p>
                   </div>
                 </div>
               </div>
@@ -981,8 +981,8 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h4 className="text-xs font-bold text-white">Contacted</h4>
-                <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+                <h4 className="text-xs font-bold text-heading">Contacted</h4>
+                <span className="text-[9px] font-bold text-heading/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
                   {calls.length}
                 </span>
               </div>
@@ -993,17 +993,17 @@ export default function AdminDashboard() {
                       {c.companyName?.charAt(0) || "C"}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-white truncate">
+                      <p className="text-[11px] font-bold text-heading truncate">
                         {c.contactName || c.companyName}
                       </p>
-                      <p className="text-[9px] text-white/40 truncate">
+                      <p className="text-[9px] text-heading/40 truncate">
                         {c.contactEmail}
                       </p>
                     </div>
                   </div>
                 ))}
                 {clients.length === 0 && (
-                  <p className="text-[10px] text-white/30 text-center py-2">
+                  <p className="text-[10px] text-heading/30 text-center py-2">
                     No contacts
                   </p>
                 )}
@@ -1012,8 +1012,8 @@ export default function AdminDashboard() {
 
             <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h4 className="text-xs font-bold text-white">Negotiation</h4>
-                <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+                <h4 className="text-xs font-bold text-heading">Negotiation</h4>
+                <span className="text-[9px] font-bold text-heading/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
                   {projects.length}
                 </span>
               </div>
@@ -1024,17 +1024,17 @@ export default function AdminDashboard() {
                       {p.name?.charAt(0) || "P"}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-white truncate">
+                      <p className="text-[11px] font-bold text-heading truncate">
                         {p.name}
                       </p>
-                      <p className="text-[9px] text-white/40">
+                      <p className="text-[9px] text-heading/40">
                         {p.uploadedFiles?.[0]?.recordCount || 0} leads
                       </p>
                     </div>
                   </div>
                 ))}
                 {projects.length === 0 && (
-                  <p className="text-[10px] text-white/30 text-center py-2">
+                  <p className="text-[10px] text-heading/30 text-center py-2">
                     No deals
                   </p>
                 )}
@@ -1043,8 +1043,8 @@ export default function AdminDashboard() {
 
             <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h4 className="text-xs font-bold text-white">Offer Sent</h4>
-                <span className="text-[9px] font-bold text-white/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
+                <h4 className="text-xs font-bold text-heading">Offer Sent</h4>
+                <span className="text-[9px] font-bold text-heading/40 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">
                   {appointments.length}
                 </span>
               </div>
@@ -1054,19 +1054,19 @@ export default function AdminDashboard() {
                     key={a.id}
                     className="rounded-xl bg-white/5 border border-white/10 p-2.5"
                   >
-                    <p className="text-[11px] font-bold text-white truncate">
+                    <p className="text-[11px] font-bold text-heading truncate">
                       {a.title}
                     </p>
                     <p className="text-[9px] text-gold mt-0.5">
                       {a.clientName || "Lead"}
                     </p>
-                    <p className="text-[8px] text-white/30 mt-1 font-mono">
+                    <p className="text-[8px] text-heading/30 mt-1 font-mono">
                       {new Date(a.scheduledAt).toLocaleDateString()}
                     </p>
                   </div>
                 ))}
                 {appointments.length === 0 && (
-                  <p className="text-[10px] text-white/30 text-center py-2">
+                  <p className="text-[10px] text-heading/30 text-center py-2">
                     No offers
                   </p>
                 )}
@@ -1075,7 +1075,7 @@ export default function AdminDashboard() {
 
             <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-5 space-y-3">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h4 className="text-xs font-bold text-white">Deal Closed</h4>
+                <h4 className="text-xs font-bold text-heading">Deal Closed</h4>
                 <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5">
                   {bookedCalls}
                 </span>
@@ -1090,7 +1090,7 @@ export default function AdminDashboard() {
                         {c.leadName?.charAt(0) || "?"}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[11px] font-bold text-white truncate">
+                        <p className="text-[11px] font-bold text-heading truncate">
                           {c.leadName}
                         </p>
                         <p className="text-[9px] text-emerald-400 font-mono">
@@ -1100,7 +1100,7 @@ export default function AdminDashboard() {
                     </div>
                   ))}
                 {bookedCalls === 0 && (
-                  <p className="text-[10px] text-white/30 text-center py-2">
+                  <p className="text-[10px] text-heading/30 text-center py-2">
                     No closed
                   </p>
                 )}
@@ -1139,12 +1139,12 @@ export default function AdminDashboard() {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-sm font-bold text-white">
+                      <span className="text-sm font-bold text-heading">
                         {avgGreeting}%
                       </span>
                     </div>
                   </div>
-                  <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                  <p className="text-[9px] uppercase font-bold text-heading/40 tracking-wider">
                     Greeting Score
                   </p>
                 </div>
@@ -1176,12 +1176,12 @@ export default function AdminDashboard() {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-sm font-bold text-white">
+                      <span className="text-sm font-bold text-heading">
                         {avgCompliance}%
                       </span>
                     </div>
                   </div>
-                  <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                  <p className="text-[9px] uppercase font-bold text-heading/40 tracking-wider">
                     Compliance
                   </p>
                 </div>
@@ -1192,7 +1192,7 @@ export default function AdminDashboard() {
               <p className="text-[9px] uppercase font-bold text-gold/70 tracking-widest">
                 Total Pipeline
               </p>
-              <h3 className="text-3xl font-black text-white mt-1">
+              <h3 className="text-3xl font-black text-heading mt-1">
                 NPR{(totalLeads * 250).toLocaleString()}
               </h3>
               <div className="flex items-center gap-1.5 mt-2">
@@ -1205,19 +1205,19 @@ export default function AdminDashboard() {
 
             <div className="lg:col-span-5 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-white">
+                <h4 className="text-xs font-bold text-heading">
                   Performance Trend
                 </h4>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1">
                     <div className="w-2 h-2 rounded-full bg-gold" />
-                    <span className="text-[9px] text-white/40">
+                    <span className="text-[9px] text-heading/40">
                       Last 4 Days
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <div className="w-2 h-2 rounded-full bg-white/30" />
-                    <span className="text-[9px] text-white/40">Last Week</span>
+                    <span className="text-[9px] text-heading/40">Last Week</span>
                   </div>
                 </div>
               </div>
@@ -1290,18 +1290,18 @@ export default function AdminDashboard() {
           {inquiries.length > 0 && (
             <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md overflow-hidden">
               <div className="border-b border-white/10 px-6 py-4">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <h3 className="text-sm font-bold text-heading flex items-center gap-2">
                   <MessageSquare size={14} className="text-gold" />
                   Captured Inquiries from Homepage AI
-                  <span className="ml-auto text-[10px] font-bold text-white/30 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">
+                  <span className="ml-auto text-[10px] font-bold text-heading/30 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">
                     {inquiries.length} conversation{inquiries.length !== 1 ? 's' : ''}
                   </span>
                 </h3>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-white/80">
+                <table className="w-full text-left text-xs text-heading/80">
                   <thead>
-                    <tr className="border-b border-white/5 bg-white/[0.02] text-[9px] uppercase tracking-wider text-white/30 font-bold">
+                    <tr className="border-b border-white/5 bg-white/[0.02] text-[9px] uppercase tracking-wider text-heading/30 font-bold">
                       <th className="px-5 py-3">Name</th>
                       <th className="px-5 py-3">Contact</th>
                       <th className="px-5 py-3">Interest</th>
@@ -1312,7 +1312,7 @@ export default function AdminDashboard() {
                   <tbody className="divide-y divide-white/5">
                     {inquiries.slice(0, 10).map((inq: any) => (
                       <tr key={inq.id} className="hover:bg-white/[0.01] transition-colors">
-                        <td className="px-5 py-3.5 font-bold text-white">
+                        <td className="px-5 py-3.5 font-bold text-heading">
                           {inq.name || '—'}
                         </td>
                         <td className="px-5 py-3.5">
@@ -1323,10 +1323,10 @@ export default function AdminDashboard() {
                             {inq.interest}
                           </span>
                         </td>
-                        <td className="px-5 py-3.5 max-w-[220px] truncate text-white/50">
+                        <td className="px-5 py-3.5 max-w-[220px] truncate text-heading/50">
                           {inq.lastMessage || '—'}
                         </td>
-                        <td className="px-5 py-3.5 text-white/30 font-mono text-[10px] whitespace-nowrap">
+                        <td className="px-5 py-3.5 text-heading/30 font-mono text-[10px] whitespace-nowrap">
                           {new Date(inq.lastSeen).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </td>
                       </tr>
@@ -1345,7 +1345,7 @@ export default function AdminDashboard() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-white/10 pb-4">
             <div className="flex items-center gap-2">
               <Users size={18} className="text-gold" />
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold text-heading">
                 Client Accounts Management
               </h2>
             </div>
@@ -1359,9 +1359,9 @@ export default function AdminDashboard() {
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-            <table className="w-full text-left border-collapse text-xs text-white/80">
+            <table className="w-full text-left border-collapse text-xs text-heading/80">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                   <th className="px-4 py-3">Company Name</th>
                   <th className="px-4 py-3">Primary Contact</th>
                   <th className="px-4 py-3">Plan</th>
@@ -1374,7 +1374,7 @@ export default function AdminDashboard() {
                   <tr>
                     <td
                       colSpan={5}
-                      className="px-4 py-6 text-center text-white/30"
+                      className="px-4 py-6 text-center text-heading/30"
                     >
                       No client records found.
                     </td>
@@ -1385,13 +1385,13 @@ export default function AdminDashboard() {
                       key={c.id}
                       className="hover:bg-white/[0.01] transition-colors"
                     >
-                      <td className="px-4 py-3.5 font-bold text-white">
+                      <td className="px-4 py-3.5 font-bold text-heading">
                         {c.companyName}
                       </td>
                       <td className="px-4 py-3.5">
                         <div className="space-y-0.5">
-                          <p className="text-white/80">{c.contactName}</p>
-                          <p className="text-[10px] text-white/40">
+                          <p className="text-heading/80">{c.contactName}</p>
+                          <p className="text-[10px] text-heading/40">
                             {c.contactEmail} • {c.contactPhone || "No phone"}
                           </p>
                         </div>
@@ -1411,7 +1411,7 @@ export default function AdminDashboard() {
                       <td className="px-4 py-3.5 text-right space-x-1.5">
                         <button
                           onClick={() => openEditClientModal(c)}
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition"
+                          className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-heading/60 hover:text-heading hover:bg-white/10 transition"
                           title="Edit"
                         >
                           <Edit2 size={11} />
@@ -1439,22 +1439,22 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div className="flex items-center gap-2">
               <Calendar size={18} className="text-gold" />
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold text-heading">
                 Appointments Booked via AI
               </h2>
             </div>
             <button
               onClick={fetchData}
-              className="text-white/40 hover:text-white transition"
+              className="text-heading/40 hover:text-heading transition"
             >
               <RefreshCw size={14} />
             </button>
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-            <table className="w-full text-left border-collapse text-xs text-white/80">
+            <table className="w-full text-left border-collapse text-xs text-heading/80">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                   <th className="px-4 py-3">Lead / Title</th>
                   <th className="px-4 py-3">Scheduled At</th>
                   <th className="px-4 py-3">Status</th>
@@ -1468,7 +1468,7 @@ export default function AdminDashboard() {
                   <tr>
                     <td
                       colSpan={4}
-                      className="px-4 py-6 text-center text-white/30"
+                      className="px-4 py-6 text-center text-heading/30"
                     >
                       No booked appointments found.
                     </td>
@@ -1481,14 +1481,14 @@ export default function AdminDashboard() {
                     >
                       <td className="px-4 py-3.5">
                         <div className="space-y-0.5">
-                          <p className="font-bold text-white">{appt.title}</p>
-                          <p className="text-[10px] text-white/40">
+                          <p className="font-bold text-heading">{appt.title}</p>
+                          <p className="text-[10px] text-heading/40">
                             {appt.clientName ||
                               "Lead Phone: " + appt.clientPhone}
                           </p>
                         </div>
                       </td>
-                      <td className="px-4 py-3.5 font-mono text-white/70">
+                      <td className="px-4 py-3.5 font-mono text-heading/70">
                         {new Date(appt.scheduledAt).toLocaleString()}
                       </td>
                       <td className="px-4 py-3.5">
@@ -1504,7 +1504,7 @@ export default function AdminDashboard() {
                             onClick={() =>
                               updateAppointmentStatus(appt.id, "CONFIRMED")
                             }
-                            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-white transition"
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 hover:bg-emerald-500 text-heading transition"
                             title="Confirm"
                           >
                             <Check size={11} />
@@ -1515,7 +1515,7 @@ export default function AdminDashboard() {
                             onClick={() =>
                               updateAppointmentStatus(appt.id, "CANCELLED")
                             }
-                            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white transition"
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-heading transition"
                             title="Cancel"
                           >
                             <X size={11} />
@@ -1537,13 +1537,13 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <div className="flex items-center gap-2">
               <PhoneCall size={18} className="text-gold" />
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold text-heading">
                 Outbound Call Performance & Auditing
               </h2>
             </div>
             <button
               onClick={fetchData}
-              className="text-white/40 hover:text-white transition"
+              className="text-heading/40 hover:text-heading transition"
             >
               <RefreshCw size={14} />
             </button>
@@ -1551,7 +1551,7 @@ export default function AdminDashboard() {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
-              <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+              <span className="text-[9.5px] uppercase font-bold text-heading/40 tracking-wider">
                 Avg Greeting Check
               </span>
               <p className="text-2xl font-bold font-mono mt-2 text-emerald-400">
@@ -1567,7 +1567,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
-              <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+              <span className="text-[9.5px] uppercase font-bold text-heading/40 tracking-wider">
                 Avg Compliance Check
               </span>
               <p className="text-2xl font-bold font-mono mt-2 text-gold">
@@ -1583,7 +1583,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <div className="rounded-xl border border-white/5 bg-white/[0.01] p-4">
-              <span className="text-[9.5px] uppercase font-bold text-white/40 tracking-wider">
+              <span className="text-[9.5px] uppercase font-bold text-heading/40 tracking-wider">
                 Conversion Ratio
               </span>
               <p className="text-2xl font-bold font-mono mt-2 text-blue-400">
@@ -1600,9 +1600,9 @@ export default function AdminDashboard() {
           </div>
 
           <div className="overflow-x-auto rounded-xl border border-white/5 bg-white/[0.01]">
-            <table className="w-full text-left border-collapse text-xs text-white/80">
+            <table className="w-full text-left border-collapse text-xs text-heading/80">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                <tr className="border-b border-white/10 bg-white/5 text-heading/40 text-[10px] font-bold uppercase tracking-wider">
                   <th className="px-4 py-3">Lead Caller</th>
                   <th className="px-4 py-3">Duration</th>
                   <th className="px-4 py-3">Greeting / Compliance</th>
@@ -1616,7 +1616,7 @@ export default function AdminDashboard() {
                   <tr>
                     <td
                       colSpan={6}
-                      className="px-4 py-6 text-center text-white/30"
+                      className="px-4 py-6 text-center text-heading/30"
                     >
                       No call logs found.
                     </td>
@@ -1629,8 +1629,8 @@ export default function AdminDashboard() {
                     >
                       <td className="px-4 py-3.5">
                         <div className="space-y-0.5">
-                          <p className="font-bold text-white">{c.leadName}</p>
-                          <p className="text-[10px] text-white/40">{c.phone}</p>
+                          <p className="font-bold text-heading">{c.leadName}</p>
+                          <p className="text-[10px] text-heading/40">{c.phone}</p>
                         </div>
                       </td>
                       <td className="px-4 py-3.5 font-mono">
@@ -1640,21 +1640,21 @@ export default function AdminDashboard() {
                         <span className="text-emerald-400">
                           {c.coaching?.greeting}%
                         </span>
-                        <span className="text-white/30 mx-1">/</span>
+                        <span className="text-heading/30 mx-1">/</span>
                         <span className="text-gold">
                           {c.coaching?.compliance}%
                         </span>
                       </td>
                       <td className="px-4 py-3.5">
                         <span
-                          className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${c.coaching?.sentiment === "Positive" ? "bg-emerald-500/10 text-emerald-400" : "bg-white/5 text-white/60"}`}
+                          className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${c.coaching?.sentiment === "Positive" ? "bg-emerald-500/10 text-emerald-400" : "bg-white/5 text-heading/60"}`}
                         >
                           {c.coaching?.sentiment || "Neutral"}
                         </span>
                       </td>
                       <td className="px-4 py-3.5">
                         <span
-                          className={`text-[9px] font-extrabold uppercase rounded px-1.5 py-0.5 ${c.outcome === "BOOKED" ? "bg-emerald-500/20 text-emerald-400" : c.outcome === "VOICEMAIL" ? "bg-blue-500/20 text-blue-400" : "bg-white/10 text-white/60"}`}
+                          className={`text-[9px] font-extrabold uppercase rounded px-1.5 py-0.5 ${c.outcome === "BOOKED" ? "bg-emerald-500/20 text-emerald-400" : c.outcome === "VOICEMAIL" ? "bg-blue-500/20 text-blue-400" : "bg-white/10 text-heading/60"}`}
                         >
                           {c.outcome}
                         </span>
@@ -1662,7 +1662,7 @@ export default function AdminDashboard() {
                       <td className="px-4 py-3.5 text-right">
                         <button
                           onClick={() => setSelectedCall(c)}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-1.5 text-[10px] text-white hover:text-gold transition font-bold"
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-1.5 text-[10px] text-heading hover:text-gold transition font-bold"
                         >
                           <Play size={10} />
                           <span>Audit Call</span>
@@ -1682,27 +1682,27 @@ export default function AdminDashboard() {
         <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-6">
           <div className="flex items-center gap-2 border-b border-white/10 pb-4">
             <Settings size={18} className="text-gold" />
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-lg font-bold text-heading">
               AI Agents Live Config Center
             </h2>
           </div>
 
           <form onSubmit={saveConfigs} className="space-y-5 text-left">
             <div>
-              <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+              <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                 Knowledge Base (FAQs & Business Rules)
               </label>
               <textarea
                 rows={5}
                 value={kbEntries}
                 onChange={(e) => setKbEntries(e.target.value)}
-                placeholder="Rule 1: Standard Septic pump outs start at $1497..."
-                className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+                placeholder="Rule 1: Standard Septic pump outs include full tank evacuation..."
+                className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-heading outline-none focus:border-gold transition font-mono leading-relaxed"
               />
             </div>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div>
-                <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                   Voice Agent Greeting Script
                 </label>
                 <textarea
@@ -1710,11 +1710,11 @@ export default function AdminDashboard() {
                   value={voiceScript}
                   onChange={(e) => setVoiceScript(e.target.value)}
                   placeholder="Greeting script used when dialing contacts..."
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-heading outline-none focus:border-gold transition font-mono leading-relaxed"
                 />
               </div>
               <div>
-                <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                   AI Specialist System Prompt
                 </label>
                 <textarea
@@ -1722,12 +1722,12 @@ export default function AdminDashboard() {
                   value={systemPrompt}
                   onChange={(e) => setSystemPrompt(e.target.value)}
                   placeholder="Overall system prompt governing agent behavior..."
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-heading outline-none focus:border-gold transition font-mono leading-relaxed"
                 />
               </div>
             </div>
             <div>
-              <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+              <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                 Client Workspace Announcement Note
               </label>
               <textarea
@@ -1735,7 +1735,7 @@ export default function AdminDashboard() {
                 value={publisherNote}
                 onChange={(e) => setPublisherNote(e.target.value)}
                 placeholder="Important updates published directly on Client dashboards..."
-                className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-white outline-none focus:border-gold transition font-mono leading-relaxed"
+                className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-xs text-heading outline-none focus:border-gold transition font-mono leading-relaxed"
               />
             </div>
 
@@ -1766,16 +1766,16 @@ export default function AdminDashboard() {
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2">
                   <Upload size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white uppercase tracking-wide">
+                  <h2 className="text-lg font-bold text-heading uppercase tracking-wide">
                     Upload &amp; Import Prospects
                   </h2>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-white/40">
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-heading/40">
                   CSV / XLSX Importer
                 </span>
               </div>
 
-              <p className="text-xs text-white/50 leading-relaxed">
+              <p className="text-xs text-heading/50 leading-relaxed">
                 Upload a standard{" "}
                 <code className="text-gold font-mono">.csv</code> or{" "}
                 <code className="text-gold font-mono">.xlsx</code> prospect
@@ -1786,7 +1786,7 @@ export default function AdminDashboard() {
                 <div className="space-y-4">
                   <div className="flex items-end gap-3">
                     <div className="flex-1">
-                      <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                      <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                         Campaign Name <span className="text-red-400">*</span>
                       </label>
                       <input
@@ -1794,7 +1794,7 @@ export default function AdminDashboard() {
                         value={uploadCampaignName}
                         onChange={(e) => setUploadCampaignName(e.target.value)}
                         placeholder="e.g. Q2 Outreach Campaign"
-                        className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                        className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2.5 text-xs text-heading outline-none focus:border-gold transition"
                       />
                     </div>
                     <button
@@ -1807,13 +1807,13 @@ export default function AdminDashboard() {
                   </div>
 
                   <div>
-                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                    <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                       Assign to Client (optional)
                     </label>
                     <select
                       value={uploadClientId}
                       onChange={(e) => setUploadClientId(e.target.value)}
-                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-heading outline-none focus:border-gold transition"
                     >
                       <option value="">-- No Client Selected --</option>
                       {clients.map((c) => (
@@ -1850,7 +1850,7 @@ export default function AdminDashboard() {
                     {uploadState === "uploading" ? (
                       <>
                         <Loader2 size={32} className="text-gold animate-spin" />
-                        <p className="text-xs font-bold text-white">
+                        <p className="text-xs font-bold text-heading">
                           Uploading to cloud storage...
                         </p>
                         <div className="w-full max-w-xs h-1.5 rounded-full bg-white/10 overflow-hidden">
@@ -1859,7 +1859,7 @@ export default function AdminDashboard() {
                             style={{ width: `${uploadProgress}%` }}
                           />
                         </div>
-                        <p className="text-[10px] text-white/40 font-mono">
+                        <p className="text-[10px] text-heading/40 font-mono">
                           {Math.round(uploadProgress)}%
                         </p>
                       </>
@@ -1874,7 +1874,7 @@ export default function AdminDashboard() {
                             e.stopPropagation();
                             resetUpload();
                           }}
-                          className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
+                          className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-heading transition"
                         >
                           Upload Another File
                         </button>
@@ -1890,7 +1890,7 @@ export default function AdminDashboard() {
                             e.stopPropagation();
                             resetUpload();
                           }}
-                          className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-white transition"
+                          className="mt-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-1.5 text-[10px] font-bold text-heading transition"
                         >
                           Try Again
                         </button>
@@ -1899,10 +1899,10 @@ export default function AdminDashboard() {
                       <>
                         <FileSpreadsheet size={32} className="text-gold" />
                         <div className="text-center">
-                          <p className="text-xs font-bold text-white">
+                          <p className="text-xs font-bold text-heading">
                             {uploadedFile.name}
                           </p>
-                          <p className="text-[10px] text-white/40 mt-0.5">
+                          <p className="text-[10px] text-heading/40 mt-0.5">
                             {(uploadedFile.size / 1024).toFixed(1)} KB •{" "}
                             {isXlsxFile(uploadedFile) ? "XLSX" : "CSV"}
                             {parsedRowCount !== null &&
@@ -1914,7 +1914,7 @@ export default function AdminDashboard() {
                             e.stopPropagation();
                             resetUpload();
                           }}
-                          className="text-[10px] text-white/30 hover:text-red-400 transition underline"
+                          className="text-[10px] text-heading/30 hover:text-red-400 transition underline"
                         >
                           Remove file
                         </button>
@@ -1924,18 +1924,18 @@ export default function AdminDashboard() {
                         <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                           <FileSpreadsheet
                             size={28}
-                            className="text-white/30"
+                            className="text-heading/30"
                           />
                         </div>
                         <div className="text-center">
-                          <p className="text-sm font-bold text-white">
+                          <p className="text-sm font-bold text-heading">
                             Choose CSV Spreadsheet
                           </p>
-                          <p className="text-xs text-white/40 mt-1">
+                          <p className="text-xs text-heading/40 mt-1">
                             Drag &amp; drop or click to select (max 20MB)
                           </p>
                         </div>
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-white/20 border border-white/10 rounded-full px-3 py-1">
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-heading/20 border border-white/10 rounded-full px-3 py-1">
                           .CSV or .XLSX files only
                         </span>
                       </>
@@ -1947,9 +1947,9 @@ export default function AdminDashboard() {
                     uploadState !== "success" &&
                     uploadState !== "uploading" && (
                       <div>
-                        <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                        <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                           Load Estimate{" "}
-                          <span className="text-white/25 font-normal">
+                          <span className="text-heading/25 font-normal">
                             (verified after upload)
                           </span>
                         </label>
@@ -1958,7 +1958,7 @@ export default function AdminDashboard() {
                           onChange={(e) =>
                             setEstimatedLeadCount(e.target.value)
                           }
-                          className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                          className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-heading outline-none focus:border-gold transition"
                         >
                           <option value="100">~100 leads</option>
                           <option value="500">~500 leads</option>
@@ -1992,16 +1992,16 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="rounded-xl border border-white/10 bg-white/[0.015] p-4 space-y-3">
-                  <span className="block text-[10px] font-bold text-white/40 uppercase tracking-wider">
+                  <span className="block text-[10px] font-bold text-heading/40 uppercase tracking-wider">
                     Parsing Preview (Top 5 Rows)
                   </span>
 
                   {!uploadedFile ? (
-                    <div className="flex h-[240px] items-center justify-center text-center text-xs text-white/30 px-6">
+                    <div className="flex h-[240px] items-center justify-center text-center text-xs text-heading/30 px-6">
                       No file selected yet.
                     </div>
                   ) : isParsingFile ? (
-                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-white/40">
+                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-heading/40">
                       <Loader2 size={20} className="animate-spin" />
                       <span className="text-xs">Parsing spreadsheet…</span>
                     </div>
@@ -2011,8 +2011,8 @@ export default function AdminDashboard() {
                       <span className="text-xs">{parseError}</span>
                     </div>
                   ) : isXlsxFile(uploadedFile) ? (
-                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-center px-6 text-white/40">
-                      <FileSpreadsheet size={20} className="text-white/30" />
+                    <div className="flex h-[240px] flex-col items-center justify-center gap-2 text-center px-6 text-heading/40">
+                      <FileSpreadsheet size={20} className="text-heading/30" />
                       <span className="text-xs">
                         XLSX preview not available in-browser.
                       </span>
@@ -2041,9 +2041,9 @@ export default function AdminDashboard() {
                       </div>
 
                       <div className="overflow-x-auto rounded-lg border border-white/5">
-                        <table className="w-full text-left border-collapse text-[10px] text-white/70">
+                        <table className="w-full text-left border-collapse text-[10px] text-heading/70">
                           <thead>
-                            <tr className="bg-white/5 text-white/40 uppercase tracking-wider">
+                            <tr className="bg-white/5 text-heading/40 uppercase tracking-wider">
                               {parsedHeaders.map((h, idx) => (
                                 <th
                                   key={idx}
@@ -2059,7 +2059,7 @@ export default function AdminDashboard() {
                               <tr>
                                 <td
                                   colSpan={parsedHeaders.length}
-                                  className="px-2.5 py-3 text-center text-white/30"
+                                  className="px-2.5 py-3 text-center text-heading/30"
                                 >
                                   No data rows.
                                 </td>
@@ -2083,7 +2083,7 @@ export default function AdminDashboard() {
                       </div>
 
                       {parsedRowCount !== null && (
-                        <p className="text-[10px] text-white/40">
+                        <p className="text-[10px] text-heading/40">
                           <span className="font-bold text-gold">
                             {parsedRowCount}
                           </span>{" "}
@@ -2092,7 +2092,7 @@ export default function AdminDashboard() {
                       )}
                     </div>
                   ) : (
-                    <div className="flex h-[240px] items-center justify-center text-center text-xs text-white/30 px-6">
+                    <div className="flex h-[240px] items-center justify-center text-center text-xs text-heading/30 px-6">
                       No file selected yet.
                     </div>
                   )}
@@ -2105,22 +2105,22 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2">
                   <Database size={18} className="text-gold" />
-                  <h2 className="text-lg font-bold text-white">
+                  <h2 className="text-lg font-bold text-heading">
                     Uploaded Campaigns
                   </h2>
                 </div>
-                <span className="text-[10px] text-white/40 font-mono">
+                <span className="text-[10px] text-heading/40 font-mono">
                   {projects.length} total
                 </span>
               </div>
 
               {projects.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <Database size={36} className="text-white/10 mb-3" />
-                  <p className="text-sm text-white/30 font-medium">
+                  <Database size={36} className="text-heading/10 mb-3" />
+                  <p className="text-sm text-heading/30 font-medium">
                     No campaigns uploaded yet
                   </p>
-                  <p className="text-xs text-white/20 mt-1">
+                  <p className="text-xs text-heading/20 mt-1">
                     Upload a CSV or XLSX file above to get started.
                   </p>
                 </div>
@@ -2140,7 +2140,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="text-sm font-bold text-white truncate">
+                                <h3 className="text-sm font-bold text-heading truncate">
                                   {p.name}
                                 </h3>
                                 <span
@@ -2149,7 +2149,7 @@ export default function AdminDashboard() {
                                   {p.status.replace("_", " ")}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-white/40">
+                              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-heading/40">
                                 <span className="font-mono">
                                   {file?.fileName || "No file"}
                                 </span>
@@ -2164,14 +2164,14 @@ export default function AdminDashboard() {
                                       href={file.storageUrl}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="text-gold hover:text-white transition underline"
+                                      className="text-gold hover:text-heading transition underline"
                                     >
                                       View file
                                     </a>
                                   </>
                                 )}
                               </div>
-                              <div className="flex items-center gap-2 mt-1.5 text-[9px] text-white/30">
+                              <div className="flex items-center gap-2 mt-1.5 text-[9px] text-heading/30">
                                 <span>Client: {p.client?.companyName || "General"}</span>
                                 <span>•</span>
                                 <span>
@@ -2222,7 +2222,7 @@ export default function AdminDashboard() {
             <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
               <div className="flex items-center gap-2 border-b border-white/10 pb-4">
                 <BarChart2 size={18} className="text-gold" />
-                <h2 className="text-lg font-bold text-white">
+                <h2 className="text-lg font-bold text-heading">
                   Distribute Leads to Agents
                 </h2>
               </div>
@@ -2230,13 +2230,13 @@ export default function AdminDashboard() {
               <form onSubmit={handleLeadSplits} className="space-y-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
-                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                    <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                       Select Approved Campaign
                     </label>
                     <select
                       value={selectedProjectId}
                       onChange={(e) => setSelectedProjectId(e.target.value)}
-                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-white outline-none focus:border-gold transition"
+                      className="w-full rounded-xl bg-background border border-white/10 px-3 py-2.5 text-xs text-heading outline-none focus:border-gold transition"
                     >
                       <option value="">-- Choose Campaign --</option>
                       {projects
@@ -2251,21 +2251,21 @@ export default function AdminDashboard() {
                   </div>
 
                   <div>
-                    <label className="text-[10px] font-bold text-white/40 tracking-wider uppercase block mb-1.5">
+                    <label className="text-[10px] font-bold text-heading/40 tracking-wider uppercase block mb-1.5">
                       Split Method
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
                         onClick={() => setUseAutoSplit(true)}
-                        className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"}`}
+                        className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-heading/70 hover:bg-white/10"}`}
                       >
                         Auto Equal Split
                       </button>
                       <button
                         type="button"
                         onClick={() => setUseAutoSplit(false)}
-                        className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${!useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10"}`}
+                        className={`rounded-xl border py-2.5 text-xs font-bold transition-all ${!useAutoSplit ? "border-gold bg-gold/10 text-gold shadow-glow-sm" : "border-white/10 bg-white/5 text-heading/70 hover:bg-white/10"}`}
                       >
                         Manual Split
                       </button>
@@ -2284,7 +2284,7 @@ export default function AdminDashboard() {
                           key={agent.id}
                           className="flex items-center justify-between gap-4"
                         >
-                          <span className="text-xs text-white/80">
+                          <span className="text-xs text-heading/80">
                             {agent.name}
                           </span>
                           <input
@@ -2297,7 +2297,7 @@ export default function AdminDashboard() {
                                 [agent.id]: Number(e.target.value),
                               }))
                             }
-                            className="w-[120px] rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-white outline-none focus:border-gold font-mono"
+                            className="w-[120px] rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-heading outline-none focus:border-gold font-mono"
                           />
                         </div>
                       ))}
@@ -2329,7 +2329,7 @@ export default function AdminDashboard() {
             <div className="rounded-2xl border border-white/10 bg-background/50 p-6 backdrop-blur-md space-y-5">
               <div className="flex items-center gap-2 border-b border-white/10 pb-4">
                 <BarChart2 size={16} className="text-gold" />
-                <h2 className="text-md font-bold text-white">
+                <h2 className="text-md font-bold text-heading">
                   Agent Capacity Status
                 </h2>
               </div>
@@ -2341,7 +2341,7 @@ export default function AdminDashboard() {
                     className="rounded-xl border border-white/5 bg-white/[0.01] p-3.5 space-y-3"
                   >
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-white">{agent.name}</span>
+                      <span className="font-bold text-heading">{agent.name}</span>
                       <span
                         className={`text-[9px] uppercase font-mono px-2 py-0.5 rounded ${agent.activeTasks > 0 ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400"}`}
                       >
@@ -2351,7 +2351,7 @@ export default function AdminDashboard() {
                       </span>
                     </div>
                     <div className="space-y-1">
-                      <div className="flex items-center justify-between text-[9px] text-white/40 uppercase">
+                      <div className="flex items-center justify-between text-[9px] text-heading/40 uppercase">
                         <span>Assigned capacity</span>
                         <span>
                           {agent.activeTasks * 250 || 0} / {agent.capacity}{" "}
@@ -2367,7 +2367,7 @@ export default function AdminDashboard() {
                         />
                       </div>
                     </div>
-                    <div className="flex items-center justify-between text-[9.5px] text-white/40 border-t border-white/5 pt-2 font-semibold">
+                    <div className="flex items-center justify-between text-[9.5px] text-heading/40 border-t border-white/5 pt-2 font-semibold">
                       <span>Performance rate:</span>
                       <span className="text-emerald-400 font-mono">
                         {agent.completionRate}%
@@ -2389,24 +2389,24 @@ export default function AdminDashboard() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-md rounded-2xl border border-white/10 bg-[#060b1b] p-6 space-y-5 shadow-2xl text-left"
+              className="w-full max-w-md rounded-2xl border border-white/10 bg-surface p-6 space-y-5 shadow-2xl text-left"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <h3 className="text-sm font-bold text-white">
+                <h3 className="text-sm font-bold text-heading">
                   {isEditingClient
                     ? "Edit Client Details"
                     : "Create Client Account"}
                 </h3>
                 <button
                   onClick={() => setIsClientModalOpen(false)}
-                  className="text-white/40 hover:text-white"
+                  className="text-heading/40 hover:text-heading"
                 >
                   <X size={16} />
                 </button>
               </div>
               <form onSubmit={saveClient} className="space-y-4">
                 <div>
-                  <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                  <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                     Company Name
                   </label>
                   <input
@@ -2420,12 +2420,12 @@ export default function AdminDashboard() {
                       })
                     }
                     placeholder="e.g. Septic Specialists"
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-gold transition"
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-gold transition"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                    <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                       Contact Name
                     </label>
                     <input
@@ -2438,11 +2438,11 @@ export default function AdminDashboard() {
                         })
                       }
                       placeholder="e.g. James Carter"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-gold transition"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-gold transition"
                     />
                   </div>
                   <div>
-                    <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                    <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                       Contact Phone
                     </label>
                     <input
@@ -2455,12 +2455,12 @@ export default function AdminDashboard() {
                         })
                       }
                       placeholder="e.g. +1 555-0100"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-gold transition"
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-gold transition"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                  <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                     Contact Email
                   </label>
                   <input
@@ -2474,12 +2474,12 @@ export default function AdminDashboard() {
                       })
                     }
                     placeholder="e.g. contact@company.com"
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-white outline-none focus:border-gold transition"
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-xs text-heading outline-none focus:border-gold transition"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                    <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                       Service Plan
                     </label>
                     <select
@@ -2487,7 +2487,7 @@ export default function AdminDashboard() {
                       onChange={(e) =>
                         setClientForm({ ...clientForm, plan: e.target.value })
                       }
-                      className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-white outline-none focus:border-gold transition"
+                      className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-heading outline-none focus:border-gold transition"
                     >
                       <option value="BASIC">Basic Pilot</option>
                       <option value="GROWTH">Growth Scale</option>
@@ -2495,7 +2495,7 @@ export default function AdminDashboard() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[9.5px] font-bold text-white/40 tracking-wider uppercase block mb-1">
+                    <label className="text-[9.5px] font-bold text-heading/40 tracking-wider uppercase block mb-1">
                       Status
                     </label>
                     <select
@@ -2503,7 +2503,7 @@ export default function AdminDashboard() {
                       onChange={(e) =>
                         setClientForm({ ...clientForm, status: e.target.value })
                       }
-                      className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-white outline-none focus:border-gold transition"
+                      className="w-full rounded-xl bg-background border border-white/10 px-2 py-2 text-xs text-heading outline-none focus:border-gold transition"
                     >
                       <option value="ACTIVE">Active</option>
                       <option value="SUSPENDED">Suspended</option>
@@ -2519,7 +2519,7 @@ export default function AdminDashboard() {
                   <button
                     type="button"
                     onClick={() => setIsClientModalOpen(false)}
-                    className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-white transition"
+                    className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-heading transition"
                   >
                     Cancel
                   </button>
@@ -2544,27 +2544,27 @@ export default function AdminDashboard() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#060b1b] p-6 space-y-5 shadow-2xl text-left"
+              className="w-full max-w-2xl rounded-2xl border border-white/10 bg-surface p-6 space-y-5 shadow-2xl text-left"
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div>
-                  <h3 className="text-sm font-bold text-white">
+                  <h3 className="text-sm font-bold text-heading">
                     Call Compliance & Coaching Dashboard
                   </h3>
-                  <p className="text-[10px] text-white/40">
+                  <p className="text-[10px] text-heading/40">
                     Lead: {selectedCall.leadName} • {selectedCall.phone}
                   </p>
                 </div>
                 <button
                   onClick={() => setSelectedCall(null)}
-                  className="text-white/40 hover:text-white"
+                  className="text-heading/40 hover:text-heading"
                 >
                   <X size={16} />
                 </button>
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div className="rounded-xl border border-white/5 bg-white/[0.01] p-3 text-center">
-                  <span className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                  <span className="text-[9px] uppercase font-bold text-heading/40 tracking-wider">
                     Greeting score
                   </span>
                   <p className="text-xl font-bold font-mono mt-1 text-emerald-400">
@@ -2572,7 +2572,7 @@ export default function AdminDashboard() {
                   </p>
                 </div>
                 <div className="rounded-xl border border-white/5 bg-white/[0.01] p-3 text-center">
-                  <span className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                  <span className="text-[9px] uppercase font-bold text-heading/40 tracking-wider">
                     Script compliance
                   </span>
                   <p className="text-xl font-bold font-mono mt-1 text-gold">
@@ -2580,7 +2580,7 @@ export default function AdminDashboard() {
                   </p>
                 </div>
                 <div className="rounded-xl border border-white/5 bg-white/[0.01] p-3 text-center">
-                  <span className="text-[9px] uppercase font-bold text-white/40 tracking-wider">
+                  <span className="text-[9px] uppercase font-bold text-heading/40 tracking-wider">
                     Tone sentiment
                   </span>
                   <p className="text-xl font-bold font-mono mt-1 text-blue-400">
@@ -2592,7 +2592,7 @@ export default function AdminDashboard() {
                 <h4 className="text-xs font-bold text-gold uppercase tracking-wider">
                   AI Coaching Analysis
                 </h4>
-                <p className="text-xs text-white/70 leading-relaxed bg-white/[0.01] border border-white/5 rounded-xl p-3.5">
+                <p className="text-xs text-heading/70 leading-relaxed bg-white/[0.01] border border-white/5 rounded-xl p-3.5">
                   {selectedCall.coaching?.coachingNotes}
                 </p>
               </div>
@@ -2618,7 +2618,7 @@ export default function AdminDashboard() {
                           >
                             {role}:
                           </span>
-                          <span className="text-white/80"> {text}</span>
+                          <span className="text-heading/80"> {text}</span>
                         </div>
                       );
                     })}
@@ -2627,7 +2627,7 @@ export default function AdminDashboard() {
               <div className="flex justify-end pt-2">
                 <button
                   onClick={() => setSelectedCall(null)}
-                  className="rounded-xl bg-white/5 hover:bg-white/10 px-6 py-2.5 text-xs font-bold text-white transition"
+                  className="rounded-xl bg-white/5 hover:bg-white/10 px-6 py-2.5 text-xs font-bold text-heading transition"
                 >
                   Close Audit Page
                 </button>

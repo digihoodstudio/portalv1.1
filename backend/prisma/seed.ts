@@ -184,8 +184,8 @@ async function main() {
     update: {},
     create: {
       id: 'client-digihood',
-      companyName: 'DigiHood Studio',
-      contactName: 'DigiHood Admin',
+      companyName: 'Digihood Studio',
+      contactName: 'Digihood Admin',
       contactEmail: 'admin@digihoodstudio.com',
       contactPhone: '',
       plan: 'GROWTH',
@@ -411,7 +411,7 @@ async function main() {
         id: 'chatlog-2',
         sessionId: 'sess-123',
         role: 'assistant',
-        message: 'We have three packages designed for real ROI. The Starter at $1,497/mo, Growth at $2,997/mo, and Dominance at $5,997/mo. Which of these sounds like the right fit for your business?'
+        message: 'We offer three packages tailored to your needs — Starter, Growth, and Dominance. Each scales with your business size and call volume. Which sounds like the right fit for you?'
       }
     ]
   });

@@ -34,7 +34,7 @@ Digihood Studio provides AI-powered phone answering, missed call recovery, and l
 CORE SERVICES:
 1. AI Receptionist & Appointment Setter – 24/7 inbound call answering, lead qualification, appointment booking, weekly reporting. Live in 48 hours.
 2. Missed Call Recovery – AI text-back within 10 seconds of any missed call, automated SMS, email alerts, CRM integration. Recovers 15-30% of lost leads.
-3. Dead Lead Reactivation – AI email/SMS campaigns to revive cold contacts with lead scoring and revenue recovery reporting. Recovers $5k-$20k+ in dormant pipeline.
+3. Dead Lead Reactivation – AI email/SMS campaigns to revive cold contacts with lead scoring and revenue recovery reporting. Revives dormant pipeline with proven results.
 
 PRICING PACKAGES (month-to-month, no contracts):
 - Starter: AI receptionist, custom scripts, weekly reports, email support
