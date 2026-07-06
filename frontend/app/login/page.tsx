@@ -61,7 +61,8 @@ function LoginContent() {
       }
 
       if (!res.ok) {
-        throw new Error(data.error || "Invalid credentials");
+        const msg = data.detail ? `${data.error} (${data.detail})` : data.error;
+        throw new Error(msg || "Invalid credentials");
       }
 
       localStorage.setItem("token", data.token);
