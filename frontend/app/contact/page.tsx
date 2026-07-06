@@ -39,16 +39,17 @@ export default function ContactPage() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/leads", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          access_key: "6887ac90-0118-4ffb-a49b-ae94b7f68be7",
           name,
           email,
           phone,
           business,
-          source: "Web Form",
-          clientId: "client-default",
+          message,
+          subject: "New Contact Form Submission from PortalV1",
         }),
       });
 
@@ -95,12 +96,11 @@ export default function ContactPage() {
               <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
                 <CheckCircle2 className="h-12 w-12 text-green-400 animate-pulse" />
                 <h3 className="text-lg font-semibold text-heading">
-                  Request Submitted Successfully
+                  Message Sent Successfully
                 </h3>
                 <p className="text-sm text-foreground/70 max-w-sm">
-                  Our team has registered your lead in our database. You can log
-                  in to the dashboard to see your lead details live in the
-                  active tables!
+                  Thank you for reaching out! Our team will get back to you
+                  shortly.
                 </p>
                 <button
                   onClick={() => setStatus("")}
@@ -117,8 +117,7 @@ export default function ContactPage() {
               >
                 {status === "error" && (
                   <div className="rounded-xl border border-red-500/20 bg-red-950/20 p-4 text-xs text-red-300">
-                    Failed to submit. Please ensure the backend server is
-                    running.
+                    Failed to send message. Please try again later.
                   </div>
                 )}
 
