@@ -6,17 +6,17 @@
 
 :root {
   color-scheme: light;
-  --color-background: 243 240 235;
-  --color-foreground: 28 28 46;
-  --color-heading: 10 12 24;
-  --color-white: 0 0 0;
-  --color-gold: 184 149 106;
-  --color-gold-dim: 138 123 102;
+  --color-background: 248 247 243;
+  --color-foreground: 30 30 47;
+  --color-heading: 12 14 28;
+  --color-white: 255 255 255;
+  --color-gold: 180 144 98;
+  --color-gold-dim: 155 138 115;
   --color-surface: 255 255 255;
-  --color-surface-elevated: 237 233 227;
+  --color-surface-elevated: 242 240 235;
   --glass-rgb: 255 255 255;
-  --gold-rgb: 184 149 106;
-  --gradient-bg: radial-gradient(circle at top, rgba(184,149,106,0.10), transparent 40%), linear-gradient(180deg, #F3F0EB 0%, #EDE9E3 100%);
+  --gold-rgb: 180 144 98;
+  --gradient-bg: radial-gradient(circle at top, rgba(180,144,98,0.06), transparent 40%), linear-gradient(180deg, #F8F7F3 0%, #F0EEE8 100%);
   font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
