@@ -66,14 +66,15 @@ export default function Navbar() {
     };
   }, [handleMouseMove, handleMouseLeave]);
 
-  // ── Legacy auth check ──
+  // ── Auth check (localStorage token OR Supabase session) ──
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
+      const supabaseSession = localStorage.getItem("supabase_session");
       const userStr = localStorage.getItem("user");
-      setIsLoggedIn(!!token);
+      setIsLoggedIn(!!token || !!supabaseSession);
 
-      if (token && userStr) {
+      if ((token || supabaseSession) && userStr) {
         try {
           const user = JSON.parse(userStr);
           const role = user.role?.toUpperCase?.() || user.role;
@@ -126,9 +127,10 @@ export default function Navbar() {
   // Determine combined login state (legacy OR Google session)
   const effectiveLoggedIn = isLoggedIn || !!session;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("supabase_session");
     setIsLoggedIn(false);
     setUserRole(null);
     setMobileOpen(false);
@@ -136,6 +138,9 @@ export default function Navbar() {
     if (session) {
       signOut({ callbackUrl: "/" });
     } else {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      await supabase.auth.signOut();
       window.location.href = "/";
     }
   };
