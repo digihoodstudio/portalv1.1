@@ -53,7 +53,12 @@ function LoginContent() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      let data: any;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Backend unavailable. Please check your connection.");
+      }
 
       if (!res.ok) {
         throw new Error(data.error || "Invalid credentials");

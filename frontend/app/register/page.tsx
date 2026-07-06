@@ -66,7 +66,12 @@ export default function RegisterPage() {
         }),
       });
 
-      const data = await response.json();
+      let data: any;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Backend unavailable. Please check your connection.");
+      }
 
       if (!response.ok) {
         throw new Error(data.error || "Registration failed");
