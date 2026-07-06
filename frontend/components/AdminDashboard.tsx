@@ -870,7 +870,7 @@ export default function AdminDashboard() {
 
               <div>
                 <h2 className="text-4xl font-black text-heading tracking-tight">
-                  1.25 L
+                  NPR 1.25 L
                 </h2>
                 <div className="flex items-center gap-1.5 mt-1">
                   <TrendingUp size={11} className="text-emerald-400" />
@@ -1218,7 +1218,7 @@ export default function AdminDashboard() {
                 Total Pipeline
               </p>
               <h3 className="text-3xl font-black text-heading mt-1">
-                NPR 749 CR
+                NPR 7.49 CR
               </h3>
               <div className="flex items-center gap-1.5 mt-2">
                 <Activity size={11} className="text-emerald-400" />
