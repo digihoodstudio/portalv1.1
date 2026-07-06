@@ -1218,7 +1218,7 @@ export default function AdminDashboard() {
                 Total Pipeline
               </p>
               <h3 className="text-3xl font-black text-heading mt-1">
-                NPR 749 L
+                NPR 749 CR
               </h3>
               <div className="flex items-center gap-1.5 mt-2">
                 <Activity size={11} className="text-emerald-400" />
