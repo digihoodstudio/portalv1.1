@@ -43,16 +43,17 @@ export default function ContactSection() {
     setStatus("");
 
     try {
-      const response = await fetch("/api/leads", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          access_key: "6887ac90-0118-4ffb-a49b-ae94b7f68be7",
           name,
           email,
           phone,
           business,
-          source: "Homepage Contact Form",
-          clientId: "client-default",
+          message,
+          subject: "New Contact Form Submission from PortalV1",
         }),
       });
 
@@ -149,8 +150,7 @@ export default function ContactSection() {
               >
                 {status === "error" && (
                   <div className="rounded-xl border border-red-500/20 bg-red-950/20 p-4 text-xs text-red-300">
-                    Failed to submit. Please verify the backend server is
-                    active.
+                    Failed to send message. Please try again later.
                   </div>
                 )}
 
