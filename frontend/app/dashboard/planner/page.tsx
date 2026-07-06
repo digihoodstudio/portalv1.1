@@ -76,8 +76,8 @@ export default function PlannerPage() {
               transform="rotate(-90 60 60)"
               className="transition-all duration-500"
             />
-            <text x="60" y="54" textAnchor="middle" fill="white" fontSize="22" fontWeight="bold">{targetPct}%</text>
-            <text x="60" y="72" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="10">{callsMade}/{callTarget}</text>
+            <text x="60" y="52" textAnchor="middle" fill="white" fontSize="22" fontWeight="bold">{targetPct}%</text>
+            <text x="60" y="66" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="10">{callsMade}/{callTarget}</text>
           </svg>
           <p className="text-xs uppercase tracking-wider text-heading/50 mb-4">Daily Call Target</p>
           <div className="flex items-center gap-3 mb-4">
