@@ -20,10 +20,10 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Digihood Studio",
+  title: "Portal | Digihood Studio",
   description:
     "Enterprise AI automation for appointments, missed calls, and lead reactivation.",
-  icons: "/favicon.ico",
+  icons: [{ rel: "icon", url: "/digilogo.png", type: "image/png" }],
 };
 
 export default function RootLayout({
