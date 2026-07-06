@@ -870,7 +870,7 @@ export default function AdminDashboard() {
 
               <div>
                 <h2 className="text-4xl font-black text-heading tracking-tight">
-                  NPR 7.49 L
+                  1.25 L
                 </h2>
                 <div className="flex items-center gap-1.5 mt-1">
                   <TrendingUp size={11} className="text-emerald-400" />
