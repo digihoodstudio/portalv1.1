@@ -972,7 +972,7 @@ export default function AdminDashboard() {
                         cx="50" cy="50" r="40"
                         fill="none" stroke="#3b82f680" strokeWidth="12"
                         strokeDasharray={`${2 * Math.PI * 40}`}
-                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.27)}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.28)}`}
                         strokeLinecap="round"
                         transform="rotate(263 50 50)"
                       />
