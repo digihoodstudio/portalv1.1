@@ -21,11 +21,14 @@ export async function POST(req: NextRequest) {
       .eq('email', email)
       .single();
 
-    if (error || !user) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    if (error) return NextResponse.json({ error: 'Invalid credentials', detail: error.message, hint: error.hint }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Invalid credentials', detail: 'No user found' }, { status: 401 });
     if (user.suspended) return NextResponse.json({ error: 'Your account has been suspended. Contact support.' }, { status: 403 });
 
+    if (!user.password_hash) return NextResponse.json({ error: 'Invalid credentials', detail: 'password_hash is null/undefined' }, { status: 401 });
+
     const isValid = await bcrypt.compare(password, user.password_hash);
-    if (!isValid) return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    if (!isValid) return NextResponse.json({ error: 'Invalid credentials', detail: 'password mismatch' }, { status: 401 });
 
     const token = signToken({ id: user.id, email: user.email, role: user.role?.name ?? 'USER' });
 
