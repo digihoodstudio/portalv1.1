@@ -15,7 +15,7 @@ export default function HomePage() {
         <HeroSection />
       </section>
 
-      <section className="mx-auto mt-12 md:mt-16 max-w-7xl">
+      <section id="services" className="mx-auto mt-12 md:mt-16 max-w-7xl">
         <ValuePillars />
       </section>
 
@@ -23,7 +23,7 @@ export default function HomePage() {
         <IndustriesSection />
       </section>
 
-      <section className="mx-auto mt-12 md:mt-16 max-w-7xl">
+      <section id="assistant" className="mx-auto mt-12 md:mt-16 max-w-7xl">
         <AssistantPanel />
       </section>
 
@@ -31,7 +31,7 @@ export default function HomePage() {
         <RoiCalculator />
       </section>
 
-      <section className="mx-auto mt-12 md:mt-16 max-w-6xl">
+      <section id="pricing" className="mx-auto mt-12 md:mt-16 max-w-6xl">
         <PricingSection />
       </section>
 

@@ -17,13 +17,6 @@ const nextConfig = {
 
   serverExternalPackages: ['@prisma/client', 'bcryptjs'],
 
-  async redirects() {
-    return [
-      { source: '/services', destination: '/#services', permanent: true },
-      { source: '/pricing', destination: '/#pricing', permanent: true },
-      { source: '/assistant', destination: '/#assistant', permanent: true },
-    ];
-  },
 };
 
 export default nextConfig;

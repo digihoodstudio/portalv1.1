@@ -96,48 +96,28 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Handle smooth scroll when navigating to/on the homepage with a hash
-  useEffect(() => {
-    const handleHashScroll = () => {
-      if (
-        pathname === "/" &&
-        typeof window !== "undefined" &&
-        window.location.hash
-      ) {
-        const id = window.location.hash.substring(1);
-        const element = document.getElementById(id);
-        if (element) {
-          setTimeout(() => {
-            element.scrollIntoView({ behavior: "smooth" });
-            window.history.replaceState(null, "", window.location.pathname);
-          }, 100);
-        }
-      }
-    };
-
-    handleHashScroll();
-    window.addEventListener("hashchange", handleHashScroll);
-    return () => window.removeEventListener("hashchange", handleHashScroll);
-  }, [pathname]);
-
   // Smooth scroll handler for navigation clicks
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
+    const sectionRoutes: Record<string, string> = {
+      "/services": "services",
+      "/pricing": "pricing",
+      "/assistant": "assistant",
+    };
     if (href === "/") {
       if (typeof window !== "undefined" && pathname === "/") {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    } else if (href.startsWith("/#")) {
-      if (typeof window !== "undefined" && pathname === "/") {
+    } else if (href in sectionRoutes) {
+      if (typeof window !== "undefined" && pathname === href) {
         e.preventDefault();
-        const id = href.replace("/#", "");
+        const id = sectionRoutes[href];
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
-          window.history.replaceState(null, "", window.location.pathname);
         }
       }
     }
