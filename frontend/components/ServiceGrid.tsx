@@ -6,19 +6,19 @@ const services = [
     title: 'AI Receptionist & Appointment Setter',
     description: '24/7 inbound call answering, lead qualification, appointment booking, and full report automation. Never miss a business call again.',
     tags: ['Live within 48 hours', 'Custom scripts', 'Weekly reporting'],
-    href: '/book-demo',
+    href: '/contact',
   },
   {
     title: 'Missed Call Recovery',
     description: 'Recover callers fast with an AI-powered callback within 10 seconds, automated SMS, email alerts, and revenue reporting.',
     tags: ['Text in 10 seconds', 'AI callbacks', 'CRM integration'],
-    href: '/book-demo',
+    href: '/contact',
   },
   {
     title: 'Dead Lead Reactivation',
     description: 'AI-driven campaigns that revive stale contacts using email, SMS, and intelligent lead scoring to uncover hidden revenue.',
     tags: ['Audit + campaign', 'Copywriting', 'Lead scoring'],
-    href: '/book-demo',
+    href: '/contact',
   },
 ];
 

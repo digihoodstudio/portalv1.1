@@ -66,7 +66,7 @@ export default function HeroSection() {
                 Go to Dashboard
               </Link>
             ) : (
-              <Link href="/book-demo" className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110">
+              <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110">
                 Book Demo
               </Link>
             )}

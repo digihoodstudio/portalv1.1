@@ -665,7 +665,7 @@ export default function WatchDemoPage() {
         {/* Secondary Navigation buttons */}
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row border-t border-white/5 pt-6">
           <Link
-            href="/book-demo"
+            href="/contact"
             className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-xs font-bold text-background transition hover:brightness-95"
           >
             Book Live Strategy Demo <ChevronRight className="h-4 w-4" />

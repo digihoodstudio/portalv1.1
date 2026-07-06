@@ -105,7 +105,7 @@ export default function PricingSection() {
               </ul>
 
               <Link
-                href="/book-demo"
+                href="/contact"
                 className={`block rounded-full py-3 text-center text-sm font-semibold transition ${
                   tier.highlight
                     ? "bg-gold text-background hover:brightness-95"

@@ -8,7 +8,7 @@ export default function CTASection() {
         Book a personalized demo, activate a trained voice agent, and deliver enterprise results with every first interaction.
       </p>
       <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <Link href="/book-demo" className="inline-flex rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition hover:brightness-95">
+        <Link href="/contact" className="inline-flex rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition hover:brightness-95">
           Book Consultation
         </Link>
         <Link href="/contact" className="inline-flex rounded-full border border-white/10 px-8 py-4 text-sm text-foreground transition hover:border-gold/70 hover:text-gold">
