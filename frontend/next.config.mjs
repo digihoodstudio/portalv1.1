@@ -2,13 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Allow build to succeed even with TypeScript type errors
-  // (We are migrating from mock DB to Prisma — types will fully resolve after first deploy)
   typescript: {
     ignoreBuildErrors: true,
   },
-
-
 
   images: {
     remotePatterns: [
@@ -19,8 +15,15 @@ const nextConfig = {
     ],
   },
 
-  // Required for Prisma on Vercel serverless runtime
   serverExternalPackages: ['@prisma/client', 'bcryptjs'],
+
+  async redirects() {
+    return [
+      { source: '/services', destination: '/#services', permanent: true },
+      { source: '/pricing', destination: '/#pricing', permanent: true },
+      { source: '/assistant', destination: '/#assistant', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
