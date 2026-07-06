@@ -29,6 +29,7 @@ import {
   TrendingUp,
   Activity,
   ChevronDown,
+  MessageSquare,
 } from "lucide-react";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
@@ -152,6 +153,8 @@ export default function AdminDashboard() {
   const [calls, setCalls] = useState<Call[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]);
+  const [inquiries, setInquiries] = useState<any[]>([]);
+  const [recentLeads, setRecentLeads] = useState<any[]>([]);
 
   const [kbEntries, setKbEntries] = useState("");
   const [voiceScript, setVoiceScript] = useState("");
@@ -211,6 +214,7 @@ export default function AdminDashboard() {
         configsRes,
         projectsRes,
         workloadRes,
+        inquiriesRes,
       ] = await Promise.all([
         fetch("/api/admin/clients", {
           headers: { Authorization: `Bearer ${token}` },
@@ -228,6 +232,9 @@ export default function AdminDashboard() {
           headers: { Authorization: `Bearer ${token}` },
         }),
         fetch("/api/crm/workload", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch("/api/admin/inquiries", {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -252,6 +259,12 @@ export default function AdminDashboard() {
           (p: Project) => p.status === "APPROVED",
         );
         if (pending && !selectedProjectId) setSelectedProjectId(pending.id);
+      }
+
+      if (inquiriesRes.ok) {
+        const d = await inquiriesRes.json();
+        setInquiries(d.inquiries || []);
+        setRecentLeads(d.recentLeads || []);
       }
 
       if (workloadRes.ok) {
@@ -817,7 +830,7 @@ export default function AdminDashboard() {
 
               <div>
                 <h2 className="text-4xl font-black text-white tracking-tight">
-                  ${((totalLeads * 250) / 100).toFixed(0).toLocaleString()}
+                  NPR{((totalLeads * 250) / 100).toFixed(0).toLocaleString()}
                 </h2>
                 <div className="flex items-center gap-1.5 mt-1">
                   <TrendingUp size={11} className="text-emerald-400" />
@@ -911,8 +924,8 @@ export default function AdminDashboard() {
                       fill="none"
                       stroke="rgb(202, 158, 87)"
                       strokeWidth="12"
-                      strokeDasharray={`${40 * 2.51}`}
-                      strokeDashoffset={`${40 * 2.51 * (1 - 0.4)}`}
+                      strokeDasharray={`${2 * Math.PI * 40}`}
+                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.4)}`}
                       strokeLinecap="round"
                     />
                     <circle
@@ -922,8 +935,8 @@ export default function AdminDashboard() {
                       fill="none"
                       stroke="rgba(202, 158, 87, 0.5)"
                       strokeWidth="12"
-                      strokeDasharray={`${40 * 2.51}`}
-                      strokeDashoffset={`${40 * 2.51 * (1 - 0.33)}`}
+                      strokeDasharray={`${2 * Math.PI * 40}`}
+                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.33)}`}
                       strokeLinecap="round"
                       transform="rotate(144 50 50)"
                     />
@@ -934,8 +947,8 @@ export default function AdminDashboard() {
                       fill="none"
                       stroke="rgba(202, 158, 87, 0.25)"
                       strokeWidth="12"
-                      strokeDasharray={`${40 * 2.51}`}
-                      strokeDashoffset={`${40 * 2.51 * (1 - 0.27)}`}
+                      strokeDasharray={`${2 * Math.PI * 40}`}
+                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.27)}`}
                       strokeLinecap="round"
                       transform="rotate(263 50 50)"
                     />
@@ -1081,7 +1094,7 @@ export default function AdminDashboard() {
                           {c.leadName}
                         </p>
                         <p className="text-[9px] text-emerald-400 font-mono">
-                          ${(c.durationSec * 5).toLocaleString()}
+                          NPR{(c.durationSec * 5).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -1120,8 +1133,8 @@ export default function AdminDashboard() {
                         fill="none"
                         stroke="rgb(202, 158, 87)"
                         strokeWidth="8"
-                        strokeDasharray={`${40 * 2.51}`}
-                        strokeDashoffset={`${40 * 2.51 * (1 - Number(avgGreeting) / 100)}`}
+                        strokeDasharray={`${2 * Math.PI * 40}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - Number(avgGreeting) / 100)}`}
                         strokeLinecap="round"
                       />
                     </svg>
@@ -1157,8 +1170,8 @@ export default function AdminDashboard() {
                         fill="none"
                         stroke="rgb(202, 158, 87)"
                         strokeWidth="8"
-                        strokeDasharray={`${40 * 2.51}`}
-                        strokeDashoffset={`${40 * 2.51 * (1 - Number(avgCompliance) / 100)}`}
+                        strokeDasharray={`${2 * Math.PI * 40}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - Number(avgCompliance) / 100)}`}
                         strokeLinecap="round"
                       />
                     </svg>
@@ -1180,7 +1193,7 @@ export default function AdminDashboard() {
                 Total Pipeline
               </p>
               <h3 className="text-3xl font-black text-white mt-1">
-                ${(totalLeads * 250).toLocaleString()}
+                NPR{(totalLeads * 250).toLocaleString()}
               </h3>
               <div className="flex items-center gap-1.5 mt-2">
                 <Activity size={11} className="text-emerald-400" />
@@ -1272,6 +1285,57 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+
+          {/* AI CAPTURED INQUIRIES */}
+          {inquiries.length > 0 && (
+            <div className="rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md overflow-hidden">
+              <div className="border-b border-white/10 px-6 py-4">
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <MessageSquare size={14} className="text-gold" />
+                  Captured Inquiries from Homepage AI
+                  <span className="ml-auto text-[10px] font-bold text-white/30 bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5">
+                    {inquiries.length} conversation{inquiries.length !== 1 ? 's' : ''}
+                  </span>
+                </h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs text-white/80">
+                  <thead>
+                    <tr className="border-b border-white/5 bg-white/[0.02] text-[9px] uppercase tracking-wider text-white/30 font-bold">
+                      <th className="px-5 py-3">Name</th>
+                      <th className="px-5 py-3">Contact</th>
+                      <th className="px-5 py-3">Interest</th>
+                      <th className="px-5 py-3">Last Message</th>
+                      <th className="px-5 py-3">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {inquiries.slice(0, 10).map((inq: any) => (
+                      <tr key={inq.id} className="hover:bg-white/[0.01] transition-colors">
+                        <td className="px-5 py-3.5 font-bold text-white">
+                          {inq.name || '—'}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {inq.phone || inq.email || '—'}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <span className="rounded bg-gold/10 border border-gold/20 px-2 py-0.5 text-[10px] font-bold text-gold inline-block">
+                            {inq.interest}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5 max-w-[220px] truncate text-white/50">
+                          {inq.lastMessage || '—'}
+                        </td>
+                        <td className="px-5 py-3.5 text-white/30 font-mono text-[10px] whitespace-nowrap">
+                          {new Date(inq.lastSeen).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

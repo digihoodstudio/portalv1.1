@@ -8,10 +8,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Suppress ESLint errors blocking production builds
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+
 
   images: {
     remotePatterns: [
@@ -23,9 +20,7 @@ const nextConfig = {
   },
 
   // Required for Prisma on Vercel serverless runtime
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
-  },
+  serverExternalPackages: ['@prisma/client', 'bcryptjs'],
 };
 
 export default nextConfig;

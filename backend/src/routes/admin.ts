@@ -316,4 +316,96 @@ router.post('/configs', async (req: any, res) => {
   }
 });
 
+// --- AI INQUIRIES (from homepage chatbot) ---
+router.get('/inquiries', async (req, res) => {
+  try {
+    const chatbotLogs = await prisma.chatbotLog.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 100,
+    });
+
+    const sessions = new Map<string, { messages: any[]; firstSeen: Date; lastSeen: Date }>();
+    for (const log of chatbotLogs) {
+      const sid = log.sessionId || 'unknown';
+      if (!sessions.has(sid)) {
+        sessions.set(sid, { messages: [], firstSeen: log.createdAt, lastSeen: log.createdAt });
+      }
+      const session = sessions.get(sid)!;
+      session.messages.push(log);
+      if (log.createdAt < session.firstSeen) session.firstSeen = log.createdAt;
+      if (log.createdAt > session.lastSeen) session.lastSeen = log.createdAt;
+    }
+
+    const inquiries: any[] = [];
+    for (const [sessionId, session] of sessions) {
+      const fullText = session.messages.map((m: any) => `${m.role}: ${m.message}`).join(' ').toLowerCase();
+      const userMessages = session.messages.filter((m: any) => m.role === 'user').map((m: any) => m.message);
+
+      let name = '';
+      let phone = '';
+      let email = '';
+      let interest = '';
+
+      const nameMatch = fullText.match(/(?:my name is|i[''\u2019]?m\s+|i am\s+|call me\s+|name[''\u2019]?s\s+|name is\s+)([a-z]+(?:\s+[a-z]+)?)/i);
+      if (nameMatch) {
+        const stopWords = new Set(['and', 'from', 'at', 'i', 'my', 'the', 'a', 'an', 'for', 'in', 'with', 'to', 'on', 'by', 'is', 'of', 'or', 'do', 'does', 'am', 'are', 'was', 'were', 'be', 'been']);
+        const parts = nameMatch[1].trim().split(/\s+/).slice(0, 2).filter((w: string) => !stopWords.has(w));
+        name = parts.join(' ').replace(/\b[a-z]/g, (c: string) => c.toUpperCase());
+      }
+
+      const phoneMatch = fullText.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
+      if (phoneMatch) phone = phoneMatch[0].trim();
+
+      const emailMatch = fullText.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,})/);
+      if (emailMatch) email = emailMatch[1].toLowerCase();
+
+      const topics: [string, string[]][] = [
+        ['Pricing', ['pricing', 'price', 'cost', 'how much', 'package', 'plan', 'subscription', 'fee', 'monthly', 'tier']],
+        ['Demo', ['demo', 'book', 'schedule', 'consult', 'appointment']],
+        ['Missed Call Recovery', ['missed call', 'call recovery', 'callback', 'missed', 'no answer']],
+        ['AI Receptionist', ['receptionist', 'inbound', 'answer phone', '24/7', 'virtual assistant']],
+        ['Lead Reactivation', ['reactivat', 'dead lead', 'old lead', 'cold', 'dormant', 'inactive', 're-engage']],
+        ['Support', ['support', 'help', 'customer service', 'contact']],
+        ['Partnership', ['partner', 'referral', 'affiliate', 'reseller']],
+        ['ROI', ['roi', 'guarantee', 'result', 'worth', 'refund']],
+        ['Setup', ['setup', 'implement', 'launch', 'go live', 'onboard', 'integration']],
+      ];
+      for (const [label, keywords] of topics) {
+        if (keywords.some((k) => fullText.includes(k))) { interest = label; break; }
+      }
+
+      if (session.messages.length >= 1) {
+        inquiries.push({
+          id: sessionId,
+          name,
+          phone,
+          email,
+          interest: interest || 'General',
+        messageCount: session.messages.length,
+        lastMessage: userMessages.length > 0 ? userMessages[userMessages.length - 1] : session.messages[session.messages.length - 1]?.message || '',
+        firstSeen: session.firstSeen,
+          lastSeen: session.lastSeen,
+          source: (() => {
+            const meta = session.messages.find((m: any) => m.metadata);
+            if (meta) {
+              try { const p = JSON.parse(meta.metadata); if (p.source === 'voice') return 'Voice Call'; } catch {}
+            }
+            return 'Homepage AI Chat';
+          })(),
+        });
+      }
+    }
+
+    const recentLeads = await prisma.lead.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+    });
+
+    return res.json({ inquiries: inquiries.slice(0, 30), recentLeads });
+  } catch (error: any) {
+    console.error('Fetch inquiries error:', error);
+    return res.status(500).json({ error: error.message || 'Failed to fetch inquiries' });
+  }
+});
+
 export default router;

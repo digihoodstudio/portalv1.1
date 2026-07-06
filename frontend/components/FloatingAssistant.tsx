@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User } from "lucide-react";
+import { MessageSquare, X, Send, User } from "lucide-react";
+import Image from "next/image";
 
 interface Message {
   role: "assistant" | "user";
@@ -12,7 +13,7 @@ interface Message {
 
 const SESSION_ID = `floating-session-${Date.now()}`;
 const INITIAL_MSG =
-  "Hello! I am your AI Growth Assistant. I can help you with packages, pricing, how to register, or missed call recovery information. How can I help you today?";
+  "Hey! I'm Maya, your AI growth assistant from Digihood Studio. I can help you with pricing, services, booking a demo, or anything about our AI automation platform. What's on your mind?";
 
 export default function FloatingAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -118,12 +119,12 @@ export default function FloatingAssistant() {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 bg-gold/5 px-5 py-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold/10 text-gold">
-                  <Bot size={16} className="animate-pulse" />
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold/10 overflow-hidden">
+                  <Image src="/digilogo.png" alt="Maya" width={32} height={32} className="object-cover w-full h-full" />
                 </div>
                 <div>
                   <h3 className="text-xs font-bold tracking-wide text-white">
-                    AI Growth Assistant
+                    Maya
                   </h3>
                   <div className="flex items-center gap-1 mt-0.5">
                     <span className="h-1 w-1 rounded-full bg-emerald-500 animate-pulse" />

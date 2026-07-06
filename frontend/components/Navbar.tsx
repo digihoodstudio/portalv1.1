@@ -211,8 +211,8 @@ export default function Navbar() {
               height={36}
               className="rounded-full object-cover"
             />
-            <span className="hidden sm:inline font-semibold text-lg tracking-[0.14em] text-gold">
-              DIGIHOOD STUDIO
+            <span className="hidden sm:inline font-monument tracking-[0.14em] text-gold">
+              DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
             </span>
           </Link>
 

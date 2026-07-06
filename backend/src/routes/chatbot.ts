@@ -181,6 +181,18 @@ router.post("/conversation", async (req, res) => {
       answer = `Thanks for your question! I'm your AI growth specialist at Digihood Studio. We help service businesses with AI receptionists, missed call recovery, and lead reactivation. Could you tell me a bit more about what you're looking for? I'd be happy to help or book you a free strategy call.`;
     }
 
+    // Only log the last user message (new input) to avoid duplicates from conversation history
+    const lastUserMsg = [...(messages ?? [])].reverse().find((m: any) => m.role === "user");
+    if (lastUserMsg) {
+      await prisma.chatbotLog.create({
+        data: {
+          sessionId: sessionId ?? "session-unknown",
+          role: "user",
+          message: lastUserMsg.text || lastUserMsg.content || "",
+          metadata: JSON.stringify({ source: "input" }),
+        },
+      });
+    }
     await prisma.chatbotLog.create({
       data: {
         sessionId: sessionId ?? "session-unknown",
@@ -198,6 +210,32 @@ router.post("/conversation", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred processing your message" });
+  }
+});
+
+// Lightweight voice transcript logging (no AI response generated)
+router.post("/voice-log", async (req, res) => {
+  try {
+    const { sessionId, messages } = req.body;
+    const sid = sessionId || `voice-${Date.now()}`;
+    if (messages && Array.isArray(messages)) {
+      for (const msg of messages) {
+        if (msg.role === "user" || msg.role === "assistant") {
+          await prisma.chatbotLog.create({
+            data: {
+              sessionId: sid,
+              role: msg.role,
+              message: msg.text || msg.content || "",
+              metadata: JSON.stringify({ source: "voice" }),
+            },
+          });
+        }
+      }
+    }
+    res.json({ ok: true });
+  } catch (error) {
+    console.error("Voice log error:", error);
+    res.status(500).json({ error: "Failed to log voice transcript" });
   }
 });
 

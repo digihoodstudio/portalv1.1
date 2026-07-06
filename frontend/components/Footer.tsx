@@ -20,8 +20,8 @@ export default function Footer() {
     <footer className="mx-auto mt-24 max-w-7xl border-t border-white/10 pt-10 pb-12 text-sm text-foreground/70">
       <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr] md:items-start">
         <div>
-          <p className="font-semibold text-lg tracking-[0.14em] text-gold">
-            DIGIHOOD STUDIO
+          <p className="font-monument text-lg tracking-[0.14em] text-gold">
+            DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
           </p>
           <p className="mt-3 max-w-sm text-foreground/70 leading-relaxed">
             Portal for enterprise teams.

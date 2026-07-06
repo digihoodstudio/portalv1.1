@@ -57,6 +57,7 @@ export default function AssistantPanel() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const vapiRef = useRef<Vapi | null>(null);
+  const voiceTranscriptsRef = useRef<{ role: string; text: string }[]>([]);
 
   useEffect(() => {
     const publicKey = process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY;
@@ -67,13 +68,26 @@ export default function AssistantPanel() {
     const vapi = new Vapi(publicKey);
     vapiRef.current = vapi;
 
-    vapi.on("call-start", () => { setCallStatus("active"); setVapiError(""); });
-    vapi.on("call-end", () => { setCallStatus("idle"); setVolumeLevel(0); setIsMuted(false); });
+    vapi.on("call-start", () => { setCallStatus("active"); setVapiError(""); voiceTranscriptsRef.current = []; });
+    vapi.on("call-end", async () => {
+      setCallStatus("idle"); setVolumeLevel(0); setIsMuted(false);
+      const transcripts = voiceTranscriptsRef.current;
+      if (transcripts.length > 0) {
+        try {
+          await fetch("/api/chatbot/voice-log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId: SESSION_ID, messages: transcripts }),
+          });
+        } catch { /* silently log best-effort */ }
+      }
+    });
     vapi.on("volume-level", (level: number) => setVolumeLevel(level));
     vapi.on("message", (msg: any) => {
       if (msg.type === "transcript" && msg.transcriptType === "final") {
         const role = msg.role === "user" ? "user" : "assistant";
         setMessages((prev) => [...prev, { role, text: msg.transcript, id: `${role[0]}-${Date.now()}-${Math.random()}` }]);
+        voiceTranscriptsRef.current.push({ role, text: msg.transcript });
       }
     });
     vapi.on("error", (err: any) => { console.error("Vapi error:", err); setVapiError("Voice call error. Please try again."); setCallStatus("idle"); });

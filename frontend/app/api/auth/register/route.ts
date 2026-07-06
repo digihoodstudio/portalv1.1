@@ -1,85 +1,35 @@
-import { NextRequest } from 'next/server';
-import bcrypt from 'bcryptjs';
-import { prisma } from '@/lib/db';
-import { signToken, requireAuth, json } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password, name, roleName, phoneNumber, businessName } = await req.json();
-    if (!email || !password || !roleName) {
-      return json({ error: 'Email, password, and role are required' }, 400);
-    }
+    const body = await req.json();
+    const { email, password, name, roleName, phoneNumber, businessName } = body;
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
-    if (existingUser) return json({ error: 'A user with this email already exists' }, 400);
-
-    const role = await prisma.role.findUnique({ where: { name: roleName } });
-    if (!role) return json({ error: `Invalid role: ${roleName}` }, 400);
-
-    const passwordHash = await bcrypt.hash(password, 12);
-
-    let clientId: string | undefined = undefined;
-    if (['CLIENT', 'ADMIN', 'USER'].includes(roleName)) {
-      const client = await prisma.client.create({
-        data: {
-          companyName: businessName || 'My Business',
-          contactName: name || 'Client User',
-          contactEmail: email,
-          contactPhone: phoneNumber || '',
-          plan: 'GROWTH',
-          status: 'ACTIVE',
-        },
-      });
-      clientId = client.id;
-    }
-
-    const user = await prisma.user.create({
-      data: { email, name, passwordHash, roleId: role.id, clientId },
+    const backendRes = await fetch('http://localhost:4000/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name, roleName, phoneNumber, businessName }),
     });
 
-    return json({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: role.name,
-        phone: phoneNumber || '',
-        business: businessName || '',
-        agentId: user.agentId || '',
-        clientId: user.clientId || '',
-      },
-    });
+    const data = await backendRes.json();
+    return NextResponse.json(data, { status: backendRes.status });
   } catch (err: any) {
-    console.error('Register error:', err);
-    return json({ error: 'An error occurred during registration' }, 500);
+    return NextResponse.json({ error: 'Backend unavailable' }, { status: 502 });
   }
 }
 
 export async function GET(req: NextRequest) {
-  const auth = requireAuth(req);
-  if ('error' in auth) return auth.error;
-  const { user } = auth;
-
   try {
-    const dbUser = await prisma.user.findUnique({
-      where: { id: user.id },
-      include: { role: true, client: true },
-    });
-    if (!dbUser) return json({ error: 'User not found' }, 404);
-
-    return json({
-      user: {
-        id: dbUser.id,
-        email: dbUser.email,
-        name: dbUser.name,
-        role: dbUser.role?.name,
-        phone: dbUser.phone || dbUser.client?.contactPhone || '',
-        business: dbUser.client?.companyName || '',
-        agentId: dbUser.agentId || '',
-        clientId: dbUser.clientId || '',
+    const authHeader = req.headers.get('authorization');
+    const backendRes = await fetch('http://localhost:4000/api/auth/profile', {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(authHeader ? { Authorization: authHeader } : {}),
       },
     });
-  } catch (err: any) {
-    return json({ error: 'Failed to fetch profile' }, 500);
+    const data = await backendRes.json();
+    return NextResponse.json(data, { status: backendRes.status });
+  } catch {
+    return NextResponse.json({ error: 'Backend unavailable' }, { status: 502 });
   }
 }

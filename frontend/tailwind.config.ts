@@ -20,6 +20,7 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
         display: ['var(--font-plus-jakarta)', 'sans-serif'],
+        monument: ['Monument Extended', 'sans-serif'],
       },
     },
   },

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import SuperAdminDashboard from "../../components/SuperAdminDashboard";
 import AdminDashboard from "../../components/AdminDashboard";
 import ClientDashboard from "../../components/ClientDashboard";
@@ -14,68 +13,27 @@ export default function UnifiedDashboardPage() {
   const [userRole, setUserRole] = useState<string>("CLIENT");
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const supabase = createClient();
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
 
-      if (!session) {
-        router.push("/login");
-        return;
-      }
+    if (!token) {
+      router.push("/login");
+      return;
+    }
 
-      // Try to read role from Supabase profiles table
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", session.user.id)
-        .single();
-
-      let role = profile?.role;
-
-      // Sync to backend — this creates the user in the mock DB if missing
-      // and returns the authoritative role + JWT
+    let role = "CLIENT";
+    if (userStr) {
       try {
-        const syncRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"}/api/auth/supabase-sync`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: session.user.email,
-              name: profile?.full_name || session.user.email,
-              role: role || "CLIENT",
-            }),
-          },
-        );
-        if (syncRes.ok) {
-          const syncData = await syncRes.json();
-          localStorage.setItem("token", syncData.token);
-          // Use the backend's authoritative role
-          role = syncData.user.role;
-        } else {
-          console.warn("Backend sync failed, API calls may not work");
+        const u = JSON.parse(userStr);
+        role = (u.role || "CLIENT").toUpperCase();
+        if (!localStorage.getItem("token")) {
+          localStorage.setItem("token", token);
         }
-      } catch {
-        console.warn("Backend sync failed, API calls may not work");
-      }
+      } catch {}
+    }
 
-      role = role || "CLIENT";
-      setUserRole(role);
-
-      const userInfo = {
-        name: profile?.full_name || session.user.email,
-        email: session.user.email,
-        role,
-      };
-
-      localStorage.setItem("user", JSON.stringify(userInfo));
-
-      setLoading(false);
-    };
-
-    checkAuth();
+    setUserRole(role);
+    setLoading(false);
   }, [router]);
 
   const isStaffRole = (role: string) =>

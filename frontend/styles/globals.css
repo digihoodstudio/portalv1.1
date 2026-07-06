@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/monument-extended');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +17,10 @@
 
 h1, h2, h3, h4, h5, h6, .font-display {
   font-family: var(--font-plus-jakarta), var(--font-inter), sans-serif;
+}
+
+.font-monument {
+  font-family: 'Monument Extended', sans-serif;
 }
 
 html {

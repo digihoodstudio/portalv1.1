@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Users,
@@ -12,7 +13,6 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  X,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -54,14 +54,18 @@ export default function Sidebar() {
   return (
     <aside className="w-64 h-screen bg-background border-r border-white/10 flex flex-col">
       {/* Logo */}
-      <div className="flex items-center justify-between p-5 border-b border-white/10">
+      <div className="flex items-center gap-2 p-5 border-b border-white/10">
+        <Image
+          src="/digilogo.png"
+          alt="Digihood Studio"
+          width={32}
+          height={32}
+          className="rounded-full object-cover flex-shrink-0"
+        />
         <div className="text-white">
-          <span className="font-bold text-sm">DIGIHOOD</span>
-          <span className="text-white/40 ml-1 text-xs">STUDIO</span>
+          <span className="font-monument text-sm">DIGIHOOD</span>
+          <span className="font-monument text-white/40 ml-1 text-xs">STUDIO</span>
         </div>
-        <button className="text-white/40 hover:text-white">
-          <X size={16} />
-        </button>
       </div>
 
       {/* Nav */}

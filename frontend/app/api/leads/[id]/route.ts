@@ -1,68 +1,45 @@
-import { NextRequest } from 'next/server';
-import { prisma } from '@/lib/db';
-import { requireAuth, json } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const auth = requireAuth(req);
-  if ('error' in auth) return auth.error;
-  const { user } = auth;
+const API_BASE = process.env.API_BASE_URL || 'http://localhost:4000';
+
+async function proxyToBackend(req: NextRequest, path: string, method: string) {
+  const targetUrl = `${API_BASE}/api/leads/${path}`;
+
+  const headers: Record<string, string> = {
+    'Content-Type': req.headers.get('content-type') || 'application/json',
+  };
+
+  const auth = req.headers.get('authorization');
+  if (auth) headers['Authorization'] = auth;
+
+  let body: BodyInit | undefined;
+  if (method !== 'GET' && method !== 'HEAD') {
+    body = await req.text().catch(() => undefined);
+  }
 
   try {
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
-    const { status, name, email, phone, business } = await req.json();
-
-    const lead = await prisma.lead.findUnique({ where: { id } });
-    if (!lead) return json({ error: 'Lead not found' }, 404);
-
-    const updateData: any = {};
-    if (status !== undefined) updateData.status = status;
-    if (name !== undefined) updateData.name = name;
-    if (email !== undefined) updateData.email = email;
-    if (phone !== undefined) updateData.phone = phone;
-    if (business !== undefined) updateData.business = business;
-
-    const updatedLead = await prisma.lead.update({ where: { id }, data: updateData });
-
-    await prisma.auditLog.create({
-      data: {
-        action: 'UPDATE_LEAD',
-        actor: user.email,
-        details: `Updated lead '${lead.name}'`,
-        ipAddress: '127.0.0.1',
+    const backendRes = await fetch(targetUrl, { method, headers, body });
+    const text = await backendRes.text();
+    return new Response(text, {
+      status: backendRes.status,
+      headers: {
+        'Content-Type': backendRes.headers.get('content-type') || 'application/json',
       },
     });
-
-    return json({ lead: updatedLead });
-  } catch (err: any) {
-    return json({ error: 'Failed to update lead' }, 500);
+  } catch {
+    return NextResponse.json(
+      { error: 'Backend unavailable. Ensure the backend server is running on port 4000.' },
+      { status: 502 }
+    );
   }
 }
 
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return proxyToBackend(req, id, 'PATCH');
+}
+
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const auth = requireAuth(req);
-  if ('error' in auth) return auth.error;
-  const { user } = auth;
-
-  try {
-    const resolvedParams = await params;
-    const { id } = resolvedParams;
-    const lead = await prisma.lead.findUnique({ where: { id } });
-    if (!lead) return json({ error: 'Lead not found' }, 404);
-
-    await prisma.lead.delete({ where: { id } });
-
-    await prisma.auditLog.create({
-      data: {
-        action: 'DELETE_LEAD',
-        actor: user.email,
-        details: `Deleted lead '${lead.name}'`,
-        ipAddress: '127.0.0.1',
-      },
-    });
-
-    return json({ message: 'Lead deleted successfully' });
-  } catch (err: any) {
-    return json({ error: 'Failed to delete lead' }, 500);
-  }
+  const { id } = await params;
+  return proxyToBackend(req, id, 'DELETE');
 }

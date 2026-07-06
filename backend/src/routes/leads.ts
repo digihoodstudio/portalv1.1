@@ -133,6 +133,46 @@ router.patch('/:id', requireAuth, async (req: AuthRequest, res) => {
   }
 });
 
+// Upload leads in bulk (from CSV import)
+router.post('/upload', requireAuth, async (req: AuthRequest, res) => {
+  try {
+    const { rows } = req.body;
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ error: 'rows array is required' });
+    }
+
+    const defaultClient = await prisma.client.findFirst({ orderBy: { createdAt: 'asc' } });
+    const clientId = defaultClient?.id || 'client-1';
+
+    const project = await prisma.project.create({
+      data: { name: `CSV Import ${new Date().toLocaleDateString()}`, clientId, status: 'PENDING_APPROVAL', progress: 0 },
+    });
+
+    const created = [];
+    for (const row of rows) {
+      if (!row.name && !row.email && !row.phone) continue;
+      const lead = await prisma.lead.create({
+        data: {
+          name: row.name || 'Imported Lead',
+          company: row.company || row.business || '',
+          phone: row.phone || '',
+          email: row.email || '',
+          notes: row.notes || '',
+          status: 'NEW',
+          projectId: project.id,
+          clientId,
+        },
+      });
+      created.push(lead);
+    }
+
+    return res.json({ count: created.length, projectId: project.id });
+  } catch (error) {
+    console.error('Bulk upload error:', error);
+    return res.status(500).json({ error: 'Failed to upload leads' });
+  }
+});
+
 // Delete lead
 router.delete('/:id', requireAuth, async (req: AuthRequest, res) => {
   try {

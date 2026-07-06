@@ -15,16 +15,24 @@ const store: Record<string, any[]> = {
   user: [
     {
       id: 'user-superadmin',
-      email: 'superadmin@gmail.com',
+      email: 'superadmin@digihoodstudio.com',
       name: 'Super Administrator',
-      passwordHash: bcrypt.hashSync('AdminPass123!', 12),
+      passwordHash: bcrypt.hashSync('SuperAdmin123!', 12),
       roleId: 'role-superadmin'
     },
     {
+      id: 'user-admin',
+      email: 'admin@digihoodstudio.com',
+      name: 'Company Admin',
+      passwordHash: bcrypt.hashSync('Admin123!', 12),
+      roleId: 'role-admin',
+      adminId: 'admin-1'
+    },
+    {
       id: 'user-client',
-      email: 'client@gmail.com',
+      email: 'client@digihoodstudio.com',
       name: 'John Doe',
-      passwordHash: bcrypt.hashSync('AdminPass123!', 12),
+      passwordHash: bcrypt.hashSync('Client123!', 12),
       roleId: 'role-client',
       clientId: 'client-1'
     },
@@ -40,10 +48,11 @@ const store: Record<string, any[]> = {
   client: [
     {
       id: 'client-1',
-      companyName: 'Septic & Drain Specialists',
+      companyName: 'Digihood Studio Client',
       contactName: 'John Doe',
-      contactEmail: 'client@gmail.com',
+      contactEmail: 'client@digihoodstudio.com',
       contactPhone: '555-0188',
+      plan: 'GROWTH',
       status: 'ACTIVE'
     }
   ],
@@ -66,6 +75,18 @@ const store: Record<string, any[]> = {
       capacity: 1000,
       activeTasks: 0,
       completionRate: 95.0,
+      status: 'AVAILABLE'
+    }
+  ],
+  admin: [
+    {
+      id: 'admin-1',
+      name: 'Company Admin',
+      email: 'admin@digihoodstudio.com',
+      phone: '555-0100',
+      capacity: 1000,
+      activeTasks: 0,
+      completionRate: 0,
       status: 'AVAILABLE'
     }
   ],

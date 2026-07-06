@@ -17,6 +17,7 @@ const trialRoutes = require('./routes/trial').default;
 const superadminRoutes = require('./routes/superadmin').default;
 const adminRoutes = require('./routes/admin').default;
 const crmRoutes = require('./routes/crm').default;
+const mayaDemoRoutes = require('./routes/maya-demo').default;
 const app = express();
 
 app.use(helmet({
@@ -76,6 +77,7 @@ app.use('/api/voice', trialRoutes);
 app.use('/api/superadmin', superadminRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/crm', crmRoutes);
+app.use('/api/voice', mayaDemoRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
