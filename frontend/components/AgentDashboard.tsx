@@ -607,51 +607,18 @@ export default function AgentDashboard() {
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">Daily Calling Targets</h3>
               </div>
               
-              <div className="flex flex-col items-center justify-center py-4 space-y-4">
-                {/* SVG Circular Progress Ring */}
-                <div className="relative w-36 h-36 flex items-center justify-center">
-                  <svg className="w-full h-full transform -rotate-90">
-                    {/* Background Ring */}
-                    <circle
-                      cx="72"
-                      cy="72"
-                      r="60"
-                      className="text-white/5"
-                      strokeWidth="10"
-                      stroke="currentColor"
-                      fill="transparent"
-                    />
-                    {/* Progress Ring */}
-                    <circle
-                      cx="72"
-                      cy="72"
-                      r="60"
-                      className="text-purple-500 transition-all duration-500 ease-out"
-                      strokeWidth="10"
-                      strokeDasharray={2 * Math.PI * 60}
-                      strokeDashoffset={
-                        2 * Math.PI * 60 * (1 - Math.min(callsMade / Math.max(callTarget, 1), 1))
-                      }
-                      strokeLinecap="round"
-                      stroke="currentColor"
-                      fill="transparent"
-                    />
-                  </svg>
-                  
-                  {/* Inside Text */}
-                  <div className="absolute text-center">
-                    <span className="text-3xl font-black text-white">{callsMade}</span>
-                    <span className="text-white/40 text-[10px] block">/ {callTarget} calls</span>
+              <div className="flex flex-col items-center justify-center py-4 space-y-3">
+                  <div className="text-center">
+                    <span className="text-5xl font-black text-white">{callsMade}</span>
+                    <span className="text-white/40 text-sm block">/ {callTarget} calls</span>
+                  </div>
+                  <div className="text-center space-y-1">
+                    <p className="text-xs font-bold text-white/80">
+                      {callsMade >= callTarget ? '🎉 Target Achieved!' : `${callTarget - callsMade} more dials to reach today's target.`}
+                    </p>
+                    <p className="text-[10px] text-white/40">Calls auto-increment on each outbound outcome save.</p>
                   </div>
                 </div>
-
-                <div className="text-center space-y-1">
-                  <p className="text-xs font-bold text-white/80">
-                    {callsMade >= callTarget ? '🎉 Target Achieved!' : `${callTarget - callsMade} more dials to reach today's target.`}
-                  </p>
-                  <p className="text-[10px] text-white/40">Calls auto-increment on each outbound outcome save.</p>
-                </div>
-              </div>
 
               {/* Set Call Target Form */}
               <form onSubmit={handleSetTarget} className="flex gap-2 items-end border-t border-white/5 pt-4">
