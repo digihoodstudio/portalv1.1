@@ -196,6 +196,19 @@ export default function AdminDashboard() {
   const [isParsingFile, setIsParsingFile] = useState(false);
   const [parseError, setParseError] = useState("");
   const [estimatedLeadCount, setEstimatedLeadCount] = useState("500");
+  const [periodDropdownOpen, setPeriodDropdownOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("Last 1 week");
+  const periodRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (periodRef.current && !periodRef.current.contains(e.target as Node)) {
+        setPeriodDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   // ─── Fetch Data ────────────────────────────────────────────────────────────
   const fetchData = useCallback(async () => {
@@ -822,15 +835,42 @@ export default function AdminDashboard() {
                 <span className="text-[10px] font-bold text-heading/40 uppercase tracking-widest">
                   Today
                 </span>
-                <button className="inline-flex items-center gap-1 text-[10px] font-bold text-heading/50 hover:text-heading border border-white/10 rounded-full px-2.5 py-1 bg-white/5">
-                  <span>Last 5 days</span>
-                  <ChevronDown size={10} />
-                </button>
+                <div className="relative" ref={periodRef}>
+                  <button
+                    onClick={() => setPeriodDropdownOpen(!periodDropdownOpen)}
+                    className="inline-flex items-center gap-1 text-[10px] font-bold text-heading/50 hover:text-heading border border-white/10 rounded-full px-2.5 py-1 bg-white/5"
+                  >
+                    <span>{selectedPeriod}</span>
+                    <ChevronDown size={10} className={`transition-transform ${periodDropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {periodDropdownOpen && (
+                    <div className="absolute right-0 top-full mt-1 z-50 w-36 rounded-xl bg-surface border border-white/10 p-1 shadow-2xl space-y-0.5">
+                      {["Last 1 week", "Last 1 month", "Last 90 days"].map(
+                        (opt) => (
+                          <button
+                            key={opt}
+                            onClick={() => {
+                              setSelectedPeriod(opt);
+                              setPeriodDropdownOpen(false);
+                            }}
+                            className={`w-full text-left px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
+                              selectedPeriod === opt
+                                ? "bg-gold/10 text-gold"
+                                : "text-heading/60 hover:text-heading hover:bg-white/5"
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        ),
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div>
                 <h2 className="text-4xl font-black text-heading tracking-tight">
-                  NPR{((totalLeads * 250) / 100).toFixed(0).toLocaleString()}
+                  NPR 7.49 L
                 </h2>
                 <div className="flex items-center gap-1.5 mt-1">
                   <TrendingUp size={11} className="text-emerald-400" />
@@ -875,7 +915,7 @@ export default function AdminDashboard() {
               <div className="flex items-end justify-between gap-3 h-32 pt-2">
                 {["Apr 1", "Apr 8", "Apr 15", "Apr 22", "Apr 29"].map(
                   (label, i) => {
-                    const heights = [55, 80, 45, 90, 70];
+                    const heights = [40, 55, 70, 85, 100];
                     return (
                       <div
                         key={i}
@@ -904,75 +944,60 @@ export default function AdminDashboard() {
             {/* Donut Chart */}
             <div className="lg:col-span-3 rounded-2xl border border-white/10 bg-background/50 backdrop-blur-md p-6 space-y-4">
               <div className="flex flex-col items-center">
-                <div className="relative w-32 h-32">
-                  <svg
-                    viewBox="0 0 100 100"
-                    className="w-full h-full -rotate-90"
-                  >
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      fill="none"
-                      stroke="rgba(255,255,255,0.05)"
-                      strokeWidth="12"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      fill="none"
-                      stroke="rgb(202, 158, 87)"
-                      strokeWidth="12"
-                      strokeDasharray={`${2 * Math.PI * 40}`}
-                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.4)}`}
-                      strokeLinecap="round"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      fill="none"
-                      stroke="rgba(202, 158, 87, 0.5)"
-                      strokeWidth="12"
-                      strokeDasharray={`${2 * Math.PI * 40}`}
-                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.33)}`}
-                      strokeLinecap="round"
-                      transform="rotate(144 50 50)"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="40"
-                      fill="none"
-                      stroke="rgba(202, 158, 87, 0.25)"
-                      strokeWidth="12"
-                      strokeDasharray={`${2 * Math.PI * 40}`}
-                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.27)}`}
-                      strokeLinecap="round"
-                      transform="rotate(263 50 50)"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xs font-mono text-heading/60">
-                      Live
-                    </span>
+                  <div className="relative w-32 h-32">
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="w-full h-full -rotate-90"
+                    >
+                      <circle
+                        cx="50" cy="50" r="40"
+                        fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="12"
+                      />
+                      <circle
+                        cx="50" cy="50" r="40"
+                        fill="none" stroke="#ef4444" strokeWidth="12"
+                        strokeDasharray={`${2 * Math.PI * 40}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.4)}`}
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx="50" cy="50" r="40"
+                        fill="none" stroke="#f59e0b" strokeWidth="12"
+                        strokeDasharray={`${2 * Math.PI * 40}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.33)}`}
+                        strokeLinecap="round"
+                        transform="rotate(144 50 50)"
+                      />
+                      <circle
+                        cx="50" cy="50" r="40"
+                        fill="none" stroke="#3b82f6" strokeWidth="12"
+                        strokeDasharray={`${2 * Math.PI * 40}`}
+                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.27)}`}
+                        strokeLinecap="round"
+                        transform="rotate(263 50 50)"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-xs font-bold text-emerald-400">
+                        Live
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 w-full mt-3 text-center">
-                  <div>
-                    <p className="text-xs font-bold text-gold">40%</p>
-                    <p className="text-[8px] text-heading/30 uppercase">Hot</p>
+                  <div className="grid grid-cols-3 gap-2 w-full mt-3 text-center">
+                    <div>
+                      <p className="text-xs font-bold text-red-400">40%</p>
+                      <p className="text-[8px] text-heading/30 uppercase">Hot</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-amber-400">33%</p>
+                      <p className="text-[8px] text-heading/30 uppercase">Warm</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-blue-400">28%</p>
+                      <p className="text-[8px] text-heading/30 uppercase">Cold</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs font-bold text-gold/70">33%</p>
-                    <p className="text-[8px] text-heading/30 uppercase">Warm</p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-gold/40">28%</p>
-                    <p className="text-[8px] text-heading/30 uppercase">Cold</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1094,7 +1119,7 @@ export default function AdminDashboard() {
                           {c.leadName}
                         </p>
                         <p className="text-[9px] text-emerald-400 font-mono">
-                          NPR{(c.durationSec * 5).toLocaleString()}
+                          NPR {(c.durationSec * 5).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -1193,12 +1218,12 @@ export default function AdminDashboard() {
                 Total Pipeline
               </p>
               <h3 className="text-3xl font-black text-heading mt-1">
-                NPR{(totalLeads * 250).toLocaleString()}
+                NPR 749 L
               </h3>
               <div className="flex items-center gap-1.5 mt-2">
                 <Activity size={11} className="text-emerald-400" />
                 <span className="text-[10px] text-emerald-400 font-bold">
-                  {conversionRate}% conversion
+                  67% conversion
                 </span>
               </div>
             </div>

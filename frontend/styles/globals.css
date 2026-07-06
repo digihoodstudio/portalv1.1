@@ -9,6 +9,7 @@
   --color-background: 243 240 235;
   --color-foreground: 28 28 46;
   --color-heading: 10 12 24;
+  --color-white: 0 0 0;
   --color-gold: 184 149 106;
   --color-gold-dim: 138 123 102;
   --color-surface: 255 255 255;
@@ -24,6 +25,7 @@
   --color-background: 10 12 24;
   --color-foreground: 197 191 182;
   --color-heading: 255 255 255;
+  --color-white: 255 255 255;
   --color-gold: 209 201 188;
   --color-gold-dim: 154 139 122;
   --color-surface: 17 20 45;

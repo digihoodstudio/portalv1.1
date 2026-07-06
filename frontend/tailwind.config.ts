@@ -11,6 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        white: 'rgb(var(--color-white) / <alpha-value>)',
         background: 'rgb(var(--color-background) / <alpha-value>)',
         foreground: 'rgb(var(--color-foreground) / <alpha-value>)',
         heading: 'rgb(var(--color-heading) / <alpha-value>)',

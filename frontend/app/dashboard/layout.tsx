@@ -38,7 +38,7 @@ export default function DashboardLayout({
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [userName, setUserName] = useState("Admin");
-  const [userRole, setUserRole] = useState("Company Admin");
+  const [userRole, setUserRole] = useState("Admin");
 
   useEffect(() => {
     const userStr = localStorage.getItem("user");
@@ -48,7 +48,7 @@ export default function DashboardLayout({
         setUserName(u.name || "Admin");
         const r = (u.role || "").toUpperCase();
         if (r === "SUPERADMIN") setUserRole("Super Admin");
-        else if (r === "ADMIN") setUserRole("Company Admin");
+        else if (r === "ADMIN") setUserRole("Admin");
         else if (r === "AGENT") setUserRole("Outbound Agent");
         else if (r === "TEAMLEADER") setUserRole("Team Leader");
         else if (r === "EMPLOYEE") setUserRole("Employee");
