@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 function DigihoodLogo() {
   return (
@@ -34,10 +34,12 @@ function LoginContent() {
     }
   }, [searchParams]);
 
+  const { data: session } = useSession();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) router.push("/dashboard");
-  }, [router]);
+    if (token || session) router.push("/dashboard");
+  }, [router, session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -188,7 +190,7 @@ function LoginContent() {
           </div>
 
           <button
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
             className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-bold text-heading hover:bg-white/10 transition"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">

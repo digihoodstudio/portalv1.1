@@ -347,7 +347,7 @@ export default function Navbar() {
                     <button
                       onClick={() => {
                         setMobileOpen(false);
-                        signIn("google");
+                        signIn("google", { callbackUrl: "/dashboard" });
                       }}
                       className="flex w-full items-center justify-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-foreground transition hover:bg-white/10"
                     >

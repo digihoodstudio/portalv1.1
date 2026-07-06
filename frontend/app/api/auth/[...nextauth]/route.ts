@@ -51,44 +51,9 @@ const handler = NextAuth({
   ],
 
   callbacks: {
-    async signIn({ user, account }) {
-      // Allow Google sign-in users — register them in your backend
-      if (account?.provider === "google") {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/google`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: user.email,
-                name: user.name,
-                googleId: account.providerAccountId,
-                image: user.image,
-              }),
-            },
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            // Attach token and role from your backend
-            user.token = data.token;
-            user.role = data.user.role;
-            user.id = data.user.id;
-          }
-        } catch (error) {
-          console.error("Google sign-in backend error:", error);
-          // Still allow sign-in even if backend sync fails
-        }
-      }
-      return true;
-    },
-
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role || "user";
-        token.accessToken = user.token;
       }
       return token;
     },
@@ -96,8 +61,6 @@ const handler = NextAuth({
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.accessToken = token.accessToken as string;
       }
       return session;
     },
