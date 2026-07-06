@@ -955,14 +955,14 @@ export default function AdminDashboard() {
                       />
                       <circle
                         cx="50" cy="50" r="40"
-                        fill="none" stroke="rgba(var(--color-gold-dim) / 0.3)" strokeWidth="12"
+                        fill="none" stroke="#ef444480" strokeWidth="12"
                         strokeDasharray={`${2 * Math.PI * 40}`}
                         strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.4)}`}
                         strokeLinecap="round"
                       />
                       <circle
                         cx="50" cy="50" r="40"
-                        fill="none" stroke="rgba(var(--color-gold) / 0.4)" strokeWidth="12"
+                        fill="none" stroke="#f59e0b80" strokeWidth="12"
                         strokeDasharray={`${2 * Math.PI * 40}`}
                         strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.33)}`}
                         strokeLinecap="round"
@@ -970,7 +970,7 @@ export default function AdminDashboard() {
                       />
                       <circle
                         cx="50" cy="50" r="40"
-                        fill="none" stroke="rgba(var(--color-foreground) / 0.25)" strokeWidth="12"
+                        fill="none" stroke="#3b82f680" strokeWidth="12"
                         strokeDasharray={`${2 * Math.PI * 40}`}
                         strokeDashoffset={`${2 * Math.PI * 40 * (1 - 0.27)}`}
                         strokeLinecap="round"
@@ -978,23 +978,23 @@ export default function AdminDashboard() {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-gold animate-pulse" />
-                      <span className="text-xs font-bold text-gold">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70 animate-pulse" />
+                      <span className="text-xs font-bold text-emerald-400/80">
                         Live
                       </span>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-2 w-full mt-3 text-center">
                     <div>
-                      <p className="text-xs font-bold text-gold-dim">40%</p>
+                      <p className="text-xs font-bold text-red-400/80">40%</p>
                       <p className="text-[8px] text-heading/30 uppercase">Hot</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-gold">33%</p>
+                      <p className="text-xs font-bold text-amber-400/80">33%</p>
                       <p className="text-[8px] text-heading/30 uppercase">Warm</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-foreground/40">28%</p>
+                      <p className="text-xs font-bold text-blue-400/80">28%</p>
                       <p className="text-[8px] text-heading/30 uppercase">Cold</p>
                     </div>
                   </div>
