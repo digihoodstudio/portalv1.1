@@ -1021,9 +1021,9 @@ export default function AdminDashboard() {
                       <p className="text-[11px] font-bold text-heading truncate">
                         {c.contactName || c.companyName}
                       </p>
-                      <p className="text-[9px] text-heading/40 truncate">
+                      <a href={`mailto:${c.contactEmail}`} className="text-[9px] text-heading/40 truncate hover:text-gold transition">
                         {c.contactEmail}
-                      </p>
+                      </a>
                     </div>
                   </div>
                 ))}
@@ -1417,7 +1417,7 @@ export default function AdminDashboard() {
                         <div className="space-y-0.5">
                           <p className="text-heading/80">{c.contactName}</p>
                           <p className="text-[10px] text-heading/40">
-                            {c.contactEmail} • {c.contactPhone || "No phone"}
+                            <a href={`mailto:${c.contactEmail}`} className="hover:text-gold transition">{c.contactEmail}</a> • {c.contactPhone || "No phone"}
                           </p>
                         </div>
                       </td>
