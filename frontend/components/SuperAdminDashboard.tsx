@@ -1610,7 +1610,7 @@ export default function SuperAdminDashboard() {
                                 <span className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full border ${
                                   l.status === 'CLOSED' || l.status.includes('Closed') ? 'bg-emerald-500/10 border-emerald-500/15 text-emerald-400' :
                                   l.status.includes('Well') ? 'bg-purple-500/10 border-purple-500/15 text-purple-400' :
-                                  l.status.includes('Scheduled') || l.status === 'FOLLOW_UP' ? 'bg-blue-500/10 border-blue-500/15 text-blue-400' :
+                                  l.status.includes('Scheduled') || l.status === 'FOLLOW_UP' ? 'bg-teal-500/10 border-teal-500/15 text-teal-400' :
                                   l.status.includes('Poorly') ? 'bg-yellow-500/10 border-yellow-500/15 text-yellow-400' :
                                   l.status.includes('Failed') || l.status === 'LOST' ? 'bg-red-500/10 border-red-500/15 text-red-400' :
                                   'bg-white/5 border-white/5 text-heading/60'

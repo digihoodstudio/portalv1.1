@@ -33,7 +33,7 @@ export default function ProspectsPage() {
 
   const statusColor = (s: string) => {
     const map: Record<string, string> = {
-      NEW: 'bg-blue-500/20 text-blue-300',
+      NEW: 'bg-teal-500/20 text-teal-300',
       FOLLOW_UP: 'bg-amber-500/20 text-amber-300',
       INTERESTED: 'bg-emerald-500/20 text-emerald-300',
       NO_ANSWER: 'bg-gray-500/20 text-gray-300',

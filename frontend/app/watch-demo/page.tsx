@@ -275,10 +275,10 @@ export default function WatchDemoPage() {
 
                     {voiceCallStatus === 'completed' && (
                       <div className="my-auto space-y-3">
-                        <div className="h-10 w-10 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center justify-center mx-auto">
+                        <div className="h-10 w-10 rounded-full bg-teal-500/15 text-teal-400 border border-teal-500/30 flex items-center justify-center mx-auto">
                           <CheckCircle size={16} />
                         </div>
-                        <p className="text-xs font-bold text-blue-400">Booking Saved</p>
+                        <p className="text-xs font-bold text-teal-400">Booking Saved</p>
                         <p className="text-[9px] text-heading/40">Dispatch slot reserved in ServiceTitan CRM database.</p>
                       </div>
                     )}

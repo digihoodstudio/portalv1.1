@@ -14,7 +14,7 @@ const activityFeed = [
 
 const dotColors: Record<string, string> = {
   booking: 'bg-emerald-400',
-  recovery: 'bg-blue-400',
+  recovery: 'bg-teal-400',
   lead: 'bg-gold',
   call: 'bg-purple-400',
   revenue: 'bg-rose-400',
@@ -97,7 +97,7 @@ export default function HeroSection() {
           {/* Stats row */}
           <div className="mb-4 grid grid-cols-3 gap-2">
             {[
-              { label: 'Active Calls', value: 18, icon: <Phone className="h-3.5 w-3.5" />, color: 'text-blue-400' },
+              { label: 'Active Calls', value: 18, icon: <Phone className="h-3.5 w-3.5" />, color: 'text-teal-400' },
               { label: 'Leads Today', value: 142, icon: <Users className="h-3.5 w-3.5" />, color: 'text-gold' },
               { label: 'Revenue', value: '24.8k', icon: <TrendingUp className="h-3.5 w-3.5" />, color: 'text-emerald-400' },
             ].map((stat) => (

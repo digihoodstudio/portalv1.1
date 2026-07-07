@@ -1005,7 +1005,7 @@ export default function AdminDashboard() {
                       <p className="text-[8px] text-heading/30 uppercase">Warm</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-blue-400/80">28%</p>
+                      <p className="text-xs font-bold text-teal-400/80">28%</p>
                       <p className="text-[8px] text-heading/30 uppercase">Cold</p>
                     </div>
                   </div>
@@ -1529,7 +1529,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="px-4 py-3.5">
                         <span
-                          className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${appt.status === "CONFIRMED" ? "bg-emerald-500/20 text-emerald-400" : appt.status === "CANCELLED" ? "bg-red-500/20 text-red-400" : "bg-blue-500/20 text-blue-400"}`}
+                          className={`text-[8.5px] font-extrabold uppercase px-2 py-0.5 rounded-full ${appt.status === "CONFIRMED" ? "bg-emerald-500/20 text-emerald-400" : appt.status === "CANCELLED" ? "bg-red-500/20 text-red-400" : "bg-teal-500/20 text-teal-400"}`}
                         >
                           {appt.status}
                         </span>
@@ -1622,7 +1622,7 @@ export default function AdminDashboard() {
               <span className="text-[9.5px] uppercase font-bold text-heading/40 tracking-wider">
                 Conversion Ratio
               </span>
-              <p className="text-2xl font-bold font-mono mt-2 text-blue-400">
+              <p className="text-2xl font-bold font-mono mt-2 text-teal-400">
                 {calls.length > 0
                   ? (
                       (calls.filter((c) => c.outcome === "BOOKED").length /
@@ -1690,7 +1690,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="px-4 py-3.5">
                         <span
-                          className={`text-[9px] font-extrabold uppercase rounded px-1.5 py-0.5 ${c.outcome === "BOOKED" ? "bg-emerald-500/20 text-emerald-400" : c.outcome === "VOICEMAIL" ? "bg-blue-500/20 text-blue-400" : "bg-white/10 text-heading/60"}`}
+                          className={`text-[9px] font-extrabold uppercase rounded px-1.5 py-0.5 ${c.outcome === "BOOKED" ? "bg-emerald-500/20 text-emerald-400" : c.outcome === "VOICEMAIL" ? "bg-teal-500/20 text-teal-400" : "bg-white/10 text-heading/60"}`}
                         >
                           {c.outcome}
                         </span>
@@ -2180,7 +2180,7 @@ export default function AdminDashboard() {
                                   {p.name}
                                 </h3>
                                 <span
-                                  className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${p.status === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" : p.status === "PENDING_APPROVAL" ? "bg-blue-500/20 text-blue-400" : p.status === "REJECTED" ? "bg-red-500/20 text-red-400" : "bg-amber-500/20 text-amber-400"}`}
+                                  className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${p.status === "APPROVED" ? "bg-emerald-500/20 text-emerald-400" : p.status === "PENDING_APPROVAL" ? "bg-teal-500/20 text-teal-400" : p.status === "REJECTED" ? "bg-red-500/20 text-red-400" : "bg-amber-500/20 text-amber-400"}`}
                                 >
                                   {p.status.replace("_", " ")}
                                 </span>
@@ -2619,7 +2619,7 @@ export default function AdminDashboard() {
                   <span className="text-[9px] uppercase font-bold text-heading/40 tracking-wider">
                     Tone sentiment
                   </span>
-                  <p className="text-xl font-bold font-mono mt-1 text-blue-400">
+                  <p className="text-xl font-bold font-mono mt-1 text-teal-400">
                     {selectedCall.coaching?.sentiment}
                   </p>
                 </div>

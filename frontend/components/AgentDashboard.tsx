@@ -542,7 +542,7 @@ export default function AgentDashboard() {
         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 p-5 shadow-glow backdrop-blur-xl">
           <div className="flex items-center justify-between text-white/40 text-[9px] tracking-[0.2em] uppercase font-bold">
             <span>Total Leads</span>
-            <Users size={14} className="text-blue-400" />
+            <Users size={14} className="text-teal-400" />
           </div>
           <p className="mt-3 text-3xl font-black font-mono tracking-tight text-white">{totalLeads}</p>
         </div>
@@ -677,7 +677,7 @@ export default function AgentDashboard() {
             {/* Meetings Tracker */}
             <div className="rounded-2xl border border-white/10 bg-slate-900/35 p-6 shadow-glow backdrop-blur-md space-y-4">
               <div className="flex items-center gap-2 border-b border-white/5 pb-3">
-                <Calendar size={16} className="text-blue-400" />
+                <Calendar size={16} className="text-teal-400" />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-white">Scheduled Meetings</h3>
               </div>
 
@@ -899,7 +899,7 @@ export default function AgentDashboard() {
                         <span className={`text-[8px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${
                           proj.status === 'COMPLETED' ? 'bg-emerald-500/10 border-emerald-500/15 text-emerald-400' :
                           proj.status === 'WORK_STARTED' ? 'bg-purple-500/10 border-purple-500/15 text-purple-400' :
-                          proj.status === 'IN_PROGRESS' ? 'bg-blue-500/10 border-blue-500/15 text-blue-400' : 'bg-amber-500/10 border-amber-500/15 text-gold'
+                          proj.status === 'IN_PROGRESS' ? 'bg-teal-500/10 border-teal-500/15 text-teal-400' : 'bg-amber-500/10 border-amber-500/15 text-gold'
                         }`}>
                           {proj.status.replace('_', ' ')}
                         </span>
@@ -945,7 +945,7 @@ export default function AgentDashboard() {
                   <button
                     onClick={() => handleAgentWorkAction(activeProject.id, 'PAUSE')}
                     disabled={activeProject.status === 'IN_PROGRESS' || activeProject.status === 'COMPLETED' || activeProject.status === 'PENDING_APPROVAL'}
-                    className="flex flex-col items-center justify-center gap-1.5 rounded-xl border border-blue-500/15 bg-blue-500/5 hover:bg-blue-500/10 py-3 text-blue-400 font-bold transition-all disabled:opacity-30 disabled:pointer-events-none"
+                    className="flex flex-col items-center justify-center gap-1.5 rounded-xl border border-teal-500/15 bg-teal-500/5 hover:bg-teal-500/10 py-3 text-teal-400 font-bold transition-all disabled:opacity-30 disabled:pointer-events-none"
                     title="Pause Outbounds"
                   >
                     <Pause size={14} />
@@ -997,7 +997,7 @@ export default function AgentDashboard() {
               <div className="rounded-2xl border border-white/10 bg-slate-900/35 overflow-hidden shadow-glow backdrop-blur-md md:col-span-7">
                 <div className="flex items-center justify-between border-b border-white/5 px-5 py-4">
                   <div className="flex items-center gap-2">
-                    <Users size={15} className="text-blue-400" />
+                    <Users size={15} className="text-teal-400" />
                     <h3 className="text-xs font-bold uppercase tracking-wider text-white">My Assigned Prospects</h3>
                   </div>
                   <span className="text-[10px] font-bold text-white/30 font-mono">{leads.length} total</span>
@@ -1025,7 +1025,7 @@ export default function AgentDashboard() {
                             onClick={() => handleLeadSelect(lead)}
                             className={`cursor-pointer transition-colors ${
                               selectedLeadId === lead.id
-                                ? 'bg-blue-500/[0.06] border-l-2 border-l-blue-500'
+                                ? 'bg-teal-500/[0.06] border-l-2 border-l-teal-500'
                                 : 'hover:bg-white/[0.015]'
                             }`}
                           >
@@ -1041,10 +1041,10 @@ export default function AgentDashboard() {
                                 ['CLOSED', 'DEAL_CLOSED', 'Deal Closed', 'Deal Closed ✅'].includes(lead.status) ? 'bg-emerald-500/10 border-emerald-500/15 text-emerald-400' :
                                 lead.status === 'Call Went Well' ? 'bg-emerald-500/10 border-emerald-500/15 text-emerald-300' :
                                 lead.status === 'Call Went Poorly' ? 'bg-rose-500/10 border-rose-500/15 text-rose-400' :
-                                lead.status === 'Follow-up Meeting Scheduled' ? 'bg-blue-500/10 border-blue-500/15 text-blue-300' :
+                                lead.status === 'Follow-up Meeting Scheduled' ? 'bg-teal-500/10 border-teal-500/15 text-teal-300' :
                                 ['Lost/Failed', 'Lost / Failed ❌'].includes(lead.status) ? 'bg-red-500/10 border-red-500/15 text-red-400' :
                                 lead.status === 'INTERESTED' ? 'bg-purple-500/10 border-purple-500/15 text-purple-400' :
-                                lead.status === 'FOLLOW_UP' ? 'bg-blue-500/10 border-blue-500/15 text-blue-400' :
+                                lead.status === 'FOLLOW_UP' ? 'bg-teal-500/10 border-teal-500/15 text-teal-400' :
                                 lead.status === 'NO_ANSWER' ? 'bg-yellow-500/10 border-yellow-500/15 text-yellow-400' :
                                 lead.status === 'CONTACTED' ? 'bg-amber-500/10 border-amber-500/15 text-amber-400' : 'bg-white/5 border-white/5 text-white/60'
                               }`}>
@@ -1056,7 +1056,7 @@ export default function AgentDashboard() {
                                 onClick={(e) => { e.stopPropagation(); handleLeadSelect(lead); }}
                                 className={`rounded-lg px-3 py-1.5 text-[9.5px] font-bold transition ${
                                   selectedLeadId === lead.id
-                                    ? 'bg-blue-500/20 border border-blue-500/30 text-blue-300'
+                                    ? 'bg-teal-500/20 border border-teal-500/30 text-teal-300'
                                     : 'bg-white/5 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white'
                                 }`}
                               >

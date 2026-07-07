@@ -25,7 +25,7 @@ export default function ReportsPage() {
   }, []);
 
   const cards = [
-    { label: 'Leads Generated', value: metrics.leadsGenerated ?? '-', icon: Users, color: 'text-blue-400' },
+    { label: 'Leads Generated', value: metrics.leadsGenerated ?? '-', icon: Users, color: 'text-teal-400' },
     { label: 'Appointments Booked', value: metrics.appointmentsBooked ?? '-', icon: Phone, color: 'text-emerald-400' },
     { label: 'Calls Answered', value: metrics.callsAnswered ?? '-', icon: TrendingUp, color: 'text-purple-400' },
     { label: 'Recovered Leads', value: metrics.recoveredLeads ?? '-', icon: DollarSign, color: 'text-amber-400' },

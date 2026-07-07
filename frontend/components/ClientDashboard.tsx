@@ -330,17 +330,17 @@ export default function ClientDashboard() {
           whileHover={{ y: -3 }}
           className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 p-6 shadow-glow backdrop-blur-xl transition-all duration-300 group"
         >
-          <div className="absolute right-0 bottom-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all duration-300" />
+          <div className="absolute right-0 bottom-0 w-24 h-24 bg-teal-500/10 rounded-full blur-2xl group-hover:bg-teal-500/20 transition-all duration-300" />
           <div className="flex items-center justify-between">
             <span className="text-2xs font-extrabold text-heading/40 uppercase tracking-[0.2em]">
               Total Uploads
             </span>
-            <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+            <div className="p-2 rounded-lg bg-teal-500/10 border border-teal-500/20 text-teal-400">
               <Database size={16} />
             </div>
           </div>
           <div className="mt-4 space-y-1">
-            <div className="text-3xl font-black font-mono tracking-tight text-heading group-hover:text-blue-400 transition">
+            <div className="text-3xl font-black font-mono tracking-tight text-heading group-hover:text-teal-400 transition">
               {(totalUploaded || 1500).toLocaleString()}
             </div>
             <div className="text-[10px] text-heading/40 font-extrabold uppercase tracking-wider">
@@ -406,7 +406,7 @@ export default function ClientDashboard() {
           <div className="relative z-20 rounded-2xl border border-white/10 bg-slate-900/35 p-6 shadow-glow backdrop-blur-md space-y-6">
             <div className="flex items-center justify-between border-b border-white/5 pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/15">
+                <div className="p-1.5 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/15">
                   <Upload size={16} />
                 </div>
                 <h2 className="text-base font-bold text-heading tracking-tight">
@@ -434,7 +434,7 @@ export default function ClientDashboard() {
                     value={fileName}
                     onChange={(e) => setFileName(e.target.value)}
                     placeholder="e.g. spring_leads_2026.csv"
-                    className="w-full h-11 rounded-xl bg-slate-950/80 border border-white/10 pl-10 pr-4 text-xs text-heading placeholder-white/30 outline-hidden focus:border-blue-500 focus:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all duration-300"
+                    className="w-full h-11 rounded-xl bg-slate-950/80 border border-white/10 pl-10 pr-4 text-xs text-heading placeholder-white/30 outline-hidden focus:border-teal-500 focus:shadow-[0_0_15px_rgba(20,184,166,0.15)] transition-all duration-300"
                   />
                 </div>
               </div>
@@ -446,7 +446,7 @@ export default function ClientDashboard() {
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="w-full h-11 flex items-center justify-between rounded-xl bg-slate-950 border border-white/10 px-4 text-xs text-heading focus:border-blue-500 transition-all duration-300"
+                  className="w-full h-11 flex items-center justify-between rounded-xl bg-slate-950 border border-white/10 px-4 text-xs text-heading focus:border-teal-500 transition-all duration-300"
                 >
                   <span>
                     {recordCount === 10000
@@ -471,7 +471,7 @@ export default function ClientDashboard() {
                         }}
                         className={`w-full text-left rounded-lg px-3 py-2 text-xs transition duration-150 ${
                           recordCount === val
-                            ? "bg-blue-600/20 text-blue-400 font-bold border border-blue-500/20"
+                            ? "bg-teal-600/20 text-teal-400 font-bold border border-teal-500/20"
                             : "text-heading/70 hover:bg-white/5 hover:text-heading"
                         }`}
                       >
@@ -491,7 +491,7 @@ export default function ClientDashboard() {
                 <button
                   type="submit"
                   disabled={isUploading || !fileName}
-                  className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 active:scale-[0.98] text-xs font-bold text-heading transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-blue-500/10"
+                  className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-teal-600 hover:bg-teal-500 active:scale-[0.98] text-xs font-bold text-heading transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-teal-500/10"
                 >
                   {isUploading ? (
                     <RefreshCw size={14} className="animate-spin" />
@@ -506,10 +506,10 @@ export default function ClientDashboard() {
             </form>
 
             {uploadStatus && (
-              <div className="flex items-center gap-2.5 rounded-xl border border-blue-500/20 bg-blue-950/30 px-4 py-3 text-xs text-blue-300 shadow-inner">
+              <div className="flex items-center gap-2.5 rounded-xl border border-teal-500/20 bg-teal-950/30 px-4 py-3 text-xs text-teal-300 shadow-inner">
                 <AlertCircle
                   size={15}
-                  className="text-blue-400 animate-pulse"
+                  className="text-teal-400 animate-pulse"
                 />
                 <span className="font-semibold">{uploadStatus}</span>
               </div>
@@ -675,7 +675,7 @@ export default function ClientDashboard() {
                           proj.status === "COMPLETED"
                             ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
                             : proj.status === "PENDING_APPROVAL"
-                              ? "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                              ? "bg-teal-500/10 border-teal-500/20 text-teal-400"
                               : "bg-amber-500/10 border-amber-500/20 text-gold"
                         }`}
                       >
@@ -756,13 +756,13 @@ export default function ClientDashboard() {
           <div className="rounded-2xl border border-white/10 bg-slate-900/35 p-5 shadow-glow backdrop-blur-md space-y-4">
             <div className="flex items-center justify-between border-b border-white/5 pb-3">
               <div className="flex items-center gap-2">
-                <Bell size={16} className="text-blue-400" />
+                <Bell size={16} className="text-teal-400" />
                 <h2 className="text-xs font-bold uppercase tracking-wider text-heading">
                   System Alerts Inbox
                 </h2>
               </div>
               {notifications.filter((n) => !n.read).length > 0 && (
-                <span className="rounded-full bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 text-[9px] font-black text-blue-400 font-mono animate-pulse">
+                <span className="rounded-full bg-teal-500/10 border border-teal-500/20 px-2 py-0.5 text-[9px] font-black text-teal-400 font-mono animate-pulse">
                   {notifications.filter((n) => !n.read).length} New
                 </span>
               )}
@@ -780,7 +780,7 @@ export default function ClientDashboard() {
                     className={`rounded-xl border p-3.5 space-y-1.5 transition-all duration-300 ${
                       notif.read
                         ? "border-white/5 bg-slate-950/30 opacity-50"
-                        : "border-blue-500/15 bg-blue-500/[0.02]"
+                        : "border-teal-500/15 bg-teal-500/[0.02]"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -790,7 +790,7 @@ export default function ClientDashboard() {
                       {!notif.read && (
                         <button
                           onClick={() => handleMarkAsRead(notif.id)}
-                          className="text-[9px] text-blue-400 hover:text-blue-300 font-extrabold uppercase whitespace-nowrap"
+                          className="text-[9px] text-teal-400 hover:text-teal-300 font-extrabold uppercase whitespace-nowrap"
                         >
                           Clear
                         </button>
@@ -978,9 +978,9 @@ export default function ClientDashboard() {
 
           {/* Section 4: Activity Timeline */}
           <div className="relative z-10 overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-900/40 p-5 shadow-glow backdrop-blur-xl space-y-5">
-            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+            <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-teal-500/20 to-transparent" />
             <div className="flex items-center gap-2 border-b border-white/5 pb-3.5">
-              <Clock size={16} className="text-blue-400" />
+              <Clock size={16} className="text-teal-400" />
               <h2 className="text-xs font-bold uppercase tracking-wider text-heading">
                 Operational Logs
               </h2>
@@ -999,8 +999,8 @@ export default function ClientDashboard() {
                   >
                     {/* Glowing circular timeline dot */}
                     <span className="absolute -left-1.5 top-1 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400/50 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500 border border-slate-950"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400/50 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500 border border-slate-950"></span>
                     </span>
 
                     <h5 className="text-xs font-bold text-heading/90">

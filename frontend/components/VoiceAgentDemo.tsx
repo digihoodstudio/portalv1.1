@@ -213,12 +213,12 @@ export default function VoiceAgentDemo() {
             {messages.map((msg, i) => (
               <div key={i} className={`flex items-start gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  msg.role === "assistant" ? "bg-gold/20 border border-gold/30" : "bg-blue-500/20 border border-blue-500/30"
+                  msg.role === "assistant" ? "bg-gold/20 border border-gold/30" : "bg-teal-500/20 border border-teal-500/30"
                 }`}>
                   {msg.role === "assistant" ? (
                     <Sparkles size={12} className="text-gold" />
                   ) : (
-                    <User size={12} className="text-blue-400" />
+                    <User size={12} className="text-teal-400" />
                   )}
                 </div>
                 <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
