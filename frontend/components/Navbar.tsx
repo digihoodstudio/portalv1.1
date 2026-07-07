@@ -243,10 +243,10 @@ export default function Navbar() {
                   {mounted && theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
                 </button>
                 <Link
-                  href="/login"
+                  href={pathname === '/login' ? '/' : '/login'}
                   className="rounded-lg bg-gold px-4 py-2 text-sm font-medium text-background transition-all duration-300 hover:brightness-110"
                 >
-                  Portal Login
+                  {pathname === '/login' ? 'Back to Home' : 'Portal Login'}
                 </Link>
               </>
             )}
