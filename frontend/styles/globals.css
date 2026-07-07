@@ -201,10 +201,10 @@ main {
 
 /* ── 24/7 thread draw animation ── */
 @keyframes write247 {
-  0%   { stroke-dashoffset: 340; }
+  0%   { stroke-dashoffset: 420; }
   40%  { stroke-dashoffset: 0; }
   70%  { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 340; }
+  100% { stroke-dashoffset: 420; }
 }
 
 .animate-write247 {
