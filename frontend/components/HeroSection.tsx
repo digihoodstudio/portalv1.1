@@ -22,22 +22,29 @@ export default function HeroSection() {
           className="space-y-6"
         >
           <div className="flex flex-col items-center gap-10 md:gap-14">
-            <svg
-              viewBox="0 0 120 60"
-              className="h-20 w-40 text-white/50 md:h-28 md:w-56"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M30 30 C30 12,54 12,60 30 C66 48,90 48,90 30 C90 12,66 12,60 30 C54 48,30 48,30 30Z"
-                className="animate-infinity-draw"
-                strokeDasharray="140"
-                strokeDashoffset="140"
-              />
-            </svg>
+            <div className="relative flex items-center justify-center w-40 h-40 md:w-56 md:h-56 animate-spin-slow">
+              {/* Orbit ring */}
+              <div className="absolute inset-0 rounded-full border border-white/15" />
+              <div className="absolute inset-4 rounded-full border border-dashed border-white/8" />
+
+              {/* Center dot */}
+              <div className="relative z-10 w-2.5 h-2.5 rounded-full bg-gold/60 shadow-[0_0_12px_rgba(180,144,98,0.3)]" />
+
+              {/* Phone - top */}
+              <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-background border border-white/10 shadow-lg z-20">
+                <PhoneCall size={16} className="text-gold md:w-5 md:h-5" />
+              </div>
+
+              {/* Refresh - bottom-right */}
+              <div className="absolute left-[82%] top-[82%] -translate-x-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-background border border-white/10 shadow-lg z-20">
+                <RefreshCw size={16} className="text-gold md:w-5 md:h-5" />
+              </div>
+
+              {/* Chart - bottom-left */}
+              <div className="absolute left-[18%] top-[82%] -translate-x-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-background border border-white/10 shadow-lg z-20">
+                <BarChart3 size={16} className="text-gold md:w-5 md:h-5" />
+              </div>
+            </div>
             <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-heading sm:text-5xl md:text-6xl lg:text-7xl">
               Your AI Workforce{' '}
               <span className="text-gold">Never Sleeps.</span>

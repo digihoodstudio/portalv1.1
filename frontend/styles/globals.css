@@ -199,13 +199,12 @@ main {
   50% { opacity: 0.6; filter: blur(80px); }
 }
 
-/* ── Infinity draw animation ── */
-@keyframes infinityDraw {
-  0%   { stroke-dashoffset: 140; }
-  50%  { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 140; }
+/* ── Slow spin animation ── */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
-.animate-infinity-draw {
-  animation: infinityDraw 3s ease-in-out infinite;
+.animate-spin-slow {
+  animation: spinSlow 8s linear infinite;
 }
