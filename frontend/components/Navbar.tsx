@@ -174,43 +174,14 @@ export default function Navbar() {
               </span>
             </Link>
 
-            {/* Mobile infinity symbol + menu toggle */}
-            <div className="flex items-center gap-2 md:hidden">
-              {/* Infinity symbol - "Your AI Workforce Never Sleeps" */}
-              <svg
-                viewBox="0 0 40 20"
-                className="h-5 w-10 text-gold/30"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                aria-hidden="true"
-              >
-                <defs>
-                  <linearGradient id="infinity-grad" x1="0" x2="1" y1="0" y2="0">
-                    <stop offset="0%" stopColor="currentColor" stopOpacity="0.1" />
-                    <stop offset="50%" stopColor="currentColor" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="currentColor" stopOpacity="0.1" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M10 10 C10 4, 18 4, 20 10 C22 16, 30 16, 30 10 C30 4, 22 4, 20 10 C18 16, 10 16, 10 10Z"
-                  fill="none"
-                  stroke="url(#infinity-grad)"
-                  className="animate-infinity-draw"
-                  strokeDasharray="60"
-                  strokeDashoffset="60"
-                />
-              </svg>
-              <button
-                id="mobile-menu-toggle"
-                onClick={() => setMobileOpen((v) => !v)}
-                className="inline-flex items-center rounded-lg p-1.5 text-foreground/40 transition hover:text-foreground"
-                aria-label="Toggle mobile menu"
-              >
-                {mobileOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-              </button>
-            </div>
+            <button
+              id="mobile-menu-toggle"
+              onClick={() => setMobileOpen((v) => !v)}
+              className="inline-flex items-center rounded-lg p-1.5 text-foreground/40 transition hover:text-foreground md:hidden"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </button>
           </div>
 
           <nav className="hidden items-center gap-8 md:flex">
