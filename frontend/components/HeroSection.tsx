@@ -23,20 +23,19 @@ export default function HeroSection() {
         >
           <div className="flex flex-col items-center gap-10 md:gap-14">
             <svg
-              viewBox="0 0 135 55"
-              className="h-20 w-56 text-white/80 md:h-28 md:w-72"
+              viewBox="0 0 120 60"
+              className="h-20 w-40 text-white/50 md:h-28 md:w-56"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
-              strokeLinejoin="round"
               aria-hidden="true"
             >
               <path
-                d="M8 12 L35 12 L35 38 L12 38 L12 26 L32 26 L42 44 L46 12 L64 44 L54 44 L68 12 L80 44 L84 12 L118 12 L96 44"
-                className="animate-write247"
-                strokeDasharray="420"
-                strokeDashoffset="420"
+                d="M30 30 C30 12,54 12,60 30 C66 48,90 48,90 30 C90 12,66 12,60 30 C54 48,30 48,30 30Z"
+                className="animate-infinity-draw"
+                strokeDasharray="140"
+                strokeDashoffset="140"
               />
             </svg>
             <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-heading sm:text-5xl md:text-6xl lg:text-7xl">

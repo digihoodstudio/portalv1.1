@@ -199,14 +199,14 @@ main {
   50% { opacity: 0.6; filter: blur(80px); }
 }
 
-/* ── 24/7 thread draw animation ── */
-@keyframes write247 {
-  0%   { stroke-dashoffset: 420; }
-  40%  { stroke-dashoffset: 0; }
-  70%  { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 420; }
+/* ── Infinity draw animation ── */
+@keyframes infinityDraw {
+  0%   { stroke-dashoffset: 140; }
+  45%  { stroke-dashoffset: 0; }
+  75%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 140; }
 }
 
-.animate-write247 {
-  animation: write247 3s ease-in-out infinite;
+.animate-infinity-draw {
+  animation: infinityDraw 3s ease-in-out infinite;
 }
