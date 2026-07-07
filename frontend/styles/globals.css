@@ -199,12 +199,12 @@ main {
   50% { opacity: 0.6; filter: blur(80px); }
 }
 
-/* ── 24/7 write animation ── */
+/* ── 24/7 thread draw animation ── */
 @keyframes write247 {
-  0% { clip-path: inset(0 100% 0 0); }
-  35% { clip-path: inset(0 0% 0 0); }
-  70% { clip-path: inset(0 0% 0 0); }
-  100% { clip-path: inset(0 100% 0 0); }
+  0%   { stroke-dashoffset: 320; }
+  40%  { stroke-dashoffset: 0; }
+  70%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 320; }
 }
 
 .animate-write247 {
