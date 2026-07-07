@@ -114,7 +114,7 @@ export default function HeroSection() {
           </div>
 
           {/* Waveform */}
-          <div className="mb-4 rounded-2xl border border-white/[0.06] dark:bg-[#040A1E] bg-surface-elevated px-4 py-3">
+          <div className="mb-4 rounded-2xl border border-white/[0.06] dark:bg-[#1E1E1E] bg-surface-elevated px-4 py-3">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-[10px] uppercase tracking-[0.15em] text-heading/40">Voice Agent — Live</p>
               <div className="flex items-center gap-1 text-[10px] text-gold">

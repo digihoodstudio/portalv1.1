@@ -22,17 +22,17 @@
 
 .dark {
   color-scheme: dark;
-  --color-background: 10 12 24;
+  --color-background: 18 18 18;
   --color-foreground: 197 191 182;
   --color-heading: 255 255 255;
   --color-white: 255 255 255;
   --color-gold: 209 201 188;
   --color-gold-dim: 154 139 122;
-  --color-surface: 17 20 45;
-  --color-surface-elevated: 24 27 56;
+  --color-surface: 30 30 30;
+  --color-surface-elevated: 42 42 42;
   --glass-rgb: 255 255 255;
   --gold-rgb: 207 199 186;
-  --gradient-bg: radial-gradient(circle at top, rgba(154,139,122,0.16), transparent 40%), linear-gradient(180deg, #0A0C18 0%, #0E1126 100%);
+  --gradient-bg: radial-gradient(circle at top, rgba(154,139,122,0.12), transparent 40%), linear-gradient(180deg, #121212 0%, #1A1A1A 100%);
 }
 
 h1, h2, h3, h4, h5, h6, .font-display {

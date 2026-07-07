@@ -225,7 +225,7 @@ export default function AssistantPanel() {
         </div>
 
         {/* ── Right: Voice AI — Phone UI ── */}
-        <div className="flex flex-col items-center justify-center p-4 md:p-6 dark:bg-[#030816]/40 bg-surface-elevated min-h-[320px] md:min-h-[520px]">
+        <div className="flex flex-col items-center justify-center p-4 md:p-6 dark:bg-[#1E1E1E]/40 bg-surface-elevated min-h-[320px] md:min-h-[520px]">
           {/* Phone frame */}
           <div className="relative w-full max-w-[240px] aspect-[9/19] rounded-[32px] border-2 border-white/15 bg-black shadow-2xl overflow-hidden">
             {/* Notch */}
