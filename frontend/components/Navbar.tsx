@@ -145,7 +145,7 @@ export default function Navbar() {
         className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-background/70 backdrop-blur-2xl"
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-12">
-          <div className="flex items-center gap-0">
+          <div className="relative flex items-center gap-0">
             <Link
               href="/"
               onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -262,7 +262,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="fixed left-3 right-3 top-[73px] z-40 rounded-xl border border-white/10 bg-background/98 backdrop-blur-2xl shadow-lg md:hidden overflow-hidden"
+            className="absolute left-0 top-full mt-2 w-56 z-40 rounded-xl border border-white/10 bg-background/98 backdrop-blur-2xl shadow-lg md:hidden overflow-hidden"
           >
             <nav className="flex flex-col gap-0.5 p-2">
               {allNavItems.map((item) => (
