@@ -22,11 +22,11 @@ export async function sendLeadNotification(lead: {
   const html = `
     <h2>New Lead Submission</h2>
     <table style="border-collapse:collapse;width:100%;max-width:500px;">
-      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">${lead.name}</td></tr>
-      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Email</td><td style="padding:8px;border:1px solid #ddd;">${lead.email}</td></tr>
-      ${lead.phone ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Phone</td><td style="padding:8px;border:1px solid #ddd;">${lead.phone}</td></tr>` : ''}
-      ${lead.business ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Business</td><td style="padding:8px;border:1px solid #ddd;">${lead.business}</td></tr>` : ''}
-      <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Source</td><td style="padding:8px;border:1px solid #ddd;">${lead.source || 'Web Form'}</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ffffff;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ffffff;">${lead.name}</td></tr>
+      <tr><td style="padding:8px;border:1px solid #ffffff;font-weight:bold;">Email</td><td style="padding:8px;border:1px solid #ffffff;">${lead.email}</td></tr>
+      ${lead.phone ? `<tr><td style="padding:8px;border:1px solid #ffffff;font-weight:bold;">Phone</td><td style="padding:8px;border:1px solid #ffffff;">${lead.phone}</td></tr>` : ''}
+      ${lead.business ? `<tr><td style="padding:8px;border:1px solid #ffffff;font-weight:bold;">Business</td><td style="padding:8px;border:1px solid #ffffff;">${lead.business}</td></tr>` : ''}
+      <tr><td style="padding:8px;border:1px solid #ffffff;font-weight:bold;">Source</td><td style="padding:8px;border:1px solid #ffffff;">${lead.source || 'Web Form'}</td></tr>
     </table>
   `;
 

@@ -212,8 +212,8 @@ export default function Navbar() {
             />
             <span className="hidden sm:inline-flex flex-col leading-tight">
               <span className="text-[0.5em] text-white tracking-[0.2em] uppercase">Portal by</span>
-              <span className="font-monument tracking-[0.14em] text-gold">
-                DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
+              <span className="font-monument tracking-[0.14em] text-white">
+                DIGIHOOD<span className="text-[0.6em] text-white/60 ml-1">STUDIO</span>
               </span>
             </span>
           </Link>

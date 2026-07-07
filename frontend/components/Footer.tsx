@@ -22,8 +22,8 @@ export default function Footer() {
         <div>
           <div className="flex flex-col leading-tight">
             <span className="text-[0.5em] text-white tracking-[0.2em] uppercase">Portal by</span>
-            <p className="font-monument text-lg tracking-[0.14em] text-gold">
-              DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
+            <p className="font-monument text-lg tracking-[0.14em] text-white">
+              DIGIHOOD<span className="text-[0.6em] text-white/60 ml-1">STUDIO</span>
             </p>
           </div>
           <p className="mt-3 max-w-sm text-foreground/70 leading-relaxed">
