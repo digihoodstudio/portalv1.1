@@ -24,24 +24,17 @@ export default function HeroSection() {
           <div className="relative inline-block">
             <svg
               viewBox="0 0 120 60"
-              className="absolute inset-x-0 -top-12 mx-auto h-16 w-32 text-gold/10 md:-top-16 md:h-20 md:w-40"
+              className="absolute inset-x-0 -top-20 mx-auto h-28 w-56 text-white/60 md:-top-28 md:h-36 md:w-72"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="1.2"
               strokeLinecap="round"
               aria-hidden="true"
             >
-              <defs>
-                <linearGradient id="infinity-hero" x1="0" x2="1" y1="0" y2="0">
-                  <stop offset="0%" stopColor="currentColor" stopOpacity="0.05" />
-                  <stop offset="50%" stopColor="currentColor" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="currentColor" stopOpacity="0.05" />
-                </linearGradient>
-              </defs>
               <path
                 d="M30 30 C30 12, 54 12, 60 30 C66 48, 90 48, 90 30 C90 12, 66 12, 60 30 C54 48, 30 48, 30 30Z"
                 fill="none"
-                stroke="url(#infinity-hero)"
+                stroke="currentColor"
                 className="animate-infinity-draw"
                 strokeDasharray="120"
                 strokeDashoffset="120"
