@@ -13,7 +13,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="home" className="relative">
+    <section id="home" className="relative pt-24 md:pt-32 lg:pt-40">
       <div className="mx-auto max-w-3xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -21,10 +21,10 @@ export default function HeroSection() {
           transition={{ duration: 0.7 }}
           className="space-y-6"
         >
-          <div className="relative inline-block">
+          <div className="flex flex-col items-center gap-10 md:gap-14">
             <svg
               viewBox="0 0 120 60"
-              className="absolute inset-x-0 -top-20 mx-auto h-28 w-56 text-white/60 md:-top-28 md:h-36 md:w-72"
+              className="h-28 w-56 text-white/50 md:h-36 md:w-72"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.2"
