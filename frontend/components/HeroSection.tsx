@@ -13,7 +13,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="home" className="relative pt-24 md:pt-32 lg:pt-40">
+    <section id="home" className="relative pt-14 md:pt-20">
       <div className="mx-auto max-w-3xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
