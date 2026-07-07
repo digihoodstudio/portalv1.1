@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -20,7 +20,6 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
 
-  // ── Hide navbar on dashboard/superadmin routes ──
   if (
     pathname?.startsWith("/dashboard") ||
     pathname?.startsWith("/superadmin")
@@ -28,7 +27,6 @@ export default function Navbar() {
     return null;
   }
 
-  // ── Auth state (Supabase + localStorage) ──
   const [session, setSession] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -38,7 +36,6 @@ export default function Navbar() {
 
   useEffect(() => { setMounted(true); }, []);
 
-  // ── Supabase session subscription ──
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -50,35 +47,6 @@ export default function Navbar() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // ── Glow tracking ──
-  const headerRef = useRef<HTMLElement>(null);
-  const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
-  const [glowVisible, setGlowVisible] = useState(false);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    const header = headerRef.current;
-    if (!header) return;
-    const rect = header.getBoundingClientRect();
-    setGlowPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    setGlowVisible(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setGlowVisible(false);
-  }, []);
-
-  useEffect(() => {
-    const header = headerRef.current;
-    if (!header) return;
-    header.addEventListener("mousemove", handleMouseMove);
-    header.addEventListener("mouseleave", handleMouseLeave);
-    return () => {
-      header.removeEventListener("mousemove", handleMouseMove);
-      header.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, [handleMouseMove, handleMouseLeave]);
-
-  // ── Auth check (localStorage token OR Supabase session) ──
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token");
@@ -104,12 +72,10 @@ export default function Navbar() {
     return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Smooth scroll handler for navigation clicks
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
@@ -136,7 +102,6 @@ export default function Navbar() {
     }
   };
 
-  // Determine combined login state (legacy OR Google session)
   const effectiveLoggedIn = isLoggedIn || !!session;
 
   const handleLogout = async () => {
@@ -174,25 +139,15 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        ref={headerRef}
-        initial={{ opacity: 0, y: -30 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-background/80 backdrop-blur-2xl overflow-hidden"
+        transition={{ duration: 0.5 }}
+        className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-background/90 backdrop-blur-xl"
       >
-        {/* ── Mouse-tracking glow ── */}
-        <div
-          className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-300"
-          style={{
-            opacity: glowVisible ? 1 : 0,
-            background: `radial-gradient(600px circle at ${glowPos.x}px ${glowPos.y}px, rgba(207,199,186,0.07), transparent 40%)`,
-          }}
-        />
-
-        <div className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-12">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-12">
           <Link
             href="/"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               if (
                 typeof window !== "undefined" &&
                 window.location.pathname === "/"
@@ -206,33 +161,31 @@ export default function Navbar() {
             <Image
               src="/digilogo.png"
               alt="Digihood Studio"
-              width={36}
-              height={36}
+              width={32}
+              height={32}
               className="rounded-full object-cover"
             />
             <span className="hidden sm:inline-flex flex-col leading-tight">
-              <span className="text-[0.5em] text-white tracking-[0.2em] uppercase">Portal by</span>
-              <span className="font-monument tracking-[0.14em] text-white">
-                DIGIHOOD<span className="text-[0.6em] text-white/60 ml-1">STUDIO</span>
+              <span className="text-[10px] text-foreground/40 tracking-[0.2em] uppercase">Portal by</span>
+              <span className="font-monument text-sm tracking-[0.14em] text-heading">
+                DIGIHOOD<span className="text-[0.6em] text-foreground/40 ml-1">STUDIO</span>
               </span>
             </span>
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden items-center gap-8 md:flex">
             {allNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className="text-sm text-foreground transition hover:text-gold"
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(e, item.href)}
+                className="text-sm text-foreground/60 transition-colors hover:text-foreground"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
 
-          {/* Desktop CTA buttons */}
           <div className="hidden md:flex items-center gap-3">
             {effectiveLoggedIn ? (
               <>
@@ -242,13 +195,13 @@ export default function Navbar() {
                     alt={session.user.user_metadata.full_name ?? "User"}
                     width={32}
                     height={32}
-                    className="rounded-full border border-gold/30"
+                    className="rounded-full border border-gold/20"
                   />
                 )}
                 {dashboardLink && (
                   <Link
                     href={dashboardLink.href}
-                    className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-4 py-2.5 text-sm text-gold transition-all duration-300 hover:bg-gold/10 hover:shadow-[0_0_18px_rgba(207,199,186,0.2)] hover:scale-[1.03]"
+                    className="inline-flex items-center gap-2 rounded-lg border border-gold/20 bg-gold/[0.06] px-4 py-2 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/[0.1]"
                   >
                     <LayoutDashboard size={14} />
                     {dashboardLink.label}
@@ -256,24 +209,23 @@ export default function Navbar() {
                 )}
                 <button
                   onClick={handleLogout}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-foreground transition-all duration-300 hover:bg-white/10 hover:shadow-[0_0_16px_rgba(255,255,255,0.06)] hover:scale-[1.03]"
+                  className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-foreground/60 transition-all duration-300 hover:bg-white/[0.08] hover:text-foreground"
                 >
                   <LogOut size={14} />
-                  Logout
                 </button>
               </>
             ) : (
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  className="rounded-full border border-white/10 bg-white/5 p-2.5 text-foreground transition hover:bg-white/10 hover:scale-[1.03]"
+                  className="rounded-lg border border-white/10 bg-white/[0.04] p-2 text-foreground/60 transition hover:bg-white/[0.08] hover:text-foreground"
                   aria-label="Toggle theme"
                 >
                   {mounted && theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
                 </button>
                 <Link
                   href="/login"
-                  className="rounded-full border border-gold/20 bg-gold/5 px-5 py-2.5 text-sm font-medium text-gold transition-all duration-300 hover:bg-gold/10 hover:shadow-[0_0_20px_rgba(207,199,186,0.2)] hover:scale-[1.03]"
+                  className="rounded-lg bg-gold px-5 py-2 text-sm font-medium text-background transition-all duration-300 hover:brightness-110"
                 >
                   Portal Login
                 </Link>
@@ -281,11 +233,10 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile hamburger */}
           <button
             id="mobile-menu-toggle"
             onClick={() => setMobileOpen((v) => !v)}
-            className="inline-flex items-center rounded-full bg-gold/10 px-4 py-3 text-sm font-medium text-gold shadow-sm transition hover:bg-gold/20 md:hidden"
+            className="inline-flex items-center rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-foreground/60 transition hover:bg-white/[0.08] md:hidden"
             aria-label="Toggle mobile menu"
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -293,14 +244,13 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile Drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ opacity: 0, y: -16 }}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
+            exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-x-0 top-[73px] z-40 border-b border-white/10 bg-background/98 backdrop-blur-xl md:hidden"
           >
@@ -309,11 +259,11 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={(e) => {
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                     setMobileOpen(false);
                     handleNavClick(e, item.href);
                   }}
-                  className="rounded-2xl px-4 py-3 text-sm text-foreground transition hover:bg-white/5 hover:text-gold"
+                  className="rounded-lg px-4 py-3 text-sm text-foreground/60 transition hover:bg-white/[0.04] hover:text-foreground"
                 >
                   {item.label}
                 </Link>
@@ -322,7 +272,7 @@ export default function Navbar() {
                 {effectiveLoggedIn ? (
                   <>
                     {session?.user && (
-                      <div className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3">
+                      <div className="flex items-center gap-3 rounded-lg bg-white/[0.04] px-4 py-3">
                         {session.user.user_metadata?.avatar_url && (
                           <Image
                             src={session.user.user_metadata.avatar_url}
@@ -346,7 +296,7 @@ export default function Navbar() {
                       <Link
                         href={dashboardLink.href}
                         onClick={() => setMobileOpen(false)}
-                        className="flex w-full items-center justify-center gap-2 rounded-full border border-gold/20 bg-gold/5 px-5 py-3 text-sm font-semibold text-gold transition hover:bg-gold/10"
+                        className="flex w-full items-center justify-center gap-2 rounded-lg border border-gold/20 bg-gold/[0.06] px-5 py-3 text-sm font-medium text-gold transition hover:bg-gold/[0.1]"
                       >
                         <LayoutDashboard size={14} />
                         {dashboardLink.label}
@@ -354,7 +304,7 @@ export default function Navbar() {
                     )}
                     <button
                       onClick={handleLogout}
-                      className="w-full rounded-full border border-red-500/20 bg-red-950/10 px-5 py-3 text-sm text-red-300 transition hover:bg-red-950/20"
+                      className="w-full rounded-lg border border-red-500/20 bg-red-950/10 px-5 py-3 text-sm text-red-300 transition hover:bg-red-950/20"
                     >
                       Logout
                     </button>
@@ -372,7 +322,7 @@ export default function Navbar() {
                           },
                         });
                       }}
-                      className="flex w-full items-center justify-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-foreground transition hover:bg-white/10"
+                      className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-white/10 bg-white/[0.04] px-5 py-3 text-sm text-foreground/60 transition hover:bg-white/[0.08]"
                     >
                       <svg
                         viewBox="0 0 24 24"
@@ -401,7 +351,7 @@ export default function Navbar() {
                     <Link
                       href="/login"
                       onClick={() => setMobileOpen(false)}
-                      className="block w-full rounded-full bg-gold px-5 py-3 text-center text-sm font-semibold text-background transition hover:brightness-95"
+                      className="block w-full rounded-lg bg-gold px-5 py-3 text-center text-sm font-medium text-background transition hover:brightness-95"
                     >
                       Portal Login
                     </Link>

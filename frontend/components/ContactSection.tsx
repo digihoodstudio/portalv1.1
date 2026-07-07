@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   MessageCircle,
   Mail,
-  Facebook,
   User,
   Phone,
   Briefcase,
@@ -76,44 +75,33 @@ export default function ContactSection() {
       name: "WhatsApp",
       value: "+977 9712039972",
       url: "https://wa.me/message/FKV26Z3XPSIOL1",
-      color:
-        "border-emerald-500/20 hover:border-emerald-500/40 bg-emerald-950/10 text-emerald-400",
-      icon: <MessageCircle className="h-6 w-6" />,
+      icon: MessageCircle,
     },
     {
       name: "Email",
       value: "info@digihoodstudio.com",
       url: "mailto:info@digihoodstudio.com",
-      color:
-        "border-rose-500/20 hover:border-rose-500/40 bg-rose-950/10 text-rose-400",
-      icon: <Mail className="h-6 w-6" />,
+      icon: Mail,
     },
   ];
 
   return (
-    <section
-      id="contact"
-      className="scroll-mt-28 mt-24 rounded-[24px] border border-white/[0.06] bg-surface overflow-hidden"
-    >
-      {/* Header */}
-      <div className="border-b border-white/10 p-6 md:p-10">
-        <p className="text-sm uppercase tracking-[0.3em] text-gold">
-          Contact Sales
-        </p>
-        <h2 className="mt-2 text-xl font-semibold text-heading md:text-3xl">
-          Let's scale your operations.
+    <section id="contact" className="scroll-mt-28 space-y-16">
+      <div className="space-y-4 text-center">
+        <p className="text-sm font-medium text-gold">Contact</p>
+        <h2 className="text-3xl font-semibold text-heading md:text-4xl lg:text-5xl">
+          Let&apos;s scale your operations.
         </h2>
-        <p className="mt-1.5 text-sm text-foreground/70">
-          Get in touch with our AI automation architects to design a custom
-          voice or chat agent flow.
+        <p className="mx-auto max-w-xl text-base leading-relaxed text-foreground/60">
+          Get in touch with our team to design a custom voice or chat agent flow 
+          for your business.
         </p>
       </div>
 
-      <div className="grid gap-0 lg:grid-cols-[1.2fr_0.8fr] border-t border-white/0">
-        {/* Left Column: Form */}
-        <div className="p-6 md:p-10 border-r border-white/10">
+      <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
+        <div className="rounded-2xl border border-white/[0.06] bg-surface p-8">
           <h3 className="text-lg font-semibold text-heading mb-6">
-            Request Consultation
+            Request a Consultation
           </h3>
 
           <AnimatePresence mode="wait">
@@ -124,19 +112,18 @@ export default function ContactSection() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center py-10 text-center space-y-4"
               >
-                <div className="rounded-full bg-green-500/10 p-4">
-                  <CheckCircle2 className="h-10 w-10 text-green-400 animate-bounce" />
+                <div className="rounded-full bg-emerald-500/10 p-4">
+                  <CheckCircle2 className="h-10 w-10 text-emerald-400" />
                 </div>
-                <h4 className="text-lg font-semibold text-heading font-medium">
-                  Request Submitted Successfully
+                <h4 className="text-lg font-semibold text-heading">
+                  Request Submitted
                 </h4>
-                <p className="text-sm text-foreground/70 max-w-sm">
-                  Our team has registered your details. Check your client
-                  dashboard live to review this lead profile!
+                <p className="text-sm text-foreground/60 max-w-sm">
+                  Our team has received your details and will follow up shortly.
                 </p>
                 <button
                   onClick={() => setStatus("")}
-                  className="rounded-full border border-white/10 bg-white/5 px-6 py-2 text-xs text-foreground transition hover:bg-white/10"
+                  className="rounded-xl border border-white/10 bg-white/[0.04] px-6 py-2 text-sm text-foreground/60 transition hover:bg-white/[0.08] hover:text-foreground"
                 >
                   Submit Another
                 </button>
@@ -148,19 +135,19 @@ export default function ContactSection() {
                 autoComplete="off"
               >
                 {status === "error" && (
-                  <div className="rounded-xl border border-red-500/20 bg-red-950/20 p-4 text-xs text-red-300">
-                    Failed to submit. Please verify the backend server is active.
+                  <div className="rounded-xl border border-red-500/20 bg-red-950/20 p-4 text-sm text-red-300">
+                    Failed to submit. Please try again.
                   </div>
                 )}
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
                       Full Name
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
-                      <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
-                        <User size={16} />
+                    <div className="relative rounded-xl border border-white/10 bg-white/[0.03] focus-within:border-gold/40 transition">
+                      <span className="absolute inset-y-0 left-3.5 flex items-center text-foreground/30">
+                        <User size={15} />
                       </span>
                       <input
                         required
@@ -168,19 +155,17 @@ export default function ContactSection() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your full name"
-                        autoComplete="new-name"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
+                        className="w-full rounded-xl bg-transparent py-3 pl-10 pr-4 text-sm text-heading outline-none placeholder:text-foreground/20"
                       />
                     </div>
                   </div>
-
-                  <div>
-                    <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
                       Email Address
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
-                      <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
-                        <Mail size={16} />
+                    <div className="relative rounded-xl border border-white/10 bg-white/[0.03] focus-within:border-gold/40 transition">
+                      <span className="absolute inset-y-0 left-3.5 flex items-center text-foreground/30">
+                        <Mail size={15} />
                       </span>
                       <input
                         required
@@ -188,21 +173,20 @@ export default function ContactSection() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email address"
-                        autoComplete="new-email"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
+                        className="w-full rounded-xl bg-transparent py-3 pl-10 pr-4 text-sm text-heading outline-none placeholder:text-foreground/20"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
                       Phone Number
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
-                      <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
-                        <Phone size={16} />
+                    <div className="relative rounded-xl border border-white/10 bg-white/[0.03] focus-within:border-gold/40 transition">
+                      <span className="absolute inset-y-0 left-3.5 flex items-center text-foreground/30">
+                        <Phone size={15} />
                       </span>
                       <input
                         required
@@ -210,19 +194,17 @@ export default function ContactSection() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="Enter your phone number"
-                        autoComplete="new-phone"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
+                        className="w-full rounded-xl bg-transparent py-3 pl-10 pr-4 text-sm text-heading outline-none placeholder:text-foreground/20"
                       />
                     </div>
                   </div>
-
-                  <div>
-                    <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
                       Business Name
                     </label>
-                    <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
-                      <span className="absolute inset-y-0 left-4 flex items-center text-slate-400">
-                        <Briefcase size={16} />
+                    <div className="relative rounded-xl border border-white/10 bg-white/[0.03] focus-within:border-gold/40 transition">
+                      <span className="absolute inset-y-0 left-3.5 flex items-center text-foreground/30">
+                        <Briefcase size={15} />
                       </span>
                       <input
                         required
@@ -230,24 +212,23 @@ export default function ContactSection() {
                         value={business}
                         onChange={(e) => setBusiness(e.target.value)}
                         placeholder="Enter your business name"
-                        autoComplete="new-business"
-                        className="w-full rounded-2xl bg-transparent py-3 pl-11 pr-4 text-sm text-heading outline-none placeholder:text-heading/20"
+                        className="w-full rounded-xl bg-transparent py-3 pl-10 pr-4 text-sm text-heading outline-none placeholder:text-foreground/20"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div>
-                  <label className="text-xxs font-bold text-slate-400 tracking-wider uppercase">
-                    Message / Focus
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
+                    Message
                   </label>
-                  <div className="relative mt-1.5 rounded-2xl bg-surface border border-white/10 focus-within:border-gold/50 transition">
+                  <div className="relative rounded-xl border border-white/10 bg-white/[0.03] focus-within:border-gold/40 transition">
                     <textarea
                       rows={3}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Tell us about your automation needs..."
-                      className="w-full rounded-2xl bg-transparent p-4 text-sm text-heading outline-none placeholder:text-heading/20 resize-none"
+                      className="w-full rounded-xl bg-transparent p-4 text-sm text-heading outline-none placeholder:text-foreground/20 resize-none"
                     />
                   </div>
                 </div>
@@ -255,7 +236,7 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gold py-3.5 text-sm font-semibold text-background transition hover:brightness-105 disabled:opacity-60"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gold py-3.5 text-sm font-medium text-background transition hover:brightness-105 disabled:opacity-60"
                 >
                   <Send size={15} />
                   <span>{loading ? "Submitting..." : "Send Request"}</span>
@@ -265,43 +246,33 @@ export default function ContactSection() {
           </AnimatePresence>
         </div>
 
-        {/* Right Column: Direct Channels */}
-        <div className="p-6 md:p-10 bg-background flex flex-col justify-center">
-          <h3 className="text-lg font-semibold text-heading mb-6">
-            Direct Channels
-          </h3>
-
-          <div className="space-y-4">
-            {channels.map((channel) => (
-              <a
-                key={channel.name}
-                href={channel.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-4 rounded-2xl border border-white/5 bg-surface p-4 transition-all duration-300 hover:border-gold/20 hover:bg-surface"
-              >
-                <div className={`rounded-xl border p-2.5 ${channel.color}`}>
-                  {channel.icon}
+        <div className="space-y-4">
+          {channels.map((channel) => (
+            <a
+              key={channel.name}
+              href={channel.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-4 rounded-2xl border border-white/[0.06] bg-surface p-6 transition-all duration-300 hover:border-white/[0.12]"
+            >
+              <div className="rounded-xl border border-white/[0.06] bg-gold/[0.06] p-3">
+                <channel.icon className="h-5 w-5 text-gold" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-heading">
+                    {channel.name}
+                  </h4>
+                  <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-medium text-emerald-400 uppercase tracking-wider">
+                    Active
+                  </span>
                 </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-semibold text-heading">
-                      {channel.name}
-                    </h4>
-                    <span className="text-[9px] uppercase tracking-wider text-gold bg-gold/5 px-2 py-0.5 rounded-full border border-gold/10">
-                      Active
-                    </span>
-                  </div>
-                  <p className="text-xs font-semibold text-heading/95">
-                    {channel.value}
-                  </p>
-                  <p className="text-xxs text-foreground/60 leading-normal">
-                    {channel.desc}
-                  </p>
-                </div>
-              </a>
-            ))}
-          </div>
+                <p className="text-sm text-foreground/60">
+                  {channel.value}
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>

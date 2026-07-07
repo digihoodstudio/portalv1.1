@@ -3,42 +3,46 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Building2, Droplet, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 const industries = [
   {
     id: 'septic',
-    name: 'Septic & Drain',
+    name: 'Septic and Drain',
     description: 'High-frequency service calls. We intercept missed quotes, emergency drains, and septic pump-outs, locking in bookings immediately.',
-    icon: <Droplet className="h-6 w-6 text-gold" />,
-    metrics: ['Average Call Recovery: 91.4%', 'CRM: ServiceTitan Sync Ready'],
-    badge: 'Septic Script Ready'
+    icon: Droplet,
+    metrics: ['91.4% average call recovery', 'ServiceTitan sync ready'],
+    tag: 'Septic Script Ready',
   },
   {
     id: 'industrial',
     name: 'Industrial Cleaning',
-    description: 'Deep contract relationships. We reactivate legacy commercial accounts, hydro-blasting contracts, and tank cleanout lead lists.',
-    icon: <Building2 className="h-6 w-6 text-gold" />,
-    metrics: ['Average Lead Reactivation: 12.3%', 'Outreach: Voice AI + SMS Multi-Touch'],
-    badge: 'Enterprise Niche Template'
+    description: 'Deep contract relationships. Reactivate legacy commercial accounts, hydro-blasting contracts, and tank cleanout lead lists.',
+    icon: Building2,
+    metrics: ['12.3% average lead reactivation', 'Voice AI and SMS multi-touch'],
+    tag: 'Enterprise Template',
   },
   {
     id: 'laundry',
     name: 'Commercial Laundry',
-    description: 'Route density and client retention. We revive cold hospitality, healthcare, and industrial laundry accounts with dedicated campaigns.',
-    icon: <Shield className="h-6 w-6 text-gold" />,
-    metrics: ['Reactivation Match: 8.7%', 'Campaign Duration: 48h Live Turnaround'],
-    badge: 'Commercial Niche Template'
-  }
+    description: 'Route density and client retention. Revive cold hospitality, healthcare, and industrial laundry accounts with dedicated campaigns.',
+    icon: Shield,
+    metrics: ['8.7% reactivation match rate', '48-hour campaign turnaround'],
+    tag: 'Commercial Template',
+  },
 ];
 
 export default function IndustriesSection() {
   return (
-    <section id="services" className="scroll-mt-28 space-y-12">
+    <section id="industries" className="scroll-mt-28 space-y-16">
       <div className="space-y-4 text-center">
-        <p className="text-sm uppercase tracking-[0.3em] text-gold font-bold">Niches We Serve</p>
-        <h2 className="text-2xl font-semibold text-heading md:text-5xl">Three Niche Doors. Stated Revenue Focus.</h2>
-        <p className="mx-auto max-w-2xl text-sm leading-relaxed text-foreground/80">
-          We do not build generic chatbots. We deliver pre-configured industry setups tuned specifically for operators in Septic, Industrial, and Laundry brackets.
+        <p className="text-sm font-medium text-gold">Industries</p>
+        <h2 className="text-3xl font-semibold text-heading md:text-4xl lg:text-5xl">
+          Purpose-built for your niche.
+        </h2>
+        <p className="mx-auto max-w-2xl text-base leading-relaxed text-foreground/60">
+          Pre-configured industry setups tuned specifically for operators in 
+          septic, industrial cleaning, and commercial laundry.
         </p>
       </div>
 
@@ -50,44 +54,41 @@ export default function IndustriesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: idx * 0.1 }}
-            className="flex h-full flex-col justify-between rounded-[20px] border border-white/[0.06] bg-surface p-6 md:p-8 transition duration-300 hover:border-white/[0.12]"
+            className="group relative rounded-2xl border border-white/[0.06] bg-surface p-8 transition-all duration-300 hover:border-white/[0.12]"
           >
-            <div>
-              <div className="flex justify-between items-start">
-                <div className="rounded-xl bg-gold/[0.08] p-3 mb-4">
-                  {ind.icon}
-                </div>
-                <span className="rounded-full bg-white/[0.04] border border-white/[0.06] px-3 py-1 text-[10px] text-heading/70 font-semibold uppercase tracking-wider">
-                  {ind.badge}
-                </span>
+            <div className="mb-6 flex items-center justify-between">
+              <div className="rounded-xl bg-gold/[0.08] p-3">
+                <ind.icon className="h-5 w-5 text-gold" />
               </div>
-
-              <h3 className="text-xl font-bold text-heading mt-1">
-                {ind.name}
-              </h3>
-
-              <p className="mt-4 text-xs text-foreground/80 leading-relaxed">
-                {ind.description}
-              </p>
-
-              <ul className="mt-6 space-y-2 border-t border-white/[0.06] pt-4">
-                {ind.metrics.map((m, mIdx) => (
-                  <li key={mIdx} className="flex items-center gap-2 text-[11px] text-heading/60">
-                    <span className="h-1 w-1 rounded-full bg-gold/70" />
-                    <span>{m}</span>
-                  </li>
-                ))}
-              </ul>
+              <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1 text-[10px] font-medium text-foreground/40 uppercase tracking-wider">
+                {ind.tag}
+              </span>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/[0.06]">
-              <a
-                href="#contact"
-                className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.04] px-4 py-3 text-xs font-semibold text-heading transition hover:bg-white/[0.08] hover:border-white/[0.12]"
-              >
-                Run a Live Audit <ArrowRight className="h-3 w-3" />
-              </a>
-            </div>
+            <h3 className="text-xl font-semibold text-heading">
+              {ind.name}
+            </h3>
+
+            <p className="mt-3 text-sm leading-relaxed text-foreground/60">
+              {ind.description}
+            </p>
+
+            <ul className="mt-8 space-y-3 border-t border-white/[0.06] pt-6">
+              {ind.metrics.map((m) => (
+                <li key={m} className="flex items-center gap-3 text-sm text-foreground/50">
+                  <span className="h-1 w-1 rounded-full bg-gold/60" />
+                  {m}
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="#contact"
+              className="mt-8 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-sm font-medium text-foreground/60 transition-all duration-300 hover:border-white/[0.12] hover:text-foreground"
+            >
+              Run a live audit
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </motion.article>
         ))}
       </div>

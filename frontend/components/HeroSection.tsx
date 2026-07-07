@@ -3,34 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Play, Phone, TrendingUp, Users, PhoneIncoming, LayoutDashboard } from 'lucide-react';
-
-const activityFeed = [
-  { id: 1, msg: 'AI booked appointment — Sarah M.', time: 'just now', type: 'booking' },
-  { id: 2, msg: 'Missed call recovered — +1 (555) 0134', time: '12s ago', type: 'recovery' },
-  { id: 3, msg: 'Lead reactivated — James T.', time: '38s ago', type: 'lead' },
-  { id: 4, msg: 'AI booked appointment — Chen L.', time: '1m ago', type: 'booking' },
-];
-
-const dotColors: Record<string, string> = {
-  booking: 'bg-emerald-400',
-  recovery: 'bg-teal-400',
-  lead: 'bg-gold',
-  call: 'bg-purple-400',
-  revenue: 'bg-rose-400',
-};
-
-function WaveBar({ delay }: { delay: number }) {
-  return (
-    <div
-      className="w-1 rounded-full bg-gold/70"
-      style={{
-        height: '6px',
-        animation: `wave 1.4s ease-in-out ${delay}s infinite`,
-      }}
-    />
-  );
-}
+import { Play, ArrowRight, BarChart3, PhoneCall, RefreshCw } from 'lucide-react';
 
 export default function HeroSection() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,148 +13,157 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section
-      id="home"
-      className="relative overflow-hidden rounded-[20px] border border-white/[0.06] bg-surface p-6 md:p-12"
-    >
-      <div className="grid gap-12 lg:grid-cols-[1.35fr_0.9fr] lg:items-center">
-
-        {/* Left: Hero copy */}
+    <section id="home" className="relative">
+      <div className="grid gap-16 lg:grid-cols-[1.2fr_1fr] lg:items-center">
         <div className="space-y-8">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl text-3xl font-semibold leading-tight text-heading sm:text-5xl md:text-6xl"
+            transition={{ duration: 0.7 }}
+            className="space-y-6"
           >
-            Your AI Workforce{' '}
-            <span className="text-gold">
-              Never Sleeps.
-            </span>
-          </motion.h1>
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold/20 bg-gold/[0.04] px-4 py-1.5 text-xs font-medium text-gold">
+              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+              Enterprise AI Automation Platform
+            </div>
 
-          <div className="flex flex-col gap-4 sm:flex-row">
+            <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-heading sm:text-5xl md:text-6xl lg:text-7xl">
+              Your AI Workforce{' '}
+              <span className="text-gold">Never Sleeps.</span>
+            </h1>
+
+            <p className="max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
+              AI-powered phone answering, missed call recovery, and lead reactivation for 
+              service businesses. Turn every missed opportunity into booked revenue — 24/7.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="flex flex-col gap-3 sm:flex-row"
+          >
             {isLoggedIn ? (
-              <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-7 py-3.5 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110"
+              >
                 Go to Dashboard
+                <ArrowRight className="h-4 w-4" />
               </Link>
             ) : (
-              <Link href="/contact" className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110">
-                Book Demo
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold px-7 py-3.5 text-sm font-semibold text-background transition-all duration-300 hover:brightness-110"
+              >
+                Book a Demo
+                <ArrowRight className="h-4 w-4" />
               </Link>
             )}
-            <Link href="/watch-demo" className="inline-flex items-center justify-center rounded-full border border-white/10 px-8 py-4 text-sm text-foreground transition-all duration-300 hover:border-gold/50 hover:text-gold">
-              <Play className="mr-2 h-4 w-4" />
+            <Link
+              href="/watch-demo"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-7 py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:border-gold/30 hover:text-gold"
+            >
+              <Play className="h-4 w-4" />
               Watch Demo
             </Link>
-          </div>
-        </div>
+          </motion.div>
 
-        {/* Right: Live Dashboard */}
-        <div className="relative overflow-hidden rounded-[20px] border border-white/[0.06] bg-surface p-5">
-          {/* Header */}
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-heading/50">AI Control Center</p>
-              <p className="mt-0.5 text-sm font-semibold text-heading">Live Performance Dashboard</p>
-            </div>
-            <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-950/30 px-3 py-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-              </span>
-              <span className="text-xs font-medium text-emerald-400">Live</span>
-            </div>
-          </div>
-
-          {/* Stats row */}
-          <div className="mb-4 grid grid-cols-3 gap-2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="flex flex-wrap items-center gap-6 pt-2"
+          >
             {[
-              { label: 'Active Calls', value: 18, icon: <Phone className="h-3.5 w-3.5" />, color: 'text-teal-400' },
-              { label: 'Leads Today', value: 142, icon: <Users className="h-3.5 w-3.5" />, color: 'text-gold' },
-              { label: 'Revenue', value: '24.8k', icon: <TrendingUp className="h-3.5 w-3.5" />, color: 'text-emerald-400' },
-            ].map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-white/[0.06] bg-white/[0.04] px-3 py-3 text-center">
-                <div className={`flex items-center justify-center gap-1 ${stat.color} mb-1`}>
-                  {stat.icon}
-                  <span className="text-[10px] uppercase tracking-wider font-medium">{stat.label}</span>
-                </div>
-                <p className="text-lg font-bold text-heading">
-                  {stat.value}
-                </p>
+              { icon: PhoneCall, text: '24/7 AI Answering' },
+              { icon: RefreshCw, text: 'Missed Call Recovery' },
+              { icon: BarChart3, text: 'Real-Time Dashboard' },
+            ].map((item) => (
+              <div key={item.text} className="flex items-center gap-2 text-xs text-foreground/50">
+                <item.icon className="h-3.5 w-3.5 text-gold/70" />
+                <span>{item.text}</span>
               </div>
             ))}
-          </div>
+          </motion.div>
+        </div>
 
-          {/* Waveform */}
-          <div className="mb-4 rounded-2xl border border-white/[0.06] dark:bg-[#1E1E1E] bg-surface-elevated px-4 py-3">
-            <div className="mb-2 flex items-center justify-between">
-              <p className="text-[10px] uppercase tracking-[0.15em] text-heading/40">Voice Agent — Live</p>
-              <div className="flex items-center gap-1 text-[10px] text-gold">
-                <PhoneIncoming className="h-3 w-3" />
-                <span>Answering</span>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative"
+        >
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-gold/[0.03] to-transparent p-8">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(180,144,98,0.08),transparent_60%)]" />
+            
+            <div className="relative space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <p className="text-xs font-medium text-foreground/50">Platform Status</p>
+                  <p className="text-sm font-semibold text-heading">All Systems Operational</p>
+                </div>
+                <div className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-3 py-1.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  <span className="text-xs font-medium text-emerald-400">Live</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: 'Active Calls', value: '18', change: '+12%' },
+                  { label: 'Leads Today', value: '142', change: '+8%' },
+                  { label: 'Revenue', value: 'NPR 24.8k', change: '+23%' },
+                ].map((stat) => (
+                  <div key={stat.label} className="rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-foreground/40">{stat.label}</p>
+                    <p className="mt-1 text-lg font-bold text-heading">{stat.value}</p>
+                    <p className="text-[10px] font-medium text-emerald-400">{stat.change}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-foreground/40">Recent Activity</p>
+                  <span className="text-[10px] text-gold">View all</span>
+                </div>
+                <div className="space-y-2.5">
+                  {[
+                    { msg: 'AI booked appointment — Sarah M.', time: '2m ago' },
+                    { msg: 'Missed call recovered — +1 (555) 0134', time: '12m ago' },
+                    { msg: 'Lead reactivated — James T.', time: '38m ago' },
+                  ].map((item) => (
+                    <div key={item.msg} className="flex items-center justify-between">
+                      <p className="text-xs text-foreground/60">{item.msg}</p>
+                      <span className="text-[10px] text-foreground/30">{item.time}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="flex h-8 items-end justify-between gap-0.5">
-              {Array.from({ length: 28 }).map((_, i) => (
-                <WaveBar key={i} delay={i * 0.05} />
-              ))}
-            </div>
           </div>
-
-          {/* Activity feed */}
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.04] p-3">
-            <p className="mb-2.5 text-[10px] uppercase tracking-[0.15em] text-heading/40">Activity Feed</p>
-            <div className="space-y-2">
-              {activityFeed.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-2.5"
-                >
-                  <span className={`h-1.5 w-1.5 flex-shrink-0 rounded-full ${dotColors[item.type] ?? 'bg-white/40'}`} />
-                  <p className="flex-1 text-xs text-heading/75 leading-tight truncate">{item.msg}</p>
-                  <span className="text-[10px] text-heading/30 flex-shrink-0">{item.time}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Conversion bar */}
-          <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.04] px-4 py-3">
-            <div className="mb-2 flex items-center justify-between text-[10px]">
-              <span className="uppercase tracking-wider text-heading/40">Conversion Rate</span>
-              <span className="font-semibold text-gold">87.4%</span>
-            </div>
-            <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
-              <div className="h-full w-[87.4%] rounded-full bg-gradient-to-r from-gold/60 to-gold" />
-            </div>
-            <div className="mt-2 flex justify-between text-[10px] text-heading/30">
-              <span>0%</span><span>50%</span><span>100%</span>
-            </div>
-          </div>
-        </div>
-
+        </motion.div>
       </div>
 
-      {/* Trust badges */}
-      <div className="mt-10 pt-8 border-t border-white/[0.06] flex flex-wrap items-center justify-center lg:justify-between gap-6 text-[10px] font-semibold uppercase tracking-[0.15em] text-heading/45">
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          <span>ServiceTitan Integration Ready</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          <span>Always-On 24/7 AI Answering</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          <span>Outbound Reactivation Campaigns</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-          <span>Enterprise Secure & GDPR Ready</span>
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.4 }}
+        className="mt-16 flex flex-wrap items-center justify-center gap-8 border-t border-white/[0.06] pt-8 text-[10px] font-medium uppercase tracking-[0.15em] text-foreground/40"
+      >
+        <span>ServiceTitan Integration</span>
+        <span className="h-3 w-px bg-white/[0.06]" />
+        <span>24/7 AI Answering</span>
+        <span className="h-3 w-px bg-white/[0.06]" />
+        <span>Outbound Reactivation</span>
+        <span className="h-3 w-px bg-white/[0.06]" />
+        <span>Enterprise Secure</span>
+      </motion.div>
     </section>
   );
 }

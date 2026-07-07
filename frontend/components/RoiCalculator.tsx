@@ -2,14 +2,14 @@
 
 import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 const industryParams: Record<
   string,
   { name: string; closeRate: number; jobValue: number }
 > = {
   septic: {
-    name: "Septic & Drain",
+    name: "Septic and Drain",
     closeRate: 0.85,
     jobValue: 650,
   },
@@ -44,39 +44,33 @@ export default function RoiCalculator() {
   }, [missedCalls, selectedIndustry]);
 
   return (
-    <section
-      id="roi-calculator"
-      className="scroll-mt-28 rounded-[20px] border border-white/[0.06] bg-surface p-6 md:p-12"
-    >
-      <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div className="space-y-8">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-gold font-bold">
-              ROI Calculator
-            </p>
-            <h2 className="mt-2 text-xl font-semibold text-heading md:text-4xl">
-              Calculate your lost opportunity cost.
-            </h2>
-            <p className="mt-3 text-sm text-foreground/80 leading-relaxed">
-              Operator calls go unanswered every day. Slide to configure your
-              monthly missed calls, select your trade niche, and view estimated
-              recovered revenue.
-            </p>
-          </div>
+    <section id="roi-calculator" className="scroll-mt-28 space-y-12">
+      <div className="space-y-4 text-center">
+        <p className="text-sm font-medium text-gold">ROI Calculator</p>
+        <h2 className="text-3xl font-semibold text-heading md:text-4xl lg:text-5xl">
+          Calculate your lost opportunity cost.
+        </h2>
+        <p className="mx-auto max-w-xl text-base leading-relaxed text-foreground/60">
+          Slide to configure your monthly missed calls, select your trade niche, 
+          and see estimated recovered revenue.
+        </p>
+      </div>
 
+      <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="space-y-8 rounded-2xl border border-white/[0.06] bg-surface p-8">
           <div className="space-y-3">
-            <label className="text-xs uppercase tracking-wider font-bold text-slate-400">
-              Select Industry Niche
+            <label className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
+              Industry
             </label>
             <div className="grid grid-cols-3 gap-2">
               {Object.entries(industryParams).map(([key, data]) => (
                 <button
                   key={key}
                   onClick={() => setSelectedIndustry(key)}
-                  className={`rounded-2xl border px-3 py-3.5 text-xs font-semibold tracking-wide transition-all ${
+                  className={`rounded-xl border py-3 text-sm font-medium transition-all ${
                     selectedIndustry === key
-                      ? 'border-gold bg-gold/10 text-gold'
-                      : 'border-white/[0.06] bg-white/[0.04] text-heading/70 hover:border-white/20 hover:text-heading'
+                      ? 'border-gold/30 bg-gold/[0.06] text-gold'
+                      : 'border-white/[0.06] bg-white/[0.03] text-foreground/50 hover:border-white/20 hover:text-foreground'
                   }`}
                 >
                   {data.name}
@@ -85,12 +79,12 @@ export default function RoiCalculator() {
             </div>
           </div>
 
-          <div className="space-y-4 rounded-2xl bg-white/[0.04] border border-white/[0.06] p-6">
-            <div className="flex justify-between items-center">
-              <span className="text-xs uppercase tracking-wider font-bold text-slate-400">
+          <div className="space-y-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-foreground/40 uppercase tracking-wider">
                 Monthly Missed Calls
               </span>
-              <span className="text-2xl font-extrabold text-gold">
+              <span className="text-2xl font-bold text-gold">
                 {missedCalls}
               </span>
             </div>
@@ -101,9 +95,9 @@ export default function RoiCalculator() {
               step="5"
               value={missedCalls}
               onChange={(e) => setMissedCalls(Number(e.target.value))}
-              className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-gold focus:outline-none"
+              className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-gold focus:outline-none"
             />
-            <div className="flex justify-between text-[10px] text-heading/30">
+            <div className="flex justify-between text-xs text-foreground/30">
               <span>10 calls</span>
               <span>150 calls</span>
               <span>300 calls</span>
@@ -111,50 +105,46 @@ export default function RoiCalculator() {
           </div>
         </div>
 
-        <div className="rounded-[20px] border border-gold/20 bg-gradient-to-b from-gold/[0.04] to-transparent p-6 md:p-8 space-y-6 flex flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-3 text-gold/10 pointer-events-none">
+        <div className="relative overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-b from-gold/[0.04] to-transparent p-8">
+          <div className="absolute top-0 right-0 p-4 text-gold/[0.06] pointer-events-none">
             <TrendingUp className="h-32 w-32" />
           </div>
 
-          <div className="space-y-6 relative z-10">
+          <div className="relative space-y-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.15em] text-gold">
+              <p className="text-xs font-medium text-gold uppercase tracking-wider">
                 Estimated Monthly Value
               </p>
-              <h3 className="text-3xl font-extrabold text-heading mt-1">
+              <h3 className="text-2xl font-semibold text-heading mt-1">
                 Recovered Revenue
               </h3>
             </div>
 
-            <div className="flex items-baseline gap-2 text-heading">
-              <span className="text-2xl md:text-3xl font-bold text-gold flex-shrink-0 self-center">
-                NPR
-              </span>
+            <div className="flex items-baseline gap-2">
+              <span className="text-xl font-semibold text-gold">NPR</span>
               <motion.span
                 key={stats.recoveredRevenue}
-                initial={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-3xl font-extrabold tracking-tight md:text-5xl"
+                className="text-4xl font-bold tracking-tight text-heading md:text-5xl"
               >
                 {stats.recoveredRevenue.toLocaleString()}
               </motion.span>
-              <span className="text-xs text-heading/40 ml-2 font-mono">
-                / month
-              </span>
+              <span className="text-sm text-foreground/40">/ month</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6 mt-2">
-              <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4 text-center">
-                <p className="text-[10px] uppercase tracking-wider text-heading/40">
-                  Recovered Bookings
+            <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 text-center">
+                <p className="text-xs text-foreground/40 uppercase tracking-wider">
+                  Bookings
                 </p>
                 <p className="text-2xl font-bold text-heading mt-1">
                   {stats.recoveredCalls}
                 </p>
               </div>
-              <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4 text-center">
-                <p className="text-[10px] uppercase tracking-wider text-heading/40">
-                  Plan ROI Multiple
+              <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-4 text-center">
+                <p className="text-xs text-foreground/40 uppercase tracking-wider">
+                  ROI Multiple
                 </p>
                 <p className="text-2xl font-bold text-gold mt-1">
                   {stats.roiMultiple}x
@@ -162,20 +152,15 @@ export default function RoiCalculator() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 rounded-xl bg-emerald-500/5 border border-emerald-500/10 px-4 py-3 text-xs text-emerald-400 leading-normal">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-              <span>
-                Based on a{" "}
-                {Math.round(industryParams[selectedIndustry].closeRate * 100)}%
-                closing conversion and NPR
-                {industryParams[selectedIndustry].jobValue.toLocaleString()} average ticket.
-              </span>
+            <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/10 px-4 py-3 text-sm text-emerald-400">
+              Based on a {Math.round(industryParams[selectedIndustry].closeRate * 100)}%
+              closing rate and NPR {industryParams[selectedIndustry].jobValue.toLocaleString()} average ticket.
             </div>
           </div>
 
           <a
             href="#contact"
-            className="w-full inline-flex items-center justify-center rounded-full bg-gold py-4 text-sm font-semibold text-background transition hover:brightness-105 relative z-10"
+            className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-gold py-3.5 text-sm font-medium text-background transition hover:brightness-105"
           >
             Request a Performance Preview
           </a>
