@@ -23,8 +23,8 @@ export default function HeroSection() {
         >
           <div className="flex flex-col items-center gap-10 md:gap-14">
             <svg
-              viewBox="0 0 180 60"
-              className="h-20 w-60 text-white/80 md:h-28 md:w-80"
+              viewBox="0 0 130 50"
+              className="h-20 w-56 text-white/80 md:h-28 md:w-72"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -33,10 +33,10 @@ export default function HeroSection() {
               aria-hidden="true"
             >
               <path
-                d="M10 25 C10 10,35 10,35 25 C35 42,12 42,12 30 C12 22,32 22,38 28 C42 32,40 45,44 10 L60 46 C62 30,55 30,62 10 L72 46 C74 48,78 10,80 10 L115 10 L92 46"
+                d="M8 16 C8 8,32 8,32 16 C32 28,12 34,12 24 C12 17,30 17,36 22 L40 40 L44 10 L60 40 L52 40 L64 10 L74 40 L78 10 L108 10 L88 40"
                 className="animate-write247"
-                strokeDasharray="320"
-                strokeDashoffset="320"
+                strokeDasharray="340"
+                strokeDashoffset="340"
               />
             </svg>
             <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-heading sm:text-5xl md:text-6xl lg:text-7xl">
