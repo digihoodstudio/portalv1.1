@@ -262,7 +262,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="fixed left-4 top-16 z-50 w-56 rounded-xl border border-white/10 bg-background/98 backdrop-blur-2xl shadow-lg md:hidden overflow-hidden"
+            className="fixed left-4 top-16 z-50 w-44 rounded-xl border border-white/10 bg-background/98 backdrop-blur-2xl shadow-lg md:hidden overflow-hidden"
           >
             <nav className="flex flex-col gap-0.5 p-2">
               {allNavItems.map((item) => (
