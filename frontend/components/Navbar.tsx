@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
+import { ChevronDown, ChevronUp, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { createClient } from "@/lib/supabase/client";
 
@@ -145,16 +145,7 @@ export default function Navbar() {
         className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-background/70 backdrop-blur-2xl"
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-12">
-          <div className="flex items-center gap-2">
-            <button
-              id="mobile-menu-toggle"
-              onClick={() => setMobileOpen((v) => !v)}
-              className="inline-flex items-center rounded-lg border border-white/10 bg-white/[0.04] px-2 py-2 text-foreground/60 transition hover:bg-white/[0.08] md:hidden"
-              aria-label="Toggle mobile menu"
-            >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-
+          <div className="flex items-center gap-0">
             <Link
               href="/"
               onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -182,6 +173,15 @@ export default function Navbar() {
                 </span>
               </span>
             </Link>
+
+            <button
+              id="mobile-menu-toggle"
+              onClick={() => setMobileOpen((v) => !v)}
+              className="inline-flex items-center rounded-lg p-1.5 text-foreground/40 transition hover:text-foreground md:hidden"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </button>
           </div>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -197,10 +197,10 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-3">
-              {effectiveLoggedIn ? (
-                <>
+          <div className="flex items-center gap-2">
+            {effectiveLoggedIn ? (
+              <>
+                <div className="hidden md:flex items-center gap-2">
                   {session?.user?.user_metadata?.avatar_url && (
                     <Image
                       src={session.user.user_metadata.avatar_url}
@@ -225,32 +225,30 @@ export default function Navbar() {
                   >
                     <LogOut size={14} />
                   </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    className="hidden md:inline-flex rounded-lg border border-white/10 bg-white/[0.04] p-2 text-foreground/60 transition hover:bg-white/[0.08] hover:text-foreground"
-                    aria-label="Toggle theme"
-                  >
-                    {mounted && theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
-                  </button>
-                  <Link
-                    href="/login"
-                    className="rounded-lg bg-gold px-5 py-2 text-sm font-medium text-background transition-all duration-300 hover:brightness-110"
-                  >
-                    Portal Login
-                  </Link>
-                </>
-              )}
-            </div>
-            {effectiveLoggedIn && (
-              <button
-                onClick={handleLogout}
-                className="md:hidden rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-foreground/60 transition hover:bg-white/[0.08] hover:text-foreground"
-              >
-                <LogOut size={16} />
-              </button>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="md:hidden rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-foreground/60 transition hover:bg-white/[0.08] hover:text-foreground"
+                >
+                  <LogOut size={16} />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  className="hidden md:inline-flex rounded-lg border border-white/10 bg-white/[0.04] p-2 text-foreground/60 transition hover:bg-white/[0.08] hover:text-foreground"
+                  aria-label="Toggle theme"
+                >
+                  {mounted && theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+                </button>
+                <Link
+                  href="/login"
+                  className="rounded-lg bg-gold px-4 py-2 text-sm font-medium text-background transition-all duration-300 hover:brightness-110"
+                >
+                  Portal Login
+                </Link>
+              </>
             )}
           </div>
         </div>
