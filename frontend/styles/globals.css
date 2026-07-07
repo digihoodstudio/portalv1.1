@@ -199,18 +199,14 @@ main {
   50% { opacity: 0.6; filter: blur(80px); }
 }
 
-/* ── Infinity draw animation ── */
-@keyframes infinityDraw {
-  0% { stroke-dashoffset: 60; }
-  50% { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: -60; }
+/* ── 24/7 write animation ── */
+@keyframes write247 {
+  0% { clip-path: inset(0 100% 0 0); }
+  35% { clip-path: inset(0 0% 0 0); }
+  70% { clip-path: inset(0 0% 0 0); }
+  100% { clip-path: inset(0 100% 0 0); }
 }
 
-@keyframes infinityPulse {
-  0%, 100% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.05); }
-}
-
-.animate-infinity-draw {
-  animation: infinityDraw 3s ease-in-out infinite, infinityPulse 3s ease-in-out infinite;
+.animate-write247 {
+  animation: write247 3s ease-in-out infinite;
 }

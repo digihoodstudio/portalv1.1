@@ -22,24 +22,14 @@ export default function HeroSection() {
           className="space-y-6"
         >
           <div className="flex flex-col items-center gap-10 md:gap-14">
-            <svg
-              viewBox="0 0 120 60"
-              className="h-28 w-56 text-white/50 md:h-36 md:w-72"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M30 30 C30 12, 54 12, 60 30 C66 48, 90 48, 90 30 C90 12, 66 12, 60 30 C54 48, 30 48, 30 30Z"
-                fill="none"
-                stroke="currentColor"
-                className="animate-infinity-draw"
-                strokeDasharray="120"
-                strokeDashoffset="120"
-              />
-            </svg>
+            <div className="relative">
+              <span className="text-5xl font-bold tracking-[0.15em] text-white/20 md:text-7xl">24/7</span>
+              <span
+                className="absolute inset-0 text-5xl font-bold tracking-[0.15em] text-white md:text-7xl animate-write247"
+              >
+                24/7
+              </span>
+            </div>
             <h1 className="text-4xl font-semibold leading-[1.1] tracking-tight text-heading sm:text-5xl md:text-6xl lg:text-7xl">
               Your AI Workforce{' '}
               <span className="text-gold">Never Sleeps.</span>
