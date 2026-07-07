@@ -198,3 +198,19 @@ main {
   0%, 100% { opacity: 0.3; filter: blur(60px); }
   50% { opacity: 0.6; filter: blur(80px); }
 }
+
+/* ── Infinity draw animation ── */
+@keyframes infinityDraw {
+  0% { stroke-dashoffset: 60; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -60; }
+}
+
+@keyframes infinityPulse {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.animate-infinity-draw {
+  animation: infinityDraw 3s ease-in-out infinite, infinityPulse 3s ease-in-out infinite;
+}
