@@ -203,9 +203,9 @@ main {
 @keyframes infinityDraw {
   0%   { stroke-dashoffset: 140; }
   50%  { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: -140; }
+  100% { stroke-dashoffset: 140; }
 }
 
 .animate-infinity-draw {
-  animation: infinityDraw 1.5s linear infinite;
+  animation: infinityDraw 3s ease-in-out infinite;
 }
