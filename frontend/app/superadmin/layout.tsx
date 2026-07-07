@@ -62,9 +62,12 @@ export default function Sidebar() {
           height={32}
           className="rounded-full object-cover flex-shrink-0"
         />
-        <div className="text-white">
-          <span className="font-monument text-sm">DIGIHOOD</span>
-          <span className="font-monument text-white/40 ml-1 text-xs">STUDIO</span>
+        <div className="text-white flex flex-col leading-tight">
+          <span className="text-[0.45em] text-white/50 tracking-[0.2em] uppercase">Portal by</span>
+          <div>
+            <span className="font-monument text-sm">DIGIHOOD</span>
+            <span className="font-monument text-white/40 ml-1 text-xs">STUDIO</span>
+          </div>
         </div>
       </div>
 

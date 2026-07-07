@@ -78,8 +78,11 @@ export default function DashboardLayout({
               className="rounded-full object-cover flex-shrink-0"
             />
             {!collapsed && (
-              <span className="font-monument text-xs tracking-[0.24em] text-gold">
-                DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-[0.45em] text-white/50 tracking-[0.2em] uppercase">Portal by</span>
+                <span className="font-monument text-xs tracking-[0.24em] text-gold">
+                  DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
+                </span>
               </span>
             )}
           </Link>
