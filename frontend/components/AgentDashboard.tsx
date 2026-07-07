@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, Users, Phone, CheckCircle2, Clock, Target, Calendar, ClipboardList, Send, CheckSquare, Square, Trash2, ListTodo, RefreshCw, Play, Pause, Check, Flame, PhoneCall, ShieldAlert } from 'lucide-react';
 
@@ -88,7 +88,7 @@ export default function AgentDashboard() {
   const sseRef = useRef<EventSource | null>(null);
 
   // Fetch agent's projects
-  const fetchProjects = async (autoSelect = false) => {
+  const fetchProjects = useCallback(async (autoSelect = false) => {
     const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
     if (!token || !userStr) return;
@@ -119,10 +119,10 @@ export default function AgentDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedProjectId]);
 
   // Fetch leads for selected project
-  const fetchLeads = async (projectId: string) => {
+  const fetchLeads = useCallback(async (projectId: string) => {
     const token = localStorage.getItem('token');
     if (!token || !projectId) return;
 
@@ -152,10 +152,10 @@ export default function AgentDashboard() {
     } catch (err) {
       console.error('Error fetching leads:', err);
     }
-  };
+  }, []);
 
   // Fetch planner data (target, meetings, tasks)
-  const fetchPlannerData = async () => {
+  const fetchPlannerData = useCallback(async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
 
@@ -176,10 +176,10 @@ export default function AgentDashboard() {
     } catch (err) {
       console.error('Error fetching planner data:', err);
     }
-  };
+  }, []);
 
   // Fetch agent's recent daily updates
-  const fetchRecentUpdates = async () => {
+  const fetchRecentUpdates = useCallback(async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
 
@@ -194,7 +194,7 @@ export default function AgentDashboard() {
     } catch (err) {
       console.error('Error fetching daily updates:', err);
     }
-  };
+  }, []);
 
   const selectedProjectIdRef = useRef(selectedProjectId);
 
@@ -229,7 +229,7 @@ export default function AgentDashboard() {
     return () => {
       if (sseRef.current) sseRef.current.close();
     };
-  }, [fetchProjects]);
+  }, [fetchProjects, fetchPlannerData, fetchRecentUpdates]);
 
   // Handle project select change
   const handleProjectSelect = (projectId: string) => {

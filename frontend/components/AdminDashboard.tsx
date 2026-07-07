@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, useTransition, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -146,6 +146,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<
     "overview" | "clients" | "appointments" | "calls" | "configs" | "campaigns"
   >("overview");
+  const [isPending, startTransition] = useTransition();
   const [loading, setLoading] = useState(true);
 
   const [clients, setClients] = useState<Client[]>([]);
@@ -335,33 +336,37 @@ export default function AdminDashboard() {
 
   // ─── Client CRUD ──────────────────────────────────────────────────────────
   const openAddClientModal = () => {
-    setClientForm({
-      id: "",
-      companyName: "",
-      contactName: "",
-      contactEmail: "",
-      contactPhone: "",
-      plan: "GROWTH",
-      status: "ACTIVE",
+    startTransition(() => {
+      setClientForm({
+        id: "",
+        companyName: "",
+        contactName: "",
+        contactEmail: "",
+        contactPhone: "",
+        plan: "GROWTH",
+        status: "ACTIVE",
+      });
+      setIsEditingClient(false);
+      setClientFormStatus("");
+      setIsClientModalOpen(true);
     });
-    setIsEditingClient(false);
-    setClientFormStatus("");
-    setIsClientModalOpen(true);
   };
 
   const openEditClientModal = (client: Client) => {
-    setClientForm({
-      id: client.id,
-      companyName: client.companyName,
-      contactName: client.contactName,
-      contactEmail: client.contactEmail,
-      contactPhone: client.contactPhone,
-      plan: client.plan,
-      status: client.status,
+    startTransition(() => {
+      setClientForm({
+        id: client.id,
+        companyName: client.companyName,
+        contactName: client.contactName,
+        contactEmail: client.contactEmail,
+        contactPhone: client.contactPhone,
+        plan: client.plan,
+        status: client.status,
+      });
+      setIsEditingClient(true);
+      setClientFormStatus("");
+      setIsClientModalOpen(true);
     });
-    setIsEditingClient(true);
-    setClientFormStatus("");
-    setIsClientModalOpen(true);
   };
 
   const saveClient = async (e: React.FormEvent) => {
@@ -772,27 +777,33 @@ export default function AdminDashboard() {
   // Skip loading screen — render dashboard immediately with empty state
 
   // ─── Computed Stats for Overview ───────────────────────────────────────────
-  const totalLeads = projects.reduce(
+  const totalLeads = useMemo(() => projects.reduce(
     (sum, p) => sum + (p.uploadedFiles?.[0]?.recordCount || 0),
     0,
+  ), [projects]);
+  const bookedCalls = useMemo(() => calls.filter((c) => c.outcome === "BOOKED").length, [calls]);
+  const conversionRate = useMemo(() =>
+    calls.length > 0 ? ((bookedCalls / calls.length) * 100).toFixed(0) : 0,
+  [calls, bookedCalls]
   );
-  const bookedCalls = calls.filter((c) => c.outcome === "BOOKED").length;
-  const conversionRate =
-    calls.length > 0 ? ((bookedCalls / calls.length) * 100).toFixed(0) : 0;
-  const avgGreeting =
+  const avgGreeting = useMemo(() =>
     calls.length > 0
       ? (
           calls.reduce((s, c) => s + (c.coaching?.greeting || 0), 0) /
           calls.length
         ).toFixed(0)
-      : 91;
-  const avgCompliance =
+      : 91,
+  [calls]
+  );
+  const avgCompliance = useMemo(() =>
     calls.length > 0
       ? (
           calls.reduce((s, c) => s + (c.coaching?.compliance || 0), 0) /
           calls.length
         ).toFixed(0)
-      : 87;
+      : 87,
+  [calls]
+  );
 
   const tabs = [
     { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -811,12 +822,12 @@ export default function AdminDashboard() {
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
-            onClick={() => setActiveTab(id as typeof activeTab)}
+            onClick={() => startTransition(() => setActiveTab(id as typeof activeTab))}
             className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
               activeTab === id
                 ? "bg-gold/15 border border-gold/30 text-gold shadow-glow-sm"
                 : "text-heading/60 hover:bg-white/5 hover:text-heading border border-transparent"
-            }`}
+            } ${isPending ? "opacity-70" : ""}`}
           >
             <Icon size={14} />
             <span>{label}</span>
@@ -837,7 +848,7 @@ export default function AdminDashboard() {
                 </span>
                 <div className="relative" ref={periodRef}>
                   <button
-                    onClick={() => setPeriodDropdownOpen(!periodDropdownOpen)}
+                    onClick={() => startTransition(() => setPeriodDropdownOpen(!periodDropdownOpen))}
                     className="inline-flex items-center gap-1 text-[10px] font-bold text-heading/50 hover:text-heading border border-white/10 rounded-full px-2.5 py-1 bg-white/5"
                   >
                     <span>{selectedPeriod}</span>
@@ -849,10 +860,10 @@ export default function AdminDashboard() {
                         (opt) => (
                           <button
                             key={opt}
-                            onClick={() => {
+                            onClick={() => startTransition(() => {
                               setSelectedPeriod(opt);
                               setPeriodDropdownOpen(false);
-                            }}
+                            })}
                             className={`w-full text-left px-3 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
                               selectedPeriod === opt
                                 ? "bg-gold/10 text-gold"
@@ -2543,7 +2554,7 @@ export default function AdminDashboard() {
                 <div className="flex gap-2 pt-2">
                   <button
                     type="button"
-                    onClick={() => setIsClientModalOpen(false)}
+                    onClick={() => startTransition(() => setIsClientModalOpen(false))}
                     className="w-1/2 rounded-xl bg-white/5 hover:bg-white/10 py-2.5 text-xs font-bold text-heading transition"
                   >
                     Cancel
@@ -2581,7 +2592,7 @@ export default function AdminDashboard() {
                   </p>
                 </div>
                 <button
-                  onClick={() => setSelectedCall(null)}
+                  onClick={() => startTransition(() => setSelectedCall(null))}
                   className="text-heading/40 hover:text-heading"
                 >
                   <X size={16} />
@@ -2651,7 +2662,7 @@ export default function AdminDashboard() {
               </div>
               <div className="flex justify-end pt-2">
                 <button
-                  onClick={() => setSelectedCall(null)}
+                  onClick={() => startTransition(() => setSelectedCall(null))}
                   className="rounded-xl bg-white/5 hover:bg-white/10 px-6 py-2.5 text-xs font-bold text-heading transition"
                 >
                   Close Audit Page

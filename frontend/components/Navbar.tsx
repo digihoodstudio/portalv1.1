@@ -6,8 +6,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
+import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -28,8 +28,8 @@ export default function Navbar() {
     return null;
   }
 
-  // ── Auth state (legacy localStorage + next-auth) ──
-  const { data: session } = useSession();
+  // ── Auth state (Supabase + localStorage) ──
+  const [session, setSession] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -37,6 +37,18 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
 
   useEffect(() => { setMounted(true); }, []);
+
+  // ── Supabase session subscription ──
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   // ── Glow tracking ──
   const headerRef = useRef<HTMLElement>(null);
@@ -136,13 +148,10 @@ export default function Navbar() {
     setMobileOpen(false);
 
     if (session) {
-      signOut({ callbackUrl: "/" });
-    } else {
-      const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
       await supabase.auth.signOut();
-      window.location.href = "/";
     }
+    window.location.href = "/";
   };
 
   let dashboardLink = null;
@@ -224,10 +233,10 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {effectiveLoggedIn ? (
               <>
-                {session?.user?.image && (
+                {session?.user?.user_metadata?.avatar_url && (
                   <Image
-                    src={session.user.image}
-                    alt={session.user.name ?? "User"}
+                    src={session.user.user_metadata.avatar_url}
+                    alt={session.user.user_metadata.full_name ?? "User"}
                     width={32}
                     height={32}
                     className="rounded-full border border-gold/30"
@@ -311,10 +320,10 @@ export default function Navbar() {
                   <>
                     {session?.user && (
                       <div className="flex items-center gap-3 rounded-2xl bg-white/5 px-4 py-3">
-                        {session.user.image && (
+                        {session.user.user_metadata?.avatar_url && (
                           <Image
-                            src={session.user.image}
-                            alt={session.user.name ?? "User"}
+                            src={session.user.user_metadata.avatar_url}
+                            alt={session.user.user_metadata.full_name ?? "User"}
                             width={28}
                             height={28}
                             className="rounded-full"
@@ -322,7 +331,7 @@ export default function Navbar() {
                         )}
                         <div>
                           <p className="text-sm font-medium text-heading">
-                            {session.user.name}
+                            {session.user.user_metadata?.full_name ?? session.user.email}
                           </p>
                           <p className="text-xs text-foreground/50">
                             {session.user.email}
@@ -352,7 +361,13 @@ export default function Navbar() {
                     <button
                       onClick={() => {
                         setMobileOpen(false);
-                        signIn("google", { callbackUrl: "/dashboard" });
+                        const supabase = createClient();
+                        supabase.auth.signInWithOAuth({
+                          provider: "google",
+                          options: {
+                            redirectTo: `${window.location.origin}/auth/callback`,
+                          },
+                        });
                       }}
                       className="flex w-full items-center justify-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-foreground transition hover:bg-white/10"
                     >

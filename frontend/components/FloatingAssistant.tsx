@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, User } from "lucide-react";
+import { Bot, MessageSquare, X, Send, User } from "lucide-react";
 import Image from "next/image";
 
 interface Message {
