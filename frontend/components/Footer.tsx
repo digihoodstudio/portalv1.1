@@ -21,7 +21,7 @@ export default function Footer() {
       <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr] md:items-start">
         <div>
           <div className="flex flex-col leading-tight">
-            <span className="text-[0.5em] text-white/50 tracking-[0.2em] uppercase">Portal by</span>
+            <span className="text-[0.5em] text-white tracking-[0.2em] uppercase">Portal by</span>
             <p className="font-monument text-lg tracking-[0.14em] text-gold">
               DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
             </p>

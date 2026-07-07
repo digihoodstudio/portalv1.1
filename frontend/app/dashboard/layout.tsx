@@ -79,7 +79,7 @@ export default function DashboardLayout({
             />
             {!collapsed && (
               <span className="flex flex-col leading-tight">
-                <span className="text-[0.45em] text-white/50 tracking-[0.2em] uppercase">Portal by</span>
+                <span className="text-[0.45em] text-white tracking-[0.2em] uppercase">Portal by</span>
                 <span className="font-monument text-xs tracking-[0.24em] text-gold">
                   DIGIHOOD<span className="text-[0.6em] text-gold/60 ml-1">STUDIO</span>
                 </span>
