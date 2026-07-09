@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 
 export default function HomePage() {
   return (
-    <main className="relative z-10 overflow-hidden px-4 pt-28 sm:px-6 md:px-12">
+    <main className="relative z-10 overflow-hidden px-4 pt-24 sm:px-6 md:px-12">
       <section className="mx-auto max-w-7xl">
         <HeroSection />
       </section>
