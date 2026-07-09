@@ -62,10 +62,6 @@ export default function ValuePillars() {
         {pillars.map((pillar, idx) => (
           <motion.article
             key={pillar.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: idx * 0.1 }}
             className="group relative rounded-2xl border border-white/[0.06] bg-surface p-8 transition-all duration-300 hover:border-white/[0.12]"
           >
             <div className="mb-6 flex items-center justify-between">
