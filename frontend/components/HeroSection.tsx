@@ -88,40 +88,7 @@ export default function HeroSection() {
             Watch Demo
           </Link>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-6"
-        >
-          {[
-            { icon: PhoneCall, text: '24/7 AI Answering' },
-            { icon: RefreshCw, text: 'Missed Call Recovery' },
-            { icon: BarChart3, text: 'Real-Time Dashboard' },
-          ].map((item) => (
-            <div key={item.text} className="flex items-center gap-2 text-xs text-foreground/50">
-              <item.icon className="h-3.5 w-3.5 text-gold/70" />
-              <span>{item.text}</span>
-            </div>
-          ))}
-        </motion.div>
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.4 }}
-        className="mt-16 flex flex-wrap items-center justify-center gap-8 border-t border-white/[0.06] pt-8 text-[10px] font-medium uppercase tracking-[0.15em] text-foreground/40"
-      >
-        <span>ServiceTitan Integration</span>
-        <span className="h-3 w-px bg-white/[0.06]" />
-        <span>24/7 AI Answering</span>
-        <span className="h-3 w-px bg-white/[0.06]" />
-        <span>Outbound Reactivation</span>
-        <span className="h-3 w-px bg-white/[0.06]" />
-        <span>Enterprise Secure</span>
-      </motion.div>
     </section>
   );
 }
