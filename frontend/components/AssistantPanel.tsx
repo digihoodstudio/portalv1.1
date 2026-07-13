@@ -34,7 +34,7 @@ const INITIAL: Message = {
 const voiceFeatures = [
   { icon: Headphones, text: "24/7 AI call answering" },
   { icon: Brain, text: "Natural conversation AI" },
-  { icon: Clock, text: "Answers in under 10 seconds" },
+  { icon: Clock, text: "Answers instantly" },
   { icon: BarChart3, text: "Smart lead qualification" },
 ];
 
