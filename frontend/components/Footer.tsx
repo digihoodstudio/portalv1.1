@@ -5,7 +5,7 @@ const footerLinks = {
     { label: "Services", href: "/services" },
     { label: "Pricing", href: "/pricing" },
     { label: "AI Assistant", href: "/assistant" },
-    { label: "Watch Demo", href: "/watch-demo" },
+    { label: "Try Demo", href: "/#assistant" },
   ],
   Company: [
     { label: "Contact", href: "/contact" },

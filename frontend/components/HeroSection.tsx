@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Play, ArrowRight, BarChart3, PhoneCall, RefreshCw } from 'lucide-react';
+import { ArrowRight, ArrowDown, BarChart3, PhoneCall, RefreshCw } from 'lucide-react';
 
 export default function HeroSection() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -80,13 +80,17 @@ export default function HeroSection() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           )}
-          <Link
-            href="/watch-demo"
+          <a
+            href="#assistant"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('assistant')?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-7 py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:border-gold/30 hover:text-gold"
           >
-            <Play className="h-4 w-4" />
-            Watch Demo
-          </Link>
+            <ArrowDown className="h-4 w-4" />
+            Try Demo
+          </a>
         </motion.div>
       </div>
     </section>
