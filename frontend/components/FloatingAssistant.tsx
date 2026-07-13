@@ -14,7 +14,6 @@ export default function FloatingAssistant() {
   const [isMuted, setIsMuted] = useState(false);
   const [volumeLevel, setVolumeLevel] = useState(0);
   const [vapiError, setVapiError] = useState("");
-  const [showNotification, setShowNotification] = useState(true);
 
   const vapiRef = useRef<Vapi | null>(null);
 
@@ -31,10 +30,6 @@ export default function FloatingAssistant() {
 
     return () => { vapi.stop(); };
   }, []);
-
-  useEffect(() => {
-    if (isOpen) setShowNotification(false);
-  }, [isOpen]);
 
   const toggleVoiceCall = useCallback(async () => {
     const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
@@ -242,13 +237,11 @@ export default function FloatingAssistant() {
           )}
         </AnimatePresence>
 
-        {/* Pulsing Notification Ring */}
-        {showNotification && !isOpen && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-background" />
-          </span>
-        )}
+        {/* Green Dot */}
+        <span className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-background" />
+        </span>
       </button>
     </div>
   );
