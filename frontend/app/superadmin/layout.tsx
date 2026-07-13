@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,10 +15,13 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import ProfileModal from "../../components/ProfileModal";
 
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const closeProfile = useCallback(() => setProfileOpen(false), []);
 
   const handleLogout = async () => {
     try {
@@ -79,7 +83,7 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors duration-150 ${
                 active
                   ? "bg-white/10 text-white font-bold"
                   : "text-white/60 hover:bg-white/5 hover:text-white"
@@ -94,8 +98,11 @@ export default function Sidebar() {
 
       {/* User + Logout */}
       <div className="border-t border-white/10 p-3 space-y-2">
-        <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5">
-          <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/30 flex items-center justify-center text-gold text-xs font-bold">
+        <button
+          onClick={() => setProfileOpen(true)}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors duration-150 text-left"
+        >
+          <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/30 flex items-center justify-center text-gold text-xs font-bold flex-shrink-0">
             A
           </div>
           <div className="min-w-0 flex-1">
@@ -104,7 +111,7 @@ export default function Sidebar() {
             </p>
             <p className="text-[10px] text-white/40">Company Admin</p>
           </div>
-        </div>
+        </button>
 
         <button
           onClick={handleLogout}
@@ -115,6 +122,8 @@ export default function Sidebar() {
           <span>Logout</span>
         </button>
       </div>
+
+      <ProfileModal isOpen={profileOpen} onClose={closeProfile} />
     </aside>
   );
 }

@@ -784,7 +784,7 @@ export default function SuperAdminDashboard() {
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id as any)}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-colors duration-150 ${
                 activeTab === t.id 
                   ? 'bg-purple-500/15 border border-purple-500/30 text-purple-300 shadow-glow-sm' 
                   : 'bg-white/5 border border-transparent text-heading/60 hover:bg-white/10 hover:text-heading'

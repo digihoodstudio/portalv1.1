@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -12,11 +12,12 @@ import {
   StickyNote,
   Settings,
   LogOut,
-  Menu,
-  X,
+  ChevronLeft,
+  ChevronRight,
   BarChart3,
   Calendar,
 } from "lucide-react";
+import ProfileModal from "../../components/ProfileModal";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -39,6 +40,8 @@ export default function DashboardLayout({
   const [collapsed, setCollapsed] = useState(false);
   const [userName, setUserName] = useState("Admin");
   const [userRole, setUserRole] = useState("Admin");
+  const [profileOpen, setProfileOpen] = useState(false);
+  const closeProfile = useCallback(() => setProfileOpen(false), []);
 
   useEffect(() => {
     const userStr = localStorage.getItem("user");
@@ -90,7 +93,7 @@ export default function DashboardLayout({
             onClick={() => setCollapsed(!collapsed)}
             className="rounded-lg p-2 text-heading/60 hover:bg-white/5 hover:text-heading"
           >
-            {collapsed ? <Menu size={18} /> : <X size={18} />}
+            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
         </div>
 
@@ -103,10 +106,10 @@ export default function DashboardLayout({
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
+                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors duration-150 ${
                   active
                     ? "bg-gold/10 text-gold border border-gold/20"
-                    : "text-heading/70 hover:bg-white/5 hover:text-heading"
+                    : "text-heading/70 hover:bg-white/5 hover:text-heading border border-transparent"
                 }`}
                 title={collapsed ? label : undefined}
               >
@@ -119,7 +122,10 @@ export default function DashboardLayout({
 
         <div className="border-t border-white/10 p-3 space-y-2">
           {!collapsed && (
-            <div className="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-2.5">
+            <button
+              onClick={() => setProfileOpen(true)}
+              className="flex w-full items-center gap-3 rounded-xl bg-white/5 px-3 py-2.5 hover:bg-white/10 transition-colors duration-150 text-left"
+            >
               <div className="h-8 w-8 rounded-full bg-gold/20 text-gold flex items-center justify-center text-sm font-bold flex-shrink-0">
                 {userName[0]?.toUpperCase()}
               </div>
@@ -129,7 +135,7 @@ export default function DashboardLayout({
                 </p>
                 <p className="text-[10px] text-heading/50 truncate">{userRole}</p>
               </div>
-            </div>
+            </button>
           )}
           <button
             onClick={logout}
@@ -141,6 +147,8 @@ export default function DashboardLayout({
           </button>
         </div>
       </aside>
+
+      <ProfileModal isOpen={profileOpen} onClose={closeProfile} />
 
       <main className="flex-1 flex flex-col min-h-screen">
         <div className="flex-1 p-8">{children}</div>
