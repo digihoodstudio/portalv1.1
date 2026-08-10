@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, Phone, PhoneOff, Mic, MicOff, Volume2, Loader2 } from "lucide-react";
+import { Phone, PhoneOff, Mic, MicOff, Volume2, Loader2 } from "lucide-react";
 import Vapi from "@vapi-ai/web";
 
 const DT_HOUSING_ASSISTANT_ID = "6052bcc5-7de9-4932-8fad-dc0683ebb52d";
@@ -29,7 +29,7 @@ export default function DTHousingPage() {
   useEffect(() => {
     const publicKey = process.env.NEXT_PUBLIC_VAPI_DTHOUSING_PUBLIC_KEY;
     if (!publicKey) {
-      setVapiError("DT Housing Vapi public key is not configured.");
+      setVapiError("Downtown Housing Co Vapi public key is not configured.");
       return;
     }
     const vapi = new Vapi(publicKey);
@@ -101,10 +101,11 @@ export default function DTHousingPage() {
     <main className="relative z-10 flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-16 pt-24 sm:px-6 md:px-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/25 bg-gold/10 shadow-glow">
-          <Home size={28} className="text-gold" />
+        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-gold/25 bg-white/5 p-2 shadow-glow">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/dtlogo.png" alt="Downtown Housing Co" className="h-full w-full object-contain" />
         </div>
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold">DT Housing</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gold">Downtown Housing Co</p>
         <h1 className="mt-3 text-3xl font-bold text-heading md:text-4xl">
           AI Call Assistant
         </h1>
@@ -192,7 +193,7 @@ export default function DTHousingPage() {
                 >
                   <Phone size={30} className="text-gold" />
                 </motion.div>
-                <p className="mt-4 text-sm font-bold text-heading">DT Housing Assistant</p>
+                <p className="mt-4 text-sm font-bold text-heading">Downtown Housing Co Assistant</p>
                 <div className="mt-2 flex items-center gap-2">
                   <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[10px] font-semibold text-emerald-400">
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
@@ -292,7 +293,7 @@ export default function DTHousingPage() {
       </div>
 
       <p className="mt-8 text-center text-[10px] text-foreground/30">
-        Powered by Vapi • Digihood Studio
+        Powered by Digihood Studio
       </p>
     </main>
   );
