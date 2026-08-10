@@ -28,6 +28,7 @@ export default function DTHousingPage() {
 
   useEffect(() => {
     const publicKey = process.env.NEXT_PUBLIC_VAPI_DTHOUSING_PUBLIC_KEY;
+    console.log("[dthousing] using Vapi public key:", publicKey);
     if (!publicKey) {
       setVapiError("Downtown Housing Co Vapi public key is not configured.");
       return;
@@ -79,6 +80,9 @@ export default function DTHousingPage() {
     if (!vapiRef.current) return;
     setCallStatus("connecting");
     setVapiError("");
+
+    const publicKey = process.env.NEXT_PUBLIC_VAPI_DTHOUSING_PUBLIC_KEY;
+    console.log("[dthousing] initiating call with key:", publicKey, "assistant:", DT_HOUSING_ASSISTANT_ID);
 
     // Request mic permission up front so the browser prompt appears right away.
     let micStream: MediaStream | null = null;
