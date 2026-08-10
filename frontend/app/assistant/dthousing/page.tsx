@@ -60,7 +60,11 @@ export default function DTHousingPage() {
     });
     vapi.on("error", (err: any) => {
       console.error("Vapi error:", err);
-      setVapiError(`Voice call error: ${err?.message || err || "Please try again."}`);
+      let detail = "Please try again.";
+      try {
+        detail = typeof err === "string" ? err : JSON.stringify(err);
+      } catch {}
+      setVapiError(`Voice call error: ${detail}`);
       setCallStatus("idle");
     });
 
@@ -91,7 +95,11 @@ export default function DTHousingPage() {
       await vapiRef.current.start(DT_HOUSING_ASSISTANT_ID);
     } catch (err: any) {
       console.error("Vapi start error:", err);
-      setVapiError(`Couldn't start voice call: ${err?.message || err || "Please try again."}`);
+      let detail = "Please try again.";
+      try {
+        detail = typeof err === "string" ? err : JSON.stringify(err);
+      } catch {}
+      setVapiError(`Couldn't start voice call: ${detail}`);
       setCallStatus("idle");
     }
   };
