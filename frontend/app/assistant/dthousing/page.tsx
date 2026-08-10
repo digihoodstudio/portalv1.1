@@ -60,7 +60,7 @@ export default function DTHousingPage() {
     });
     vapi.on("error", (err: any) => {
       console.error("Vapi error:", err);
-      setVapiError("Voice call error. Please try again.");
+      setVapiError(`Voice call error: ${err?.message || err || "Please try again."}`);
       setCallStatus("idle");
     });
 
@@ -75,10 +75,23 @@ export default function DTHousingPage() {
     if (!vapiRef.current) return;
     setCallStatus("connecting");
     setVapiError("");
+
+    // Request mic permission up front so the browser prompt appears right away.
+    let micStream: MediaStream | null = null;
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStream.getTracks().forEach((t) => t.stop());
+    } catch {
+      setVapiError("Microphone access is required to make a call. Please allow microphone access and try again.");
+      setCallStatus("idle");
+      return;
+    }
+
     try {
       await vapiRef.current.start(DT_HOUSING_ASSISTANT_ID);
-    } catch {
-      setVapiError("Couldn't start voice call. Please try again.");
+    } catch (err: any) {
+      console.error("Vapi start error:", err);
+      setVapiError(`Couldn't start voice call: ${err?.message || err || "Please try again."}`);
       setCallStatus("idle");
     }
   };
