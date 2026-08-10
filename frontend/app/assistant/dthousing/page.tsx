@@ -82,9 +82,6 @@ export default function DTHousingPage() {
     setCallStatus("connecting");
     setVapiError("");
 
-    const publicKey = process.env.NEXT_PUBLIC_VAPI_DTHOUSING_PUBLIC_KEY;
-    console.log("[dthousing] initiating call with key:", publicKey, "assistant:", DT_HOUSING_ASSISTANT_ID);
-
     // Request mic permission up front so the browser prompt appears right away.
     let micStream: MediaStream | null = null;
     try {
@@ -97,12 +94,20 @@ export default function DTHousingPage() {
     }
 
     try {
-      await vapiRef.current.start(DT_HOUSING_ASSISTANT_ID);
+      // Create the call server-side (reliable), then join the room in the browser.
+      const res = await fetch("/api/vapi/dthousing", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to start call.");
+      }
+
+      await vapiRef.current.stop();
+      await vapiRef.current.reconnect({ id: data.callId, webCallUrl: data.webCallUrl });
     } catch (err: any) {
       console.error("Vapi start error:", err);
       let detail = "Please try again.";
       try {
-        detail = typeof err === "string" ? err : JSON.stringify(err);
+        detail = typeof err === "string" ? err : (err?.message || JSON.stringify(err));
       } catch {}
       setVapiError(`Couldn't start voice call: ${detail}`);
       setCallStatus("idle");
