@@ -61,11 +61,12 @@ export default function DTHousingPage() {
     });
     vapi.on("error", (err: any) => {
       console.error("Vapi error:", err);
+      const keyUsed = process.env.NEXT_PUBLIC_VAPI_DTHOUSING_PUBLIC_KEY;
       let detail = "Please try again.";
       try {
         detail = typeof err === "string" ? err : JSON.stringify(err);
       } catch {}
-      setVapiError(`Voice call error: ${detail}`);
+      setVapiError(`Voice call error: ${detail}\n\nPublic key in use: ${keyUsed}`);
       setCallStatus("idle");
     });
 
@@ -310,7 +311,7 @@ export default function DTHousingPage() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-5 text-center text-xs text-red-400/80"
+            className="mt-5 max-w-sm whitespace-pre-wrap break-words text-center text-xs text-red-400/80"
           >
             {vapiError}
           </motion.p>
