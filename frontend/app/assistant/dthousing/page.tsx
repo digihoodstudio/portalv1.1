@@ -24,7 +24,7 @@ export default function DTHousingPage() {
 
   const vapiRef = useRef<Vapi | null>(null);
   const transcriptsRef = useRef<TranscriptLine[]>([]);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const transcriptBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const publicKey = process.env.NEXT_PUBLIC_VAPI_DTHOUSING_PUBLIC_KEY;
@@ -74,7 +74,8 @@ export default function DTHousingPage() {
   }, []);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const box = transcriptBoxRef.current;
+    if (box) box.scrollTop = box.scrollHeight;
   }, [transcripts]);
 
   const initiateCall = async () => {
@@ -255,7 +256,7 @@ export default function DTHousingPage() {
               </div>
 
               {/* Transcript */}
-              <div className="mb-6 max-h-40 w-full overflow-y-auto rounded-2xl border border-white/10 bg-background/50 p-4">
+              <div ref={transcriptBoxRef} className="mb-6 max-h-40 w-full overflow-y-auto rounded-2xl border border-white/10 bg-background/50 p-4">
                 {transcripts.length === 0 ? (
                   <p className="text-center text-xs text-foreground/40">
                     The live transcript will appear here...
@@ -276,7 +277,6 @@ export default function DTHousingPage() {
                         </div>
                       </div>
                     ))}
-                    <div ref={bottomRef} />
                   </div>
                 )}
               </div>
